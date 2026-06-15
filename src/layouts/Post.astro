@@ -1,0 +1,44 @@
+---
+import Base from './Base.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  type: string;
+  image?: string;
+  color?: string;
+  tags?: string[];
+}
+
+const { title, description, date, type, image, color, tags } = Astro.props;
+const formattedDate = date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<Base title={`${title} — shawncole.ca`}>
+  <article class="post" style={color ? `--color-accent: ${color}` : ''}>
+    <a href="/" class="post__back">← back to the playground</a>
+    <header class="post__header">
+      <span class="post__type">{type}</span>
+      <h1 class="post__title">{title}</h1>
+      <p class="post__meta">{formattedDate}</p>
+    </header>
+    {image && <img src={image} alt={title} class="post__hero" />}
+    <div class="post__content">
+      <slot />
+    </div>
+    {
+      tags && tags.length > 0 && (
+        <div class="card__tags" style="margin-top: var(--space-md)">
+          {tags.map((tag) => (
+            <span class="card__tag">{tag}</span>
+          ))}
+        </div>
+      )
+    }
+  </article>
+</Base>
