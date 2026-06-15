@@ -8,20 +8,27 @@ const contentSchema = z.object({
   tags: z.array(z.string()).optional(),
   image: z.string().optional(),
   color: z.string().optional(),
+  customStyles: z.string().optional(),
+  cardCustomStyles: z.string().optional(),
+  vibe: z.enum(['contained-box', 'binary-split', 'saturated-field',
+                'column-strips', 'circle-reveal', 'raw-frame']).optional(),
+  vibeProps: z.record(z.string()).optional(),
+  span: z.enum(['1', '2', '3']).optional(),
+  fontPairing: z.enum(['serif-sans', 'mono-serif', 'mono-sans']).optional(),
 });
 
 const blog = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+  loader: glob({ pattern: '**/*.md', base: './src/shawncole-ca/blog' }),
   schema: contentSchema,
 });
 
 const caseStudies = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/case-studies' }),
+  loader: glob({ pattern: '**/*.md', base: './src/shawncole-ca/case-studies' }),
   schema: contentSchema,
 });
 
 const stories = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/stories' }),
+  loader: glob({ pattern: '**/*.md', base: './src/shawncole-ca/stories' }),
   schema: contentSchema,
 });
 

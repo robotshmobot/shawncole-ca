@@ -4,6 +4,11 @@ description: "This is the first post. The beginning of something weird and wonde
 date: 2026-06-13
 tags: ["meta", "beginnings"]
 color: "#ff6b35"
+vibe: "saturated-field"
+vibeProps:
+  fieldColor: "#c44b1a"
+  textColor: "#f5f0eb"
+span: "2"
 ---
 
 Welcome to the playground.

@@ -1,0 +1,133 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  type: string;
+  href: string;
+  slug: string;
+  image?: string;
+  color?: string;
+  tags?: string[];
+  index?: number;
+  vibeProps: Record<string, string>;
+  cardCustomStyles?: string;
+}
+
+const { title, description, date, type, href, slug, image, color, tags, index = 0, vibeProps, cardCustomStyles } = Astro.props;
+const splitRatio = vibeProps.splitRatio ?? '38';
+const leftBg = vibeProps.leftBg ?? color ?? '#1a2744';
+const rightBg = vibeProps.rightBg ?? '#ffffff';
+const leftRadius = vibeProps.leftRadius ?? '24';
+const flip = vibeProps.flip === 'true';
+const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<a
+  href={href}
+  class:list={['vibe-binary-split-card', { 'vibe-binary-split-card--flip': flip }]}
+  data-post={slug}
+  style={`--i: ${index}; --split: ${splitRatio}%; --left-bg: ${leftBg}; --right-bg: ${rightBg}; --left-radius: ${leftRadius}px;`}
+>
+  <div class="vibe-binary-split-card__left">
+    {image && <img src={image} alt={title} />}
+  </div>
+  <div class="vibe-binary-split-card__right">
+    <span class="card__type" style={`color: ${leftBg};`}>{type}</span>
+    <h2 class="card__title">{title}</h2>
+    <p class="card__description">{description}</p>
+    <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>
+    {tags && tags.length > 0 && (
+      <div class="card__tags">
+        {tags.map(tag => <span class="card__tag">{tag}</span>)}
+      </div>
+    )}
+  </div>
+</a>
+{cardCustomStyles && <style set:html={cardCustomStyles.replaceAll(':card', `[data-post="${slug}"]`)} />}
+
+<style>
+  .vibe-binary-split-card {
+    display: grid;
+    grid-template-columns: var(--split) 1fr;
+    text-decoration: none;
+    color: var(--color-text);
+    overflow: hidden;
+    border-radius: var(--radius);
+    min-height: 280px;
+    transition: transform 0.4s var(--transition-spring);
+    animation: slideUp 0.6s var(--transition-smooth) both;
+    animation-delay: calc(var(--i, 0) * 0.08s);
+    cursor: crosshair;
+  }
+  .vibe-binary-split-card--flip {
+    direction: rtl;
+  }
+  .vibe-binary-split-card--flip > * {
+    direction: ltr;
+  }
+  .vibe-binary-split-card__left {
+    background: var(--left-bg);
+    border-radius: 0 var(--left-radius) var(--left-radius) 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .vibe-binary-split-card__left img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .vibe-binary-split-card__right {
+    background: var(--right-bg);
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .vibe-binary-split-card .card__title {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    line-height: 1.2;
+    margin-bottom: var(--space-xs);
+    text-transform: var(--font-display-transform);
+  }
+  .vibe-binary-split-card .card__description {
+    color: var(--color-muted);
+    font-size: 0.95rem;
+    margin-bottom: var(--space-sm);
+  }
+  .vibe-binary-split-card .card__type {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-xs);
+  }
+  .vibe-binary-split-card .card__date {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    letter-spacing: 0.05em;
+  }
+  .vibe-binary-split-card:hover {
+    transform: scale(1.01);
+  }
+  .vibe-binary-split-card:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 4px;
+  }
+  @media (max-width: 720px) {
+    .vibe-binary-split-card {
+      grid-template-columns: 1fr;
+      grid-template-rows: 140px 1fr;
+    }
+    .vibe-binary-split-card--flip {
+      direction: ltr;
+    }
+    .vibe-binary-split-card__left {
+      border-radius: 0 0 var(--left-radius) var(--left-radius);
+    }
+  }
+</style>

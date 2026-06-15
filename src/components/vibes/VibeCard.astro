@@ -1,0 +1,38 @@
+---
+import Card from '../Card.astro';
+import SaturatedFieldCard from './cards/SaturatedFieldCard.astro';
+import ContainedBoxCard from './cards/ContainedBoxCard.astro';
+import BinarySplitCard from './cards/BinarySplitCard.astro';
+import type { VibeName, FontPairing } from './vibeDefaults';
+import { getVibeProps } from './vibeDefaults';
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  type: string;
+  href: string;
+  slug: string;
+  image?: string;
+  color?: string;
+  tags?: string[];
+  index?: number;
+  span?: string;
+  vibe?: VibeName;
+  vibeProps?: Record<string, string>;
+  customStyles?: string;
+  cardCustomStyles?: string;
+  fontPairing?: FontPairing;
+}
+
+const { vibe, vibeProps: rawVibeProps, span, fontPairing, ...rest } = Astro.props;
+const resolvedProps = vibe ? getVibeProps(vibe, rawVibeProps) : {};
+const cardSpan = span ?? (rest.type === 'case study' ? '2' : '1');
+---
+
+<div class={fontPairing ? `font-pair-${fontPairing}` : ''}>
+  {!vibe && <Card {...rest} wide={cardSpan === '2'} />}
+  {vibe === 'saturated-field' && <SaturatedFieldCard {...rest} vibeProps={resolvedProps} />}
+  {vibe === 'contained-box' && <ContainedBoxCard {...rest} vibeProps={resolvedProps} />}
+  {vibe === 'binary-split' && <BinarySplitCard {...rest} vibeProps={resolvedProps} />}
+</div>

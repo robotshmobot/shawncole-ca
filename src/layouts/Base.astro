@@ -1,12 +1,14 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
 import '../styles/global.css';
+import Nav from '../components/Nav.astro';
 
 interface Props {
   title?: string;
+  fontPairing?: string;
 }
 
-const { title = 'shawncole.ca' } = Astro.props;
+const { title = 'shawncole.ca', fontPairing } = Astro.props;
 ---
 
 <!doctype html>
@@ -15,9 +17,13 @@ const { title = 'shawncole.ca' } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" rel="stylesheet" />
     <ViewTransitions />
   </head>
-  <body>
+  <body class={fontPairing ? `font-pair-${fontPairing}` : ''}>
     <slot />
+    <Nav currentPath={Astro.url.pathname} />
   </body>
 </html>

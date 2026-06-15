@@ -9,9 +9,11 @@ interface Props {
   image?: string;
   color?: string;
   tags?: string[];
+  customStyles?: string;
+  fontPairing?: string;
 }
 
-const { title, description, date, type, image, color, tags } = Astro.props;
+const { title, description, date, type, image, color, tags, customStyles, fontPairing } = Astro.props;
 const formattedDate = date.toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
@@ -19,7 +21,7 @@ const formattedDate = date.toLocaleDateString('en-US', {
 });
 ---
 
-<Base title={`${title} — shawncole.ca`}>
+<Base title={`${title} — shawncole.ca`} fontPairing={fontPairing}>
   <article class="post" style={color ? `--color-accent: ${color}` : ''}>
     <a href="/" class="post__back">← back to the playground</a>
     <header class="post__header">
@@ -41,4 +43,5 @@ const formattedDate = date.toLocaleDateString('en-US', {
       )
     }
   </article>
+  {customStyles && <style set:html={customStyles} />}
 </Base>

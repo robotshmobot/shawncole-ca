@@ -1,0 +1,187 @@
+---
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = '/' } = Astro.props;
+
+const navItems = [
+  { label: 'ALL_THE_THINGS', href: '/' },
+  { label: 'CASE_STUDIES', href: '/case-studies' },
+  { label: 'IDEAS', href: '/ideas' },
+  { label: 'FUTURES', href: '/futures' },
+  { label: 'CONTACT_ME', href: '/contact' },
+];
+
+function isActive(href: string, current: string) {
+  if (href === '/') return current === '/';
+  return current.startsWith(href);
+}
+---
+
+<nav class="site-nav" data-nav>
+  <div class="site-nav__menu" data-nav-menu>
+    {navItems.map(item => (
+      <a
+        href={item.href}
+        class:list={['site-nav__link', { 'site-nav__link--active': isActive(item.href, currentPath) }]}
+      >
+        {item.label}
+      </a>
+    ))}
+  </div>
+  <div class="site-nav__bar">
+    <a href="/" class="site-nav__monogram" aria-label="Home">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_nav)">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M0 4.56917C0 3.57505 0.805887 2.76917 1.8 2.76917H16.2C17.1941 2.76917 18 3.57505 18 4.56917H16.6154C16.6154 4.33975 16.4294 4.15378 16.2 4.15378H13.8457V2.76918H12.4611V4.15378H1.8C1.57059 4.15378 1.38462 4.33975 1.38462 4.56917V13.2923H1.38428V15.1825C0.590592 14.9948 0 14.2817 0 13.4307V4.56917ZM2.76889 15.2307H16.2C17.1941 15.2307 18 14.4248 18 13.4307H16.6154C16.6154 13.6601 16.4294 13.8461 16.2 13.8461H2.76889V15.2307Z" fill="white"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M2.76953 1.8C2.76953 0.805887 3.57542 0 4.56953 0H13.4311C14.4252 0 15.2311 0.805889 15.2311 1.8V5.67294H13.8465V1.8C13.8465 1.57059 13.6605 1.38462 13.4311 1.38462H4.56953C4.34012 1.38462 4.15415 1.57059 4.15415 1.8V4.15382H2.76982V5.53844H4.15415V7.87239C4.15415 8.1018 4.34012 8.28777 4.56953 8.28777H13.4311C14.4252 8.28777 15.2311 9.09366 15.2311 10.0878V16.2C15.2311 16.2031 15.2311 16.2062 15.231 16.2094V15.2308H13.8465V10.0878C13.8465 9.85836 13.6605 9.67239 13.4311 9.67239H4.56953C3.57542 9.67239 2.76953 8.8665 2.76953 7.87239V1.8ZM13.0618 16.6154H4.56953C4.34012 16.6154 4.15415 16.4294 4.15415 16.2V12.4864H2.76953V16.2C2.76953 17.1941 3.57542 18 4.56953 18H13.4311C14.2822 18 14.9953 17.4093 15.1829 16.6155H13.0618V16.6154Z" fill="white"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_nav">
+            <rect width="18" height="18" fill="white"/>
+          </clipPath>
+        </defs>
+      </svg>
+    </a>
+    <span class="site-nav__name">SHAWN_COLE</span>
+    <button class="site-nav__toggle" data-nav-toggle aria-label="Toggle menu" aria-expanded="false">
+      <svg class="site-nav__icon-menu" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 3H16M0 8H16M0 13H16" stroke="white" stroke-width="1.5"/>
+      </svg>
+      <svg class="site-nav__icon-close" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 14L14 2M14 14L2 2" stroke="white" stroke-width="1.5"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<style>
+  .site-nav {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: inline-flex;
+    padding: 15px 24px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    border-radius: 16px;
+    background: #1D37F9;
+    z-index: 1000;
+    font-family: 'Geist Mono', monospace;
+    text-transform: uppercase;
+  }
+
+  .site-nav__menu {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 16px 24px 8px;
+  }
+
+  .site-nav[data-open] .site-nav__menu {
+    display: flex;
+  }
+
+  .site-nav__link {
+    color: white;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    transition: text-decoration 0.2s;
+  }
+
+  .site-nav__link:hover,
+  .site-nav__link--active {
+    text-decoration: underline;
+    text-underline-offset: 6px;
+    text-decoration-thickness: 2px;
+  }
+
+  .site-nav__link:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  .site-nav__bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .site-nav__monogram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+  }
+
+  .site-nav__name {
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+  }
+
+  .site-nav__toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+
+  .site-nav__toggle:hover {
+    background: rgba(0, 0, 0, 0.15);
+  }
+
+  .site-nav__toggle:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+  }
+
+  .site-nav__icon-close {
+    display: none;
+  }
+
+  .site-nav[data-open] .site-nav__icon-menu {
+    display: none;
+  }
+
+  .site-nav[data-open] .site-nav__icon-close {
+    display: block;
+  }
+</style>
+
+<script>
+  function initNav() {
+    const toggle = document.querySelector('[data-nav-toggle]');
+    const nav = document.querySelector('[data-nav]');
+    if (!toggle || !nav) return;
+
+    toggle.addEventListener('click', () => {
+      const isOpen = nav.hasAttribute('data-open');
+      if (isOpen) {
+        nav.removeAttribute('data-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      } else {
+        nav.setAttribute('data-open', '');
+        toggle.setAttribute('aria-expanded', 'true');
+      }
+    });
+  }
+
+  initNav();
+  document.addEventListener('astro:after-swap', initNav);
+</script>

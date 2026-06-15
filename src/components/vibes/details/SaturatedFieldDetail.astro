@@ -1,0 +1,147 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { ensureContrast } from '../vibeDefaults';
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  type: string;
+  image?: string;
+  color?: string;
+  tags?: string[];
+  customStyles?: string;
+  vibeProps: Record<string, string>;
+  fontPairing?: string;
+}
+
+const { title, description, date, type, image, color, tags, customStyles, vibeProps, fontPairing } = Astro.props;
+const fieldColor = vibeProps.fieldColor ?? color ?? '#2a5aa8';
+const textColor = ensureContrast(fieldColor, vibeProps.textColor ?? '#f5f0eb');
+const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<Base title={`${title} — shawncole.ca`} fontPairing={fontPairing}>
+  <article class="vibe-saturated-field-detail" style={`--field-color: ${fieldColor}; --text-color: ${textColor};`}>
+    <a href="/" class="vibe-saturated-field-detail__back">← back to the playground</a>
+    <header class="vibe-saturated-field-detail__header">
+      <span class="post__type">{type}</span>
+      <h1 class="post__title">{title}</h1>
+      <p class="post__meta">{formattedDate}</p>
+    </header>
+    {image && <img src={image} alt={title} class="post__hero" />}
+    <div class="post__content">
+      <slot />
+    </div>
+    {tags && tags.length > 0 && (
+      <div class="card__tags" style="margin-top: var(--space-md)">
+        {tags.map(tag => <span class="card__tag" style={`background: rgba(255,255,255,0.12); color: ${textColor};`}>{tag}</span>)}
+      </div>
+    )}
+  </article>
+  {customStyles && <style set:html={customStyles} />}
+</Base>
+
+<style>
+  .vibe-saturated-field-detail {
+    background: var(--field-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    padding: var(--space-lg) var(--space-md);
+  }
+  .vibe-saturated-field-detail__back {
+    display: inline-block;
+    color: var(--text-color);
+    opacity: 0.6;
+    text-decoration: none;
+    font-size: 0.85rem;
+    margin-bottom: var(--space-md);
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    transition: opacity 0.3s;
+  }
+  .vibe-saturated-field-detail__back:hover {
+    opacity: 1;
+  }
+  .vibe-saturated-field-detail__header {
+    max-width: 720px;
+    margin: 0 auto var(--space-lg);
+    text-align: center;
+    padding: var(--space-xl) 0 var(--space-lg);
+  }
+  .vibe-saturated-field-detail .post__type {
+    color: var(--text-color);
+    opacity: 0.6;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .vibe-saturated-field-detail .post__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    line-height: 1.1;
+    margin: var(--space-sm) 0;
+    text-transform: var(--font-display-transform);
+  }
+  .vibe-saturated-field-detail .post__meta {
+    opacity: 0.5;
+    font-size: 0.85rem;
+  }
+  .vibe-saturated-field-detail .post__hero {
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto var(--space-md);
+    display: block;
+    border-radius: var(--radius);
+  }
+  .vibe-saturated-field-detail .post__content {
+    max-width: 720px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    line-height: 1.8;
+  }
+  .vibe-saturated-field-detail .post__content h2 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    margin: var(--space-md) 0 var(--space-sm);
+    text-transform: var(--font-display-transform);
+  }
+  .vibe-saturated-field-detail .post__content p {
+    margin-bottom: var(--space-sm);
+  }
+  .vibe-saturated-field-detail .post__content blockquote {
+    border-left: 3px solid var(--text-color);
+    padding-left: var(--space-sm);
+    opacity: 0.7;
+    font-style: italic;
+    margin: var(--space-sm) 0;
+  }
+  .vibe-saturated-field-detail .post__content a {
+    color: var(--text-color);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  .vibe-saturated-field-detail .post__content code {
+    background: rgba(255,255,255,0.1);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+  .vibe-saturated-field-detail .post__content pre {
+    background: rgba(0,0,0,0.3);
+    padding: var(--space-sm);
+    border-radius: var(--radius);
+    overflow-x: auto;
+    margin: var(--space-sm) 0;
+  }
+  .vibe-saturated-field-detail .card__tags {
+    max-width: 720px;
+    margin: var(--space-md) auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+</style>

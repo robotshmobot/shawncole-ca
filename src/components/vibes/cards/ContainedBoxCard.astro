@@ -1,0 +1,104 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  type: string;
+  href: string;
+  slug: string;
+  image?: string;
+  color?: string;
+  tags?: string[];
+  index?: number;
+  vibeProps: Record<string, string>;
+  cardCustomStyles?: string;
+}
+
+const { title, description, date, type, href, slug, image, color, tags, index = 0, vibeProps, cardCustomStyles } = Astro.props;
+const frameColor = vibeProps.frameColor ?? color ?? '#8b6914';
+const frameWidth = vibeProps.frameWidth ?? '6';
+const rotation = vibeProps.rotation ?? '-0.8';
+const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<a
+  href={href}
+  class="vibe-contained-box-card"
+  data-post={slug}
+  style={`--i: ${index}; --frame-color: ${frameColor}; --frame-width: ${frameWidth}px; --rotation: ${rotation}deg;`}
+>
+  <div class="vibe-contained-box-card__frame">
+    {image && <img src={image} alt={title} class="card__image" />}
+    <span class="card__type" style={`color: ${frameColor};`}>{type}</span>
+    <h2 class="card__title">{title}</h2>
+    <p class="card__description">{description}</p>
+    <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>
+    {tags && tags.length > 0 && (
+      <div class="card__tags">
+        {tags.map(tag => <span class="card__tag">{tag}</span>)}
+      </div>
+    )}
+  </div>
+</a>
+{cardCustomStyles && <style set:html={cardCustomStyles.replaceAll(':card', `[data-post="${slug}"]`)} />}
+
+<style>
+  .vibe-contained-box-card {
+    display: block;
+    text-decoration: none;
+    color: var(--color-text);
+    transform: rotate(var(--rotation));
+    transition: transform 0.4s var(--transition-spring),
+                box-shadow 0.4s var(--transition-smooth);
+    animation: slideUp 0.6s var(--transition-smooth) both;
+    animation-delay: calc(var(--i, 0) * 0.08s);
+    cursor: crosshair;
+  }
+  .vibe-contained-box-card__frame {
+    border: var(--frame-width) solid var(--frame-color);
+    border-radius: var(--radius);
+    padding: var(--space-md);
+    background: var(--color-surface);
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.08),
+                inset 0 0 40px rgba(0,0,0,0.02);
+  }
+  .vibe-contained-box-card .card__title {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    line-height: 1.2;
+    margin-bottom: var(--space-xs);
+    text-transform: var(--font-display-transform);
+  }
+  .vibe-contained-box-card .card__description {
+    color: var(--color-muted);
+    font-size: 0.95rem;
+    margin-bottom: var(--space-sm);
+  }
+  .vibe-contained-box-card .card__type {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-xs);
+  }
+  .vibe-contained-box-card .card__date {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    letter-spacing: 0.05em;
+  }
+  .vibe-contained-box-card .card__image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    margin-bottom: var(--space-sm);
+  }
+  .vibe-contained-box-card:hover {
+    transform: rotate(0deg) scale(1.02);
+    box-shadow: 8px 8px 0 rgba(0,0,0,0.12);
+  }
+  .vibe-contained-box-card:focus-visible {
+    outline: 3px solid var(--frame-color);
+    outline-offset: 4px;
+  }
+</style>
