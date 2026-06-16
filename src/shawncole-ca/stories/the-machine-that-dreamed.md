@@ -1,20 +1,11 @@
 ---
-title: "The Machine That Dreamed of Flowers"
-description: "A short story about a sensor array in a decommissioned greenhouse that refuses to stop reporting."
+title: The Machine That Dreamed of Flowers
+description: A short story about a sensor array in a decommissioned greenhouse that refuses to stop reporting.
 date: 2026-06-07
-tags: ["fiction", "technology", "nature"]
-color: "#35b06b"
-vibe: "contained-box"
-vibeProps:
-  frameColor: "#35b06b"
-  frameWidth: "4"
-  rotation: "-1.2"
-customStyles: |
-  .post__title { font-style: italic; color: #2d5a3d; }
-  .post__content hr { border: none; text-align: center; margin: 2rem 0; }
-  .post__content hr::before { content: '🌱'; font-size: 1.5rem; }
-  .post__content em { color: #2d5a3d; }
-  .post__content p:last-child { font-size: 1.3rem; font-style: italic; color: #2d5a3d; margin-top: 2rem; }
+tags:
+  - fiction
+  - technology
+  - nature
 ---
 
 The greenhouse had been decommissioned for three years when Martinez noticed the alerts.

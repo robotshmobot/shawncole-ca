@@ -7,6 +7,7 @@ import { getFontPairing } from './vibes/vibeDefaults';
 const blog = await getCollection('blog');
 const caseStudies = await getCollection('case-studies');
 const stories = await getCollection('stories');
+const futures = await getCollection('futures');
 
 type ContentEntry = {
   id: string;
@@ -42,6 +43,11 @@ const allContent: ContentEntry[] = [
     ...entry,
     type: 'story',
     href: `/stories/${entry.id}`,
+  })),
+  ...futures.map((entry) => ({
+    ...entry,
+    type: 'futures',
+    href: `/futures/${entry.id}`,
   })),
 ].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---

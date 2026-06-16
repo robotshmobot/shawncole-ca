@@ -15,7 +15,7 @@ vibeProps:
   leftRadius: "32"
 span: "2"
 ---
-![[ford-cvmp.jpg]]
+![[../img/ford-cvmp.jpg]]
 
 Ford Pro serves customers ranging from the largest national fleets down to single-vehicle small businesses. The small-to-medium fleet segment had been identified internally as underserved, particularly when it came to the aftermarket upfitting process: equipping commercial vehicles with the racks, shelving, body equipment, and service bodies that make them work-ready.
 

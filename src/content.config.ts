@@ -11,7 +11,8 @@ const contentSchema = z.object({
   customStyles: z.string().optional(),
   cardCustomStyles: z.string().optional(),
   vibe: z.enum(['contained-box', 'binary-split', 'saturated-field',
-                'column-strips', 'circle-reveal', 'raw-frame']).optional(),
+                'column-strips', 'circle-reveal', 'raw-frame',
+                'type-wall', 'data-dense', 'stripe-rhythm', 'dot-screen']).optional(),
   vibeProps: z.record(z.string()).optional(),
   span: z.enum(['1', '2', '3']).optional(),
   fontPairing: z.enum(['serif-sans', 'mono-serif', 'mono-sans']).optional(),
@@ -32,4 +33,9 @@ const stories = defineCollection({
   schema: contentSchema,
 });
 
-export const collections = { blog, 'case-studies': caseStudies, stories };
+const futures = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/shawncole-ca/futures' }),
+  schema: contentSchema,
+});
+
+export const collections = { blog, 'case-studies': caseStudies, stories, futures };

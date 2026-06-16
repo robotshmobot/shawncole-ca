@@ -24,6 +24,6 @@ const { title = 'shawncole.ca', fontPairing } = Astro.props;
   </head>
   <body class={fontPairing ? `font-pair-${fontPairing}` : ''}>
     <slot />
-    <Nav currentPath={Astro.url.pathname} />
+    <Nav currentPath={Astro.url.pathname} isDetailPage={Astro.url.pathname.split('/').filter(Boolean).length >= 2} />
   </body>
 </html>

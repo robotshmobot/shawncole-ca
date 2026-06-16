@@ -1,0 +1,154 @@
+---
+import { ensureContrast, getCompositionProps, compositionStyles, compositionClasses } from '../vibeDefaults';
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  type: string;
+  href: string;
+  slug: string;
+  image?: string;
+  color?: string;
+  tags?: string[];
+  index?: number;
+  vibeProps: Record<string, string>;
+  cardCustomStyles?: string;
+}
+
+const { title, description, date, type, href, slug, tags, index = 0, vibeProps, cardCustomStyles } = Astro.props;
+const direction = vibeProps.stripeDirection ?? 'vertical';
+const colorsStr = vibeProps.stripeColors ?? '#1a2744,#f5f0eb,#ff6b35,#1a2744';
+const colors = colorsStr.split(',').map(c => c.trim());
+const stripeCount = parseInt(vibeProps.stripeCount ?? '8');
+const widthsMode = vibeProps.stripeWidths ?? 'equal';
+const textAnchor = vibeProps.textAnchor ?? 'bottom-left';
+const textBackdrop = vibeProps.textBackdrop ?? 'none';
+const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const cp = getCompositionProps(vibeProps);
+const compStyle = compositionStyles(cp);
+const compClass = compositionClasses(cp);
+
+const stripes: { color: string; width: string }[] = [];
+for (let i = 0; i < stripeCount; i++) {
+  const color = colors[i % colors.length];
+  let width: string;
+  if (widthsMode === 'progressive') {
+    width = `${(i + 1) / stripeCount * 200 / stripeCount}%`;
+  } else if (widthsMode === 'equal') {
+    width = `${100 / stripeCount}%`;
+  } else {
+    const widths = widthsMode.split(',');
+    width = (widths[i % widths.length] || `${100 / stripeCount}`) + (widthsMode.includes('%') ? '' : '%');
+  }
+  stripes.push({ color, width });
+}
+
+const dominantColor = colors[0];
+const textColor = ensureContrast(dominantColor, '#f5f0eb');
+---
+
+<a
+  href={href}
+  class:list={['vibe-stripe-rhythm-card', `vibe-stripe-rhythm-card--${direction}`, `vibe-stripe-rhythm-card--anchor-${textAnchor}`, compClass]}
+  data-post={slug}
+  style={`--i: ${index}; --text-color: ${textColor}; ${compStyle}`}
+>
+  <div class="vibe-stripe-rhythm-card__stripes" aria-hidden="true">
+    {stripes.map(s => (
+      <div class="vibe-stripe-rhythm-card__stripe" style={`background: ${s.color}; ${direction === 'vertical' ? `width: ${s.width}` : `height: ${s.width}`};`} />
+    ))}
+  </div>
+  <div class:list={['vibe-stripe-rhythm-card__content', { 'vibe-stripe-rhythm-card__content--backdrop-solid': textBackdrop === 'solid', 'vibe-stripe-rhythm-card__content--backdrop-blur': textBackdrop === 'blur' }]}>
+    <span class="card__type">{type}</span>
+    <h2 class="card__title">{title}</h2>
+    <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>
+  </div>
+</a>
+{cardCustomStyles && <style set:html={cardCustomStyles.replaceAll(':card', `[data-post="${slug}"]`)} />}
+
+<style>
+  .vibe-stripe-rhythm-card {
+    display: flex;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-color);
+    min-height: 360px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.4s var(--transition-spring);
+    animation: slideUp 0.6s var(--transition-smooth) both;
+    animation-delay: calc(var(--i, 0) * 0.08s);
+    cursor: crosshair;
+  }
+  .vibe-stripe-rhythm-card__stripes {
+    position: absolute;
+    inset: 0;
+    display: flex;
+  }
+  .vibe-stripe-rhythm-card--vertical .vibe-stripe-rhythm-card__stripes { flex-direction: row; }
+  .vibe-stripe-rhythm-card--horizontal .vibe-stripe-rhythm-card__stripes { flex-direction: column; }
+  .vibe-stripe-rhythm-card--diagonal .vibe-stripe-rhythm-card__stripes {
+    flex-direction: row;
+    transform: skewX(-12deg) scaleX(1.3);
+  }
+  .vibe-stripe-rhythm-card__stripe {
+    flex-shrink: 0;
+  }
+  .vibe-stripe-rhythm-card--vertical .vibe-stripe-rhythm-card__stripe { height: 100%; }
+  .vibe-stripe-rhythm-card--horizontal .vibe-stripe-rhythm-card__stripe { width: 100%; }
+  .vibe-stripe-rhythm-card__content {
+    position: relative;
+    z-index: 1;
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .vibe-stripe-rhythm-card__content--backdrop-solid {
+    background: rgba(0, 0, 0, 0.65);
+    margin: var(--space-sm);
+    border-radius: 8px;
+    width: auto;
+  }
+  .vibe-stripe-rhythm-card__content--backdrop-blur {
+    backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.3);
+    margin: var(--space-sm);
+    border-radius: 8px;
+    width: auto;
+  }
+  .vibe-stripe-rhythm-card--anchor-bottom-left .vibe-stripe-rhythm-card__content { justify-content: flex-end; align-items: flex-start; }
+  .vibe-stripe-rhythm-card--anchor-bottom-right .vibe-stripe-rhythm-card__content { justify-content: flex-end; align-items: flex-end; text-align: right; }
+  .vibe-stripe-rhythm-card--anchor-top-left .vibe-stripe-rhythm-card__content { justify-content: flex-start; align-items: flex-start; }
+  .vibe-stripe-rhythm-card--anchor-center .vibe-stripe-rhythm-card__content { justify-content: center; align-items: center; text-align: center; }
+  .vibe-stripe-rhythm-card .card__type {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: var(--space-xs);
+  }
+  .vibe-stripe-rhythm-card .card__title {
+    font-family: var(--font-display);
+    font-size: calc(var(--title-scale, 1) * 1.6rem);
+    font-weight: var(--title-weight, 700);
+    line-height: var(--title-leading, 1.2);
+    text-transform: var(--font-display-transform);
+    margin-bottom: var(--space-xs);
+  }
+  .vibe-stripe-rhythm-card .card__date {
+    font-size: 0.75rem;
+    opacity: 0.5;
+    letter-spacing: 0.05em;
+  }
+  .vibe-stripe-rhythm-card:hover {
+    transform: scale(1.02);
+  }
+  .vibe-stripe-rhythm-card:focus-visible {
+    outline: 3px solid var(--text-color);
+    outline-offset: 4px;
+  }
+</style>

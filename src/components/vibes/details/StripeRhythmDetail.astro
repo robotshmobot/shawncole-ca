@@ -1,0 +1,172 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { ensureContrast, getCompositionProps, compositionClasses } from '../vibeDefaults';
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  type: string;
+  image?: string;
+  color?: string;
+  tags?: string[];
+  customStyles?: string;
+  vibeProps: Record<string, string>;
+  fontPairing?: string;
+}
+
+const { title, description, date, type, image, color, tags, customStyles, vibeProps, fontPairing } = Astro.props;
+const direction = vibeProps.stripeDirection ?? 'vertical';
+const colorsStr = vibeProps.stripeColors ?? '#1a2744,#f5f0eb,#ff6b35,#1a2744';
+const colors = colorsStr.split(',').map(c => c.trim());
+const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const dominantColor = colors[0];
+const textColor = ensureContrast(dominantColor, '#f5f0eb');
+const cp = getCompositionProps(vibeProps);
+const compClass = compositionClasses(cp);
+---
+
+<Base title={`${title} — shawncole.ca`} fontPairing={fontPairing}>
+  <article class:list={['vibe-stripe-rhythm-detail', compClass]} style={`--dominant-color: ${dominantColor}; --text-color: ${textColor};`}>
+    <header class="vibe-stripe-rhythm-detail__header">
+      <div class="vibe-stripe-rhythm-detail__stripes" aria-hidden="true">
+        {colors.map(c => (
+          <div class="vibe-stripe-rhythm-detail__stripe" style={`background: ${c};`} />
+        ))}
+      </div>
+      <div class="vibe-stripe-rhythm-detail__header-content">
+        <span class="post__type">{type}</span>
+        <h1 class="post__title">{title}</h1>
+        <p class="post__meta">{formattedDate}</p>
+      </div>
+    </header>
+    <div class="vibe-stripe-rhythm-detail__body">
+      {image && <img src={image} alt={title} class="post__hero" />}
+      <div class="post__content">
+        <slot />
+      </div>
+      {tags && tags.length > 0 && (
+        <div class="card__tags" style="margin-top: var(--space-md)">
+          {tags.map(tag => <span class="card__tag">{tag}</span>)}
+        </div>
+      )}
+    </div>
+  </article>
+  {customStyles && <style set:html={customStyles} />}
+</Base>
+
+<style>
+  .vibe-stripe-rhythm-detail {
+    min-height: 100vh;
+  }
+  .vibe-stripe-rhythm-detail__header {
+    position: relative;
+    min-height: 50vh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  .vibe-stripe-rhythm-detail__stripes {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: row;
+  }
+  .vibe-stripe-rhythm-detail__stripe {
+    flex: 1;
+    height: 100%;
+  }
+  .vibe-stripe-rhythm-detail__header-content {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
+    padding: var(--space-lg) var(--space-md);
+    color: var(--text-color);
+  }
+  .vibe-stripe-rhythm-detail__back {
+    display: inline-block;
+    color: var(--text-color);
+    opacity: 0.6;
+    text-decoration: none;
+    font-size: 0.85rem;
+    margin-bottom: var(--space-md);
+    transition: opacity 0.3s;
+  }
+  .vibe-stripe-rhythm-detail__back:hover { opacity: 1; }
+  .vibe-stripe-rhythm-detail .post__type {
+    color: var(--text-color);
+    opacity: 0.6;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .vibe-stripe-rhythm-detail .post__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin: var(--space-sm) 0;
+    text-transform: var(--font-display-transform);
+    color: var(--text-color);
+  }
+  .vibe-stripe-rhythm-detail .post__meta {
+    color: var(--text-color);
+    opacity: 0.5;
+    font-size: 0.85rem;
+  }
+  .vibe-stripe-rhythm-detail__body {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: var(--space-lg) var(--space-md);
+  }
+  .vibe-stripe-rhythm-detail .post__hero {
+    width: 100%;
+    border-radius: var(--radius);
+    margin-bottom: var(--space-md);
+  }
+  .vibe-stripe-rhythm-detail .post__content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+  }
+  .vibe-stripe-rhythm-detail .post__content h2 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    margin: var(--space-md) 0 var(--space-sm);
+    text-transform: var(--font-display-transform);
+  }
+  .vibe-stripe-rhythm-detail .post__content p { margin-bottom: var(--space-sm); }
+  .vibe-stripe-rhythm-detail .post__content blockquote {
+    border-left: 3px solid var(--dominant-color);
+    padding-left: var(--space-sm);
+    color: var(--color-muted);
+    font-style: italic;
+    margin: var(--space-sm) 0;
+  }
+  .vibe-stripe-rhythm-detail .post__content a {
+    color: var(--dominant-color);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  .vibe-stripe-rhythm-detail .post__content code {
+    background: var(--color-bg);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+  .vibe-stripe-rhythm-detail .post__content pre {
+    background: var(--color-text);
+    color: var(--color-bg);
+    padding: var(--space-sm);
+    border-radius: var(--radius);
+    overflow-x: auto;
+    margin: var(--space-sm) 0;
+  }
+  .vibe-stripe-rhythm-detail .card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+</style>

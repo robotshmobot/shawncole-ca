@@ -12,7 +12,7 @@
   --space-md: 2rem;
   --space-lg: 4rem;
   --space-xl: 8rem;
-  --radius: 12px;
+  --radius: 48px;
   --transition-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -48,9 +48,9 @@ body {
 .card-feed {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: var(--space-lg);
   padding: var(--space-md);
-  max-width: 1400px;
+  max-width: 640px;
   margin: 0 auto;
 }
 
@@ -60,7 +60,7 @@ body {
   display: block;
   background: var(--color-surface);
   border-radius: var(--radius);
-  padding: var(--space-md);
+  padding: 48px;
   text-decoration: none;
   color: var(--color-text);
   position: relative;
@@ -120,6 +120,7 @@ body {
 .card__title {
   font-family: var(--font-display);
   font-size: 1.6rem;
+  font-weight: 400;
   line-height: 1.2;
   margin-bottom: var(--space-xs);
   text-transform: var(--font-display-transform);
@@ -197,6 +198,7 @@ body {
 .site-title {
   font-family: 'Source Serif 4', Georgia, serif;
   font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 400;
   line-height: 1;
   letter-spacing: -0.03em;
   transition: letter-spacing 0.5s var(--transition-smooth);
@@ -248,6 +250,7 @@ body {
 .post__title {
   font-family: var(--font-display);
   font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 400;
   line-height: 1.1;
   margin: var(--space-xs) 0;
   text-transform: var(--font-display-transform);
@@ -272,6 +275,7 @@ body {
 .post__content h2 {
   font-family: var(--font-display);
   font-size: 1.8rem;
+  font-weight: 400;
   margin: var(--space-md) 0 var(--space-sm);
   text-transform: var(--font-display-transform);
 }
@@ -351,6 +355,121 @@ body {
   --font-display: 'Geist Mono', monospace;
   --font-body: 'Geist', system-ui, sans-serif;
   --font-display-transform: uppercase;
+}
+
+/* Shared compositional props */
+:root {
+  --title-scale: 1;
+  --title-rotation: 0deg;
+  --title-blend: normal;
+  --title-weight: inherit;
+  --title-leading: 1.15;
+  --comp-rotation: 0deg;
+  --overlay-scale: 20vw;
+  --density-pad: var(--space-md);
+}
+
+.comp-scaled-title .card__title,
+.comp-scaled-title .post__title {
+  font-size: calc(var(--title-scale) * 1rem);
+  line-height: var(--title-leading);
+}
+
+.comp-rotated-title .card__title,
+.comp-rotated-title .post__title {
+  transform: rotate(var(--title-rotation));
+  transform-origin: left center;
+}
+
+.comp-blend-title .card__title,
+.comp-blend-title .post__title {
+  mix-blend-mode: var(--title-blend);
+}
+
+.comp-rotated {
+  transform: rotate(var(--comp-rotation));
+}
+
+.comp-case-upper .card__title,
+.comp-case-upper .post__title {
+  text-transform: uppercase !important;
+}
+
+.comp-case-lower .card__title,
+.comp-case-lower .post__title {
+  text-transform: lowercase !important;
+}
+
+/* Content gravity */
+.comp-gravity-top-left { justify-content: flex-start; align-items: flex-start; text-align: left; }
+.comp-gravity-top-right { justify-content: flex-start; align-items: flex-end; text-align: right; }
+.comp-gravity-bottom-left { justify-content: flex-end; align-items: flex-start; text-align: left; }
+.comp-gravity-bottom-right { justify-content: flex-end; align-items: flex-end; text-align: right; }
+.comp-gravity-center { justify-content: center; align-items: center; text-align: center; }
+
+/* Title position — bleed */
+.comp-title-bleed-left .card__title,
+.comp-title-bleed-left .post__title {
+  margin-left: -5%;
+  max-width: 110%;
+}
+.comp-title-bleed-right .card__title,
+.comp-title-bleed-right .post__title {
+  margin-right: -5%;
+  max-width: 110%;
+  text-align: right;
+}
+.comp-title-bleed-top .card__title,
+.comp-title-bleed-top .post__title {
+  margin-top: -0.3em;
+}
+.comp-title-bleed-bottom .card__title,
+.comp-title-bleed-bottom .post__title {
+  margin-bottom: -0.3em;
+}
+
+/* Bleed container */
+.comp-bleed {
+  overflow: visible !important;
+}
+
+/* Density */
+.comp-density-packed { padding: 0.5rem !important; }
+.comp-density-airy { padding: 4rem !important; }
+.comp-density-dramatic { padding: 8rem 4rem !important; }
+
+/* Clip shapes */
+.comp-clip-circle { clip-path: circle(var(--clip-size, 80%) at 50% 50%); }
+.comp-clip-triangle { clip-path: polygon(50% 0%, 0% 100%, 100% 100%); }
+.comp-clip-diamond { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+.comp-clip-diagonal-left { clip-path: polygon(0 0, 100% 15%, 100% 100%, 0 85%); }
+.comp-clip-diagonal-right { clip-path: polygon(0 15%, 100% 0, 100% 85%, 0 100%); }
+
+/* Overlay text layer */
+.comp-has-overlay {
+  position: relative;
+}
+.comp-overlay-text {
+  position: absolute;
+  font-size: var(--overlay-scale);
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .comp-rotated,
+  .comp-rotated-title .card__title,
+  .comp-rotated-title .post__title {
+    transform: none !important;
+  }
 }
 
 /* Reduced motion */

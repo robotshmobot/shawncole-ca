@@ -3,6 +3,10 @@ import Post from '../../layouts/Post.astro';
 import SaturatedFieldDetail from './details/SaturatedFieldDetail.astro';
 import ContainedBoxDetail from './details/ContainedBoxDetail.astro';
 import BinarySplitDetail from './details/BinarySplitDetail.astro';
+import TypeWallDetail from './details/TypeWallDetail.astro';
+import DataDenseDetail from './details/DataDenseDetail.astro';
+import StripeRhythmDetail from './details/StripeRhythmDetail.astro';
+import DotScreenDetail from './details/DotScreenDetail.astro';
 import type { VibeName, FontPairing } from './vibeDefaults';
 import { getVibeProps } from './vibeDefaults';
 
@@ -28,3 +32,7 @@ const resolvedProps = vibe ? getVibeProps(vibe, rawVibeProps) : {};
 {vibe === 'saturated-field' && <SaturatedFieldDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></SaturatedFieldDetail>}
 {vibe === 'contained-box' && <ContainedBoxDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></ContainedBoxDetail>}
 {vibe === 'binary-split' && <BinarySplitDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></BinarySplitDetail>}
+{vibe === 'type-wall' && <TypeWallDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></TypeWallDetail>}
+{vibe === 'data-dense' && <DataDenseDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></DataDenseDetail>}
+{vibe === 'stripe-rhythm' && <StripeRhythmDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></StripeRhythmDetail>}
+{vibe === 'dot-screen' && <DotScreenDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></DotScreenDetail>}
