@@ -5,7 +5,6 @@ tags:
   - ai
 description: Graduating from college, our guy thinks he has everything he needs to start a business. He uses the latest agentic frontier model to prepare all of the details, file the paperwork, and spin up his offering—then he not only runs out of tokens, but the model starts steering his business decisions away from what could be "competitive" with entrenched enterprise. He abandons the subscription model in favour of a… less than legal foreign open-weight model.
 date: 2026-06-10
-vibe: saturated-field
 vibeProps:
   fieldColor: "#FAD6D6"
   textColor: "#1a1a1a"

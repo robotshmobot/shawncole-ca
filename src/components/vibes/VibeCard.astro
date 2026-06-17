@@ -1,16 +1,7 @@
 ---
 import Card from '../Card.astro';
 import SaturatedFieldCard from './cards/SaturatedFieldCard.astro';
-import ContainedBoxCard from './cards/ContainedBoxCard.astro';
-import BinarySplitCard from './cards/BinarySplitCard.astro';
-import TypeWallCard from './cards/TypeWallCard.astro';
-import DataDenseCard from './cards/DataDenseCard.astro';
-import StripeRhythmCard from './cards/StripeRhythmCard.astro';
-import DotScreenCard from './cards/DotScreenCard.astro';
-import ColumnStripsCard from './cards/ColumnStripsCard.astro';
-import CircleRevealCard from './cards/CircleRevealCard.astro';
-import RawFrameCard from './cards/RawFrameCard.astro';
-import type { VibeName, FontPairing } from './vibeDefaults';
+import type { FontPairing } from './vibeDefaults';
 import { getVibeProps } from './vibeDefaults';
 
 interface Props {
@@ -25,7 +16,6 @@ interface Props {
   tags?: string[];
   index?: number;
   span?: string;
-  vibe?: VibeName;
   vibeProps?: Record<string, string>;
   customStyles?: string;
   cardCustomStyles?: string;
@@ -33,21 +23,10 @@ interface Props {
   hideTitle?: boolean;
 }
 
-const { vibe, vibeProps: rawVibeProps, span, fontPairing, ...rest } = Astro.props;
-const resolvedProps = vibe ? getVibeProps(vibe, rawVibeProps) : {};
-const cardSpan = span ?? (rest.type === 'case study' ? '2' : '1');
+const { vibeProps: rawVibeProps, span, fontPairing, ...rest } = Astro.props;
+const resolvedProps = getVibeProps('saturated-field', rawVibeProps);
 ---
 
 <div class={fontPairing ? `font-pair-${fontPairing}` : ''}>
-  {!vibe && <Card {...rest} wide={cardSpan === '2'} />}
-  {vibe === 'saturated-field' && <SaturatedFieldCard {...rest} vibeProps={resolvedProps} />}
-  {vibe === 'contained-box' && <ContainedBoxCard {...rest} vibeProps={resolvedProps} />}
-  {vibe === 'binary-split' && <BinarySplitCard {...rest} vibeProps={resolvedProps} />}
-  {vibe === 'type-wall' && <TypeWallCard {...rest} vibeProps={resolvedProps} />}
-  {vibe === 'data-dense' && <DataDenseCard {...rest} vibeProps={resolvedProps} />}
-  {vibe === 'stripe-rhythm' && <StripeRhythmCard {...rest} vibeProps={resolvedProps} />}
-  {vibe === 'dot-screen' && <DotScreenCard {...rest} vibeProps={resolvedProps} />}
-  {vibe === 'column-strips' && <ColumnStripsCard {...rest} vibeProps={resolvedProps} />}
-  {vibe === 'circle-reveal' && <CircleRevealCard {...rest} vibeProps={resolvedProps} />}
-  {vibe === 'raw-frame' && <RawFrameCard {...rest} vibeProps={resolvedProps} />}
+  <SaturatedFieldCard {...rest} vibeProps={resolvedProps} />
 </div>

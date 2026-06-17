@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import VibeCard from './vibes/VibeCard.astro';
 import PosterCard from './PosterCard.astro';
-import type { VibeName, FontPairing } from './vibes/vibeDefaults';
+import type { FontPairing } from './vibes/vibeDefaults';
 import { getFontPairing } from './vibes/vibeDefaults';
 
 interface Props {
@@ -26,7 +26,6 @@ type ContentEntry = {
     image?: string;
     color?: string;
     cardCustomStyles?: string;
-    vibe?: VibeName;
     vibeProps?: Record<string, string>;
     span?: string;
     fontPairing?: FontPairing;
@@ -72,6 +71,7 @@ const filteredContent = filter
           slug={entry.id}
           image={entry.data.image}
           color={entry.data.color}
+          tags={entry.data.tags}
           fontPairing={getFontPairing(entry.data.fontPairing, entry.id)}
           index={i}
         />
@@ -87,7 +87,6 @@ const filteredContent = filter
           color={entry.data.color}
           tags={entry.data.tags}
           cardCustomStyles={entry.data.cardCustomStyles}
-          vibe={entry.data.vibe}
           vibeProps={entry.data.vibeProps}
           span={entry.data.span}
           fontPairing={getFontPairing(entry.data.fontPairing, entry.id)}

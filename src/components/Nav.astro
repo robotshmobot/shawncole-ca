@@ -172,6 +172,20 @@ function isActive(href: string, current: string) {
   .site-nav[data-open] .site-nav__icon-close {
     display: block;
   }
+
+  @media (max-width: 640px) {
+    .site-nav {
+      left: 32px;
+      right: 32px;
+      transform: none;
+      width: auto;
+    }
+
+    .site-nav__bar {
+      justify-content: space-between;
+      width: 100%;
+    }
+  }
 </style>
 
 <script>

@@ -1,16 +1,7 @@
 ---
 import Post from '../../layouts/Post.astro';
 import SaturatedFieldDetail from './details/SaturatedFieldDetail.astro';
-import ContainedBoxDetail from './details/ContainedBoxDetail.astro';
-import BinarySplitDetail from './details/BinarySplitDetail.astro';
-import TypeWallDetail from './details/TypeWallDetail.astro';
-import DataDenseDetail from './details/DataDenseDetail.astro';
-import StripeRhythmDetail from './details/StripeRhythmDetail.astro';
-import DotScreenDetail from './details/DotScreenDetail.astro';
-import ColumnStripsDetail from './details/ColumnStripsDetail.astro';
-import CircleRevealDetail from './details/CircleRevealDetail.astro';
-import RawFrameDetail from './details/RawFrameDetail.astro';
-import type { VibeName, FontPairing } from './vibeDefaults';
+import type { FontPairing } from './vibeDefaults';
 import { getVibeProps } from './vibeDefaults';
 
 interface Props {
@@ -22,24 +13,14 @@ interface Props {
   color?: string;
   tags?: string[];
   customStyles?: string;
-  vibe?: VibeName;
   vibeProps?: Record<string, string>;
   fontPairing?: FontPairing;
   hideTitle?: boolean;
+  footer?: string;
 }
 
-const { vibe, vibeProps: rawVibeProps, fontPairing, ...rest } = Astro.props;
-const resolvedProps = vibe ? getVibeProps(vibe, rawVibeProps) : {};
+const { vibeProps: rawVibeProps, fontPairing, ...rest } = Astro.props;
+const resolvedProps = getVibeProps('saturated-field', rawVibeProps);
 ---
 
-{!vibe && <Post {...rest} fontPairing={fontPairing}><slot /></Post>}
-{vibe === 'saturated-field' && <SaturatedFieldDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></SaturatedFieldDetail>}
-{vibe === 'contained-box' && <ContainedBoxDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></ContainedBoxDetail>}
-{vibe === 'binary-split' && <BinarySplitDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></BinarySplitDetail>}
-{vibe === 'type-wall' && <TypeWallDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></TypeWallDetail>}
-{vibe === 'data-dense' && <DataDenseDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></DataDenseDetail>}
-{vibe === 'stripe-rhythm' && <StripeRhythmDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></StripeRhythmDetail>}
-{vibe === 'dot-screen' && <DotScreenDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></DotScreenDetail>}
-{vibe === 'column-strips' && <ColumnStripsDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></ColumnStripsDetail>}
-{vibe === 'circle-reveal' && <CircleRevealDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></CircleRevealDetail>}
-{vibe === 'raw-frame' && <RawFrameDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></RawFrameDetail>}
+<SaturatedFieldDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></SaturatedFieldDetail>
