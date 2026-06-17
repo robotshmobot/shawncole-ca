@@ -30,6 +30,7 @@ type ContentEntry = {
     vibeProps?: Record<string, string>;
     span?: string;
     fontPairing?: FontPairing;
+    hideTitle?: boolean;
   };
   type: string;
   href: string;
@@ -90,6 +91,7 @@ const filteredContent = filter
           vibeProps={entry.data.vibeProps}
           span={entry.data.span}
           fontPairing={getFontPairing(entry.data.fontPairing, entry.id)}
+          hideTitle={entry.data.hideTitle}
           index={i}
         />
       )

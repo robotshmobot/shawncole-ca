@@ -11,9 +11,10 @@ interface Props {
   tags?: string[];
   customStyles?: string;
   fontPairing?: string;
+  hideTitle?: boolean;
 }
 
-const { title, description, date, type, image, color, tags, customStyles, fontPairing } = Astro.props;
+const { title, description, date, type, image, color, tags, customStyles, fontPairing, hideTitle } = Astro.props;
 
 const typeColorMap: Record<string, string> = {
   'futures': 'var(--color-cherry)',
@@ -33,12 +34,14 @@ const resolvedImage = image && !image.startsWith('/') && !image.startsWith('http
       {resolvedImage && (
         <img src={resolvedImage} alt={title} class="detail__hero-image" />
       )}
-      <div class="detail__hero-content">
-        <h1 class="detail__title">{title}</h1>
-        <div class="detail__pill">
-          <span class="detail__type" style={`color: ${pillTextColor};`}>{type}</span>
+      {!hideTitle && (
+        <div class="detail__hero-content">
+          <h1 class="detail__title">{title}</h1>
+          <div class="detail__pill">
+            <span class="detail__type" style={`color: ${pillTextColor};`}>{type}</span>
+          </div>
         </div>
-      </div>
+      )}
     </header>
 
     <div class="detail__body">

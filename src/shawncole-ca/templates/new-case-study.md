@@ -5,5 +5,6 @@ date: {{date}}
 tags: []
 vibe: ""
 image: ""
+hideTitle: false
 ---
 

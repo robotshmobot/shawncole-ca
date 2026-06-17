@@ -25,6 +25,7 @@ interface Props {
   vibe?: VibeName;
   vibeProps?: Record<string, string>;
   fontPairing?: FontPairing;
+  hideTitle?: boolean;
 }
 
 const { vibe, vibeProps: rawVibeProps, fontPairing, ...rest } = Astro.props;

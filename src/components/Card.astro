@@ -12,9 +12,10 @@ interface Props {
   index?: number;
   wide?: boolean;
   cardCustomStyles?: string;
+  hideTitle?: boolean;
 }
 
-const { title, description, date, type, href, slug, image, color, tags, index = 0, wide = false, cardCustomStyles } =
+const { title, description, date, type, href, slug, image, color, tags, index = 0, wide = false, cardCustomStyles, hideTitle } =
   Astro.props;
 const formattedDate = date.toLocaleDateString('en-US', {
   year: 'numeric',
@@ -30,12 +31,12 @@ const formattedDate = date.toLocaleDateString('en-US', {
   style={`--i: ${index};${color ? ` --card-accent: ${color};` : ''}`}
 >
   {image && <img src={image} alt={title} class="card__image" />}
-  <span class="card__type">{type}</span>
-  <h2 class="card__title">{title}</h2>
-  <p class="card__description">{description}</p>
-  <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>
+  {!hideTitle && <span class="card__type">{type}</span>}
+  {!hideTitle && <h2 class="card__title">{title}</h2>}
+  {!hideTitle && <p class="card__description">{description}</p>}
+  {!hideTitle && <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>}
   {
-    tags && tags.length > 0 && (
+    !hideTitle && tags && tags.length > 0 && (
       <div class="card__tags">
         {tags.map((tag) => (
           <span class="card__tag">{tag}</span>
