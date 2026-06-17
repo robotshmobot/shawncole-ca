@@ -6,28 +6,30 @@ import CardFeed from '../components/CardFeed.astro';
 <Base>
   <main class="home">
     <p class="home__intro">
-      Welcome to Shawn Cole's party attic and fieldcraft works.
-      As a principal strategist, designer, and researcher,
-      I absorb the energy of the people that corporate would
-      rather ignore — then turn that into experiences, services, or
-      products that people not only love, but get value from.
+      welcome to shawn cole's party attic and <span class="home__intro-highlight">fieldcraft</span> works. As a principal strategist, designer, and researcher, I absorb the energy of the people that corporate would rather ignore - then turn that into experiences, services, or products that people not only love, but get value from.
     </p>
-    <CardFeed />
+    <CardFeed variant="poster" />
   </main>
 </Base>
 
 <style>
   .home {
-    max-width: 640px;
+    max-width: 960px;
     margin: 0 auto;
-    padding: var(--space-md);
+    padding: 40px 40px 120px;
   }
 
   .home__intro {
     font-family: 'SRC Marker', var(--font-body);
-    font-size: 1rem;
-    line-height: 1.7;
-    margin-bottom: var(--space-lg);
+    font-size: clamp(28px, 5vw, 48px);
+    line-height: 1.15;
+    margin-bottom: 64px;
     text-transform: uppercase;
+    transform: rotate(-0.5deg);
+    color: var(--color-dark);
+  }
+
+  .home__intro-highlight {
+    color: #0d0eda;
   }
 </style>

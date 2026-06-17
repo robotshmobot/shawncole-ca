@@ -1,0 +1,146 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { ensureContrast, getCompositionProps, compositionClasses } from '../vibeDefaults';
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  type: string;
+  image?: string;
+  color?: string;
+  tags?: string[];
+  customStyles?: string;
+  vibeProps: Record<string, string>;
+  fontPairing?: string;
+}
+
+const { title, description, date, type, image, color, tags, customStyles, vibeProps, fontPairing } = Astro.props;
+const colorsStr = vibeProps.stripColors ?? '#1a2744,#f5f0eb,#ff6b35';
+const colors = colorsStr.split(',').map(c => c.trim());
+const ratiosStr = vibeProps.stripRatios ?? '30,40,30';
+const ratios = ratiosStr.split(',').map(r => r.trim());
+const activeStrip = parseInt(vibeProps.activeStrip ?? '2') - 1;
+const activeColor = colors[activeStrip] ?? '#f5f0eb';
+const textColor = ensureContrast(activeColor, '#1a1a1a');
+const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const cp = getCompositionProps(vibeProps);
+const compClass = compositionClasses(cp);
+---
+
+<Base title={`${title} — shawncole.ca`} fontPairing={fontPairing}>
+  <article class:list={['vibe-column-strips-detail', compClass]}>
+    <header class="vibe-column-strips-detail__header" style={`--text-color: ${textColor};`}>
+      <div class="vibe-column-strips-detail__strips" aria-hidden="true">
+        {colors.map((c, i) => (
+          <div class="vibe-column-strips-detail__strip" style={`background: ${c}; width: ${ratios[i] ?? 33}%;`} />
+        ))}
+      </div>
+      <div class="vibe-column-strips-detail__header-content">
+        <span class="post__type">{type}</span>
+        <h1 class="post__title">{title}</h1>
+        <p class="post__meta">{formattedDate}</p>
+      </div>
+    </header>
+    <div class="vibe-column-strips-detail__body">
+      {image && <img src={image} alt={title} class="post__hero" />}
+      <div class="post__content">
+        <slot />
+      </div>
+      {tags && tags.length > 0 && (
+        <div class="card__tags" style="margin-top: var(--space-md)">
+          {tags.map(tag => <span class="card__tag">{tag}</span>)}
+        </div>
+      )}
+    </div>
+  </article>
+  {customStyles && <style set:html={customStyles} />}
+</Base>
+
+<style>
+  .vibe-column-strips-detail { min-height: 100vh; }
+  .vibe-column-strips-detail__header {
+    position: relative;
+    min-height: 50vh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    color: var(--text-color);
+  }
+  .vibe-column-strips-detail__strips {
+    position: absolute;
+    inset: 0;
+    display: flex;
+  }
+  .vibe-column-strips-detail__strip { height: 100%; flex-shrink: 0; }
+  .vibe-column-strips-detail__header-content {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
+    padding: var(--space-lg) var(--space-md);
+  }
+  .vibe-column-strips-detail .post__type {
+    opacity: 0.6;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .vibe-column-strips-detail .post__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 400;
+    line-height: 1.1;
+    margin: var(--space-sm) 0;
+    text-transform: var(--font-display-transform);
+  }
+  .vibe-column-strips-detail .post__meta { opacity: 0.5; font-size: 0.85rem; }
+  .vibe-column-strips-detail__body {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: var(--space-lg) var(--space-md);
+  }
+  .vibe-column-strips-detail .post__hero {
+    width: 100%;
+    border-radius: var(--radius);
+    margin-bottom: var(--space-md);
+  }
+  .vibe-column-strips-detail .post__content { font-size: 1.1rem; line-height: 1.8; }
+  .vibe-column-strips-detail .post__content h2 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin: var(--space-md) 0 var(--space-sm);
+    text-transform: var(--font-display-transform);
+  }
+  .vibe-column-strips-detail .post__content p { margin-bottom: var(--space-sm); }
+  .vibe-column-strips-detail .post__content blockquote {
+    border-left: 3px solid var(--color-accent);
+    padding-left: var(--space-sm);
+    color: var(--color-muted);
+    font-style: italic;
+    margin: var(--space-sm) 0;
+  }
+  .vibe-column-strips-detail .post__content a {
+    color: var(--color-accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  .vibe-column-strips-detail .post__content code {
+    background: var(--color-bg);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+  .vibe-column-strips-detail .post__content pre {
+    background: var(--color-text);
+    color: var(--color-bg);
+    padding: var(--space-sm);
+    border-radius: var(--radius);
+    overflow-x: auto;
+    margin: var(--space-sm) 0;
+  }
+  .vibe-column-strips-detail .card__tags { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+</style>

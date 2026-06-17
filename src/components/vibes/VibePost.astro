@@ -7,6 +7,9 @@ import TypeWallDetail from './details/TypeWallDetail.astro';
 import DataDenseDetail from './details/DataDenseDetail.astro';
 import StripeRhythmDetail from './details/StripeRhythmDetail.astro';
 import DotScreenDetail from './details/DotScreenDetail.astro';
+import ColumnStripsDetail from './details/ColumnStripsDetail.astro';
+import CircleRevealDetail from './details/CircleRevealDetail.astro';
+import RawFrameDetail from './details/RawFrameDetail.astro';
 import type { VibeName, FontPairing } from './vibeDefaults';
 import { getVibeProps } from './vibeDefaults';
 
@@ -36,3 +39,6 @@ const resolvedProps = vibe ? getVibeProps(vibe, rawVibeProps) : {};
 {vibe === 'data-dense' && <DataDenseDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></DataDenseDetail>}
 {vibe === 'stripe-rhythm' && <StripeRhythmDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></StripeRhythmDetail>}
 {vibe === 'dot-screen' && <DotScreenDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></DotScreenDetail>}
+{vibe === 'column-strips' && <ColumnStripsDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></ColumnStripsDetail>}
+{vibe === 'circle-reveal' && <CircleRevealDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></CircleRevealDetail>}
+{vibe === 'raw-frame' && <RawFrameDetail {...rest} vibeProps={resolvedProps} fontPairing={fontPairing}><slot /></RawFrameDetail>}

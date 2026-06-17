@@ -1,0 +1,144 @@
+---
+import { ensureContrast, getCompositionProps, compositionStyles, compositionClasses } from '../vibeDefaults';
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  type: string;
+  href: string;
+  slug: string;
+  image?: string;
+  color?: string;
+  tags?: string[];
+  index?: number;
+  vibeProps: Record<string, string>;
+  cardCustomStyles?: string;
+}
+
+const { title, description, date, type, href, slug, image, tags, index = 0, vibeProps, cardCustomStyles } = Astro.props;
+const maskShape = vibeProps.maskShape ?? 'circle';
+const maskSize = vibeProps.maskSize ?? '65';
+const maskPosition = vibeProps.maskPosition ?? 'center';
+const surroundColor = vibeProps.surroundColor ?? '#1a2744';
+const revealColor = vibeProps.revealColor ?? '#f5f0eb';
+const textColor = ensureContrast(surroundColor, '#f5f0eb');
+const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const cp = getCompositionProps(vibeProps);
+const compStyle = compositionStyles(cp);
+const compClass = compositionClasses(cp);
+
+const positionMap: Record<string, string> = {
+  center: '50% 50%',
+  'top-left': '30% 30%',
+  'top-right': '70% 30%',
+  'bottom-left': '30% 70%',
+  'bottom-right': '70% 70%',
+};
+const maskPos = positionMap[maskPosition] || '50% 50%';
+
+let clipPath: string;
+if (maskShape === 'triangle') {
+  clipPath = `polygon(50% ${100 - parseInt(maskSize)}%, ${50 - parseInt(maskSize)/2}% 100%, ${50 + parseInt(maskSize)/2}% 100%)`;
+} else if (maskShape === 'diamond') {
+  const h = parseInt(maskSize) / 2;
+  clipPath = `polygon(50% ${50-h}%, ${50+h}% 50%, 50% ${50+h}%, ${50-h}% 50%)`;
+} else if (maskShape === 'hexagon') {
+  const r = parseInt(maskSize) / 2;
+  clipPath = `polygon(${50-r/2}% ${50-r*0.87}%, ${50+r/2}% ${50-r*0.87}%, ${50+r}% 50%, ${50+r/2}% ${50+r*0.87}%, ${50-r/2}% ${50+r*0.87}%, ${50-r}% 50%)`;
+} else {
+  clipPath = `circle(${parseInt(maskSize) / 2}% at ${maskPos})`;
+}
+---
+
+<a
+  href={href}
+  class:list={['vibe-circle-reveal-card', compClass]}
+  data-post={slug}
+  style={`--i: ${index}; --surround: ${surroundColor}; --reveal: ${revealColor}; --text-color: ${textColor}; ${compStyle}`}
+>
+  <div class="vibe-circle-reveal-card__surround" aria-hidden="true"></div>
+  <div class="vibe-circle-reveal-card__reveal" style={`clip-path: ${clipPath}; background: ${revealColor};`} aria-hidden="true">
+    {image && <img src={image} alt="" class="vibe-circle-reveal-card__image" />}
+  </div>
+  <div class="vibe-circle-reveal-card__content">
+    <span class="card__type">{type}</span>
+    <h2 class="card__title">{title}</h2>
+    <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>
+  </div>
+</a>
+{cardCustomStyles && <style set:html={cardCustomStyles.replaceAll(':card', `[data-post="${slug}"]`)} />}
+
+<style>
+  .vibe-circle-reveal-card {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    text-decoration: none;
+    color: var(--text-color);
+    min-height: 400px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.4s var(--transition-spring);
+    animation: slideUp 0.6s var(--transition-smooth) both;
+    animation-delay: calc(var(--i, 0) * 0.08s);
+    cursor: crosshair;
+  }
+  .vibe-circle-reveal-card__surround {
+    position: absolute;
+    inset: 0;
+    background: var(--surround);
+  }
+  .vibe-circle-reveal-card__reveal {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: clip-path 0.6s var(--transition-smooth);
+  }
+  .vibe-circle-reveal-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .vibe-circle-reveal-card__content {
+    position: relative;
+    z-index: 2;
+    padding: var(--space-md);
+    margin-top: auto;
+  }
+  .vibe-circle-reveal-card .card__type {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: var(--space-xs);
+  }
+  .vibe-circle-reveal-card .card__title {
+    font-family: var(--font-display);
+    font-size: calc(var(--title-scale, 1) * 1.6rem);
+    font-weight: var(--title-weight, 400);
+    line-height: var(--title-leading, 1.2);
+    text-transform: var(--font-display-transform);
+    margin-bottom: var(--space-xs);
+  }
+  .vibe-circle-reveal-card .card__date {
+    font-size: 0.75rem;
+    opacity: 0.5;
+    letter-spacing: 0.05em;
+  }
+  .vibe-circle-reveal-card:hover {
+    transform: scale(1.02);
+  }
+  .vibe-circle-reveal-card:hover .vibe-circle-reveal-card__reveal {
+    clip-path: circle(52% at 50% 50%) !important;
+  }
+  .vibe-circle-reveal-card:focus-visible {
+    outline: 3px solid var(--text-color);
+    outline-offset: 4px;
+  }
+</style>

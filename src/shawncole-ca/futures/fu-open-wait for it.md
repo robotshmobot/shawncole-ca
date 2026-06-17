@@ -2,21 +2,22 @@
 title: Open-wait for it
 tags:
   - futures
-  - fiction
   - ai
 description: Graduating from college, our guy thinks he has everything he needs to start a business. He uses the latest agentic frontier model to prepare all of the details, file the paperwork, and spin up his offering—then he not only runs out of tokens, but the model starts steering his business decisions away from what could be "competitive" with entrenched enterprise. He abandons the subscription model in favour of a… less than legal foreign open-weight model.
 date: 2026-06-10
-vibe: "saturated-field"
+vibe: saturated-field
 vibeProps:
   fieldColor: "#0f1419"
   textColor: "#d1d5db"
-fontPairing: "mono-sans"
+fontPairing: mono-sans
 customStyles: |
   .post__title { letter-spacing: 0.05em; }
   .post__content blockquote { border-left-color: #1D37F9; background: rgba(29, 55, 249, 0.08); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
   .post__content strong { color: #7aa2f7; }
   .post__content hr { border: none; margin: 3rem auto; width: 40px; height: 2px; background: #1D37F9; }
   .post__content h2 { color: #7aa2f7; margin-top: 4rem; font-size: 1.2rem; letter-spacing: 0.1em; }
+image: img/open-wait-for-it_20260610A.jpg
+alt-text: A high contrast silhouette of a man standing at a kiosk using his phone to get tokens.
 ---
 Graduation had the vibe of a funeral. Each and every graduate looking down the barrel of a gun that the economy pointed back at them. We used to say *demure* 6 or 7 years ago—now we can say *detached*. Like we've been ejected from society's corpo fodder nursery, waiting with a generative resume to be immediately rejected by a generative hiring manager. 
 
@@ -91,6 +92,7 @@ Sold. Next was gophers. Apparently you can hack internet-connected hardware arou
 
 Six weeks after the party my business had 43 paying customers, a healthy sales funnel, and I could work day and night without the speed limits the labs put on their platforms. Sometimes I pull up the gopher hole to watch nodes pop in and out of existence as they take on tasks. The business works. Just don't look at how. And don't be a narc.
 
+---
 ## Disclosures
 
 **Token vending**

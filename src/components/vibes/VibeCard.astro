@@ -7,6 +7,9 @@ import TypeWallCard from './cards/TypeWallCard.astro';
 import DataDenseCard from './cards/DataDenseCard.astro';
 import StripeRhythmCard from './cards/StripeRhythmCard.astro';
 import DotScreenCard from './cards/DotScreenCard.astro';
+import ColumnStripsCard from './cards/ColumnStripsCard.astro';
+import CircleRevealCard from './cards/CircleRevealCard.astro';
+import RawFrameCard from './cards/RawFrameCard.astro';
 import type { VibeName, FontPairing } from './vibeDefaults';
 import { getVibeProps } from './vibeDefaults';
 
@@ -43,4 +46,7 @@ const cardSpan = span ?? (rest.type === 'case study' ? '2' : '1');
   {vibe === 'data-dense' && <DataDenseCard {...rest} vibeProps={resolvedProps} />}
   {vibe === 'stripe-rhythm' && <StripeRhythmCard {...rest} vibeProps={resolvedProps} />}
   {vibe === 'dot-screen' && <DotScreenCard {...rest} vibeProps={resolvedProps} />}
+  {vibe === 'column-strips' && <ColumnStripsCard {...rest} vibeProps={resolvedProps} />}
+  {vibe === 'circle-reveal' && <CircleRevealCard {...rest} vibeProps={resolvedProps} />}
+  {vibe === 'raw-frame' && <RawFrameCard {...rest} vibeProps={resolvedProps} />}
 </div>

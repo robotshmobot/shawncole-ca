@@ -3,8 +3,8 @@ export type VibeName =
   | 'column-strips' | 'circle-reveal' | 'raw-frame'
   | 'type-wall' | 'data-dense' | 'stripe-rhythm' | 'dot-screen';
 
-export type FontPairing = 'serif-sans' | 'mono-serif' | 'mono-sans';
-const fontPairings: FontPairing[] = ['serif-sans', 'mono-serif', 'mono-sans'];
+export type FontPairing = 'serif-sans' | 'mono-serif' | 'mono-sans' | 'hand-sans' | 'hand-serif';
+const fontPairings: FontPairing[] = ['serif-sans', 'mono-serif', 'mono-sans', 'hand-sans', 'hand-serif'];
 
 export function getFontPairing(explicit?: string, slug?: string): FontPairing {
   if (explicit && fontPairings.includes(explicit as FontPairing)) return explicit as FontPairing;
@@ -14,33 +14,26 @@ export function getFontPairing(explicit?: string, slug?: string): FontPairing {
     hash = ((hash << 5) - hash) + slug.charCodeAt(i);
     hash |= 0;
   }
-  return fontPairings[Math.abs(hash) % 3];
+  return fontPairings[Math.abs(hash) % fontPairings.length];
 }
 
 export const vibeDefaults: Record<VibeName, Record<string, string>> = {
   'contained-box': {
-    frameColor: '#8b6914',
     frameWidth: '6',
     rotation: '-0.8',
     bgTexture: 'none',
   },
   'binary-split': {
     splitRatio: '38',
-    leftBg: '#1a2744',
-    rightBg: '#ffffff',
     leftContent: 'color',
     flip: 'false',
     leftRadius: '24',
     splitAxis: 'vertical',
   },
-  'saturated-field': {
-    fieldColor: '#2a5aa8',
-    textColor: '#f5f0eb',
-  },
+  'saturated-field': {},
   'column-strips': {
     stripCount: '3',
     stripRatios: '30,40,30',
-    stripColors: '#1a2744,#f5f0eb,#ff6b35',
     stripPattern: 'solid',
     activeStrip: '2',
   },
@@ -48,34 +41,26 @@ export const vibeDefaults: Record<VibeName, Record<string, string>> = {
     maskShape: 'circle',
     maskSize: '65',
     maskPosition: 'center',
-    surroundColor: '#1a2744',
-    revealColor: '#f5f0eb',
   },
   'raw-frame': {
     layers: '2',
     offsetX: '12',
     offsetY: '8',
     shadowDepth: 'medium',
-    layerColors: '#6b4423,#f5f0eb',
   },
   'type-wall': {
     typeMode: 'stacked',
     typeFill: 'true',
-    typeColor: '#1a1a1a',
-    fieldColor: '#f5f0eb',
     typeOpacity: '1',
     lineCount: 'auto',
   },
   'data-dense': {
-    gridColor: '#00ff88',
-    fieldColor: '#0a0a0a',
     accentScale: '4',
     gridDensity: 'tight',
     dataSource: 'meta',
   },
   'stripe-rhythm': {
     stripeDirection: 'vertical',
-    stripeColors: '#1a2744,#f5f0eb,#ff6b35,#1a2744',
     stripeWidths: 'equal',
     stripeCount: '8',
     textAnchor: 'bottom-left',
@@ -84,8 +69,6 @@ export const vibeDefaults: Record<VibeName, Record<string, string>> = {
   'dot-screen': {
     patternType: 'halftone',
     patternScale: 'medium',
-    patternColor: '#1a1a1a',
-    fieldColor: '#f5f0eb',
     patternDensity: '0.6',
     textTreatment: 'knockout',
   },
@@ -103,6 +86,7 @@ export interface CompositionProps {
   titleWeight: string;
   titleCase: string;
   titleLeading: string;
+  titleStyle: string;
   overlayText: string;
   overlayScale: string;
   overlayColor: string;
@@ -125,6 +109,7 @@ const compositionDefaults: CompositionProps = {
   titleWeight: '',
   titleCase: 'preserve',
   titleLeading: 'default',
+  titleStyle: 'default',
   overlayText: '',
   overlayScale: '20',
   overlayColor: '',
@@ -161,6 +146,7 @@ export function compositionStyles(cp: CompositionProps): string {
 
   const leadingMap: Record<string, string> = { tight: '1.0', default: '1.15', loose: '1.4', crushed: '0.85' };
   if (cp.titleLeading !== 'default') styles.push(`--title-leading: ${leadingMap[cp.titleLeading] || '1.15'}`);
+  if (cp.titleStyle === 'italic') styles.push('--title-style: italic');
 
   const densityMap: Record<string, string> = { packed: '0.5rem', default: '', airy: '4rem', dramatic: '8rem' };
   if (cp.density !== 'default' && densityMap[cp.density]) styles.push(`--density-pad: ${densityMap[cp.density]}`);
@@ -180,6 +166,7 @@ export function compositionClasses(cp: CompositionProps): string {
   if (cp.titleScale !== '1') classes.push('comp-scaled-title');
   if (cp.titleRotation !== '0') classes.push('comp-rotated-title');
   if (cp.titleBlend !== 'normal') classes.push('comp-blend-title');
+  if (cp.titleStyle !== 'default') classes.push(`comp-style-${cp.titleStyle}`);
   if (cp.overlayText) classes.push('comp-has-overlay');
   return classes.join(' ');
 }

@@ -1,14 +1,16 @@
 ---
 import { getCollection } from 'astro:content';
 import VibeCard from './vibes/VibeCard.astro';
+import PosterCard from './PosterCard.astro';
 import type { VibeName, FontPairing } from './vibes/vibeDefaults';
 import { getFontPairing } from './vibes/vibeDefaults';
 
 interface Props {
   filter?: string;
+  variant?: 'vibe' | 'poster';
 }
 
-const { filter } = Astro.props;
+const { filter, variant = 'vibe' } = Astro.props;
 
 const caseStudies = await getCollection('case-studies');
 const futures = await getCollection('futures');
@@ -59,23 +61,38 @@ const filteredContent = filter
 <div class="card-feed">
   {
     filteredContent.map((entry, i) => (
-      <VibeCard
-        title={entry.data.title}
-        description={entry.data.description}
-        date={entry.data.date}
-        type={entry.type}
-        href={entry.href}
-        slug={entry.id}
-        image={entry.data.image}
-        color={entry.data.color}
-        tags={entry.data.tags}
-        cardCustomStyles={entry.data.cardCustomStyles}
-        vibe={entry.data.vibe}
-        vibeProps={entry.data.vibeProps}
-        span={entry.data.span}
-        fontPairing={getFontPairing(entry.data.fontPairing, entry.id)}
-        index={i}
-      />
+      variant === 'poster' ? (
+        <PosterCard
+          title={entry.data.title}
+          description={entry.data.description}
+          date={entry.data.date}
+          type={entry.type}
+          href={entry.href}
+          slug={entry.id}
+          image={entry.data.image}
+          color={entry.data.color}
+          fontPairing={getFontPairing(entry.data.fontPairing, entry.id)}
+          index={i}
+        />
+      ) : (
+        <VibeCard
+          title={entry.data.title}
+          description={entry.data.description}
+          date={entry.data.date}
+          type={entry.type}
+          href={entry.href}
+          slug={entry.id}
+          image={entry.data.image}
+          color={entry.data.color}
+          tags={entry.data.tags}
+          cardCustomStyles={entry.data.cardCustomStyles}
+          vibe={entry.data.vibe}
+          vibeProps={entry.data.vibeProps}
+          span={entry.data.span}
+          fontPairing={getFontPairing(entry.data.fontPairing, entry.id)}
+          index={i}
+        />
+      )
     ))
   }
 </div>

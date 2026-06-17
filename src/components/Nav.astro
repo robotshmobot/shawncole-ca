@@ -33,35 +33,15 @@ function isActive(href: string, current: string) {
     ))}
   </div>
   <div class="site-nav__bar">
-    {isDetailPage ? (
+    {isDetailPage && (
       <a href="javascript:history.back()" class="site-nav__back" aria-label="Go back" data-nav-back>
-        <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M1.0625 8H17.0625M8.0625 15L1.0625 8L8.0625 1" stroke="#1a1a1a" stroke-width="1.5"/>
-        </svg>
-      </a>
-    ) : (
-      <a href="/" class="site-nav__monogram" aria-label="Home">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g clip-path="url(#clip0_nav)">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M0 4.56917C0 3.57505 0.805887 2.76917 1.8 2.76917H16.2C17.1941 2.76917 18 3.57505 18 4.56917H16.6154C16.6154 4.33975 16.4294 4.15378 16.2 4.15378H13.8457V2.76918H12.4611V4.15378H1.8C1.57059 4.15378 1.38462 4.33975 1.38462 4.56917V13.2923H1.38428V15.1825C0.590592 14.9948 0 14.2817 0 13.4307V4.56917ZM2.76889 15.2307H16.2C17.1941 15.2307 18 14.4248 18 13.4307H16.6154C16.6154 13.6601 16.4294 13.8461 16.2 13.8461H2.76889V15.2307Z" fill="#1a1a1a"/>
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M2.76953 1.8C2.76953 0.805887 3.57542 0 4.56953 0H13.4311C14.4252 0 15.2311 0.805889 15.2311 1.8V5.67294H13.8465V1.8C13.8465 1.57059 13.6605 1.38462 13.4311 1.38462H4.56953C4.34012 1.38462 4.15415 1.57059 4.15415 1.8V4.15382H2.76982V5.53844H4.15415V7.87239C4.15415 8.1018 4.34012 8.28777 4.56953 8.28777H13.4311C14.4252 8.28777 15.2311 9.09366 15.2311 10.0878V16.2C15.2311 16.2031 15.2311 16.2062 15.231 16.2094V15.2308H13.8465V10.0878C13.8465 9.85836 13.6605 9.67239 13.4311 9.67239H4.56953C3.57542 9.67239 2.76953 8.8665 2.76953 7.87239V1.8ZM13.0618 16.6154H4.56953C4.34012 16.6154 4.15415 16.4294 4.15415 16.2V12.4864H2.76953V16.2C2.76953 17.1941 3.57542 18 4.56953 18H13.4311C14.2822 18 14.9953 17.4093 15.1829 16.6155H13.0618V16.6154Z" fill="#1a1a1a"/>
-          </g>
-          <defs>
-            <clipPath id="clip0_nav">
-              <rect width="18" height="18" fill="#1a1a1a"/>
-            </clipPath>
-          </defs>
-        </svg>
+        <img src="/img/icon-back.svg" alt="" width="28" height="28" />
       </a>
     )}
-    <span class="site-nav__name">SHAWN_COLE</span>
+    {!isDetailPage && <span class="site-nav__name">SHAWN COLE</span>}
     <button class="site-nav__toggle" data-nav-toggle aria-label="Toggle menu" aria-expanded="false">
-      <svg class="site-nav__icon-menu" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 3H16M0 8H16M0 13H16" stroke="#1a1a1a" stroke-width="1.5"/>
-      </svg>
-      <svg class="site-nav__icon-close" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2 14L14 2M14 14L2 2" stroke="#1a1a1a" stroke-width="1.5"/>
-      </svg>
+      <img class="site-nav__icon-menu" src="/img/icon-menu.svg" alt="" width="28" height="28" />
+      <img class="site-nav__icon-close" src="/img/icon-close.svg" alt="" width="28" height="28" />
     </button>
   </div>
 </nav>
@@ -73,16 +53,15 @@ function isActive(href: string, current: string) {
     left: 50%;
     transform: translateX(-50%);
     display: inline-flex;
-    padding: 15px 24px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 24px;
     border-radius: 16px;
-    background: #BFFF00;
+    background: #B3FF38;
     z-index: 1000;
-    font-family: 'Geist Mono', monospace;
     text-transform: uppercase;
+    filter: drop-shadow(0px 12px 16px rgba(51, 51, 76, 0.25));
   }
 
   .site-nav__menu {
@@ -98,7 +77,8 @@ function isActive(href: string, current: string) {
   }
 
   .site-nav__link {
-    color: #1a1a1a;
+    font-family: 'Geist Mono', monospace;
+    color: #12121a;
     text-decoration: none;
     font-size: 0.875rem;
     font-weight: 500;
@@ -122,15 +102,9 @@ function isActive(href: string, current: string) {
   .site-nav__bar {
     display: flex;
     align-items: center;
-    gap: 16px;
-  }
-
-  .site-nav__monogram {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #1a1a1a;
-    text-decoration: none;
+    gap: 24px;
+    height: 48px;
+    padding: 0 24px;
   }
 
   .site-nav__back {
@@ -149,10 +123,10 @@ function isActive(href: string, current: string) {
   }
 
   .site-nav__name {
-    color: #1a1a1a;
-    font-size: 0.875rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
+    font-family: 'SRC Marker', var(--font-body);
+    color: #12121a;
+    font-size: 22px;
+    line-height: 1.25;
   }
 
   .site-nav__toggle {

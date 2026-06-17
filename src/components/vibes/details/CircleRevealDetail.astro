@@ -1,0 +1,157 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { ensureContrast, getCompositionProps, compositionClasses } from '../vibeDefaults';
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  type: string;
+  image?: string;
+  color?: string;
+  tags?: string[];
+  customStyles?: string;
+  vibeProps: Record<string, string>;
+  fontPairing?: string;
+}
+
+const { title, description, date, type, image, color, tags, customStyles, vibeProps, fontPairing } = Astro.props;
+const maskSize = vibeProps.maskSize ?? '65';
+const surroundColor = vibeProps.surroundColor ?? '#1a2744';
+const revealColor = vibeProps.revealColor ?? '#f5f0eb';
+const textColor = ensureContrast(surroundColor, '#f5f0eb');
+const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const cp = getCompositionProps(vibeProps);
+const compClass = compositionClasses(cp);
+---
+
+<Base title={`${title} — shawncole.ca`} fontPairing={fontPairing}>
+  <article class:list={['vibe-circle-reveal-detail', compClass]} style={`--surround: ${surroundColor}; --reveal: ${revealColor}; --text-color: ${textColor}; --mask-size: ${maskSize}%;`}>
+    <header class="vibe-circle-reveal-detail__header">
+      <div class="vibe-circle-reveal-detail__surround" aria-hidden="true"></div>
+      <div class="vibe-circle-reveal-detail__aperture" aria-hidden="true">
+        {image && <img src={image} alt="" class="vibe-circle-reveal-detail__image" />}
+      </div>
+      <div class="vibe-circle-reveal-detail__header-content">
+        <span class="post__type">{type}</span>
+        <h1 class="post__title">{title}</h1>
+        <p class="post__meta">{formattedDate}</p>
+      </div>
+    </header>
+    <div class="vibe-circle-reveal-detail__body">
+      <div class="post__content">
+        <slot />
+      </div>
+      {tags && tags.length > 0 && (
+        <div class="card__tags" style="margin-top: var(--space-md)">
+          {tags.map(tag => <span class="card__tag" style={`background: rgba(255,255,255,0.12); color: ${textColor};`}>{tag}</span>)}
+        </div>
+      )}
+    </div>
+  </article>
+  {customStyles && <style set:html={customStyles} />}
+</Base>
+
+<style>
+  .vibe-circle-reveal-detail {
+    background: var(--surround);
+    color: var(--text-color);
+    min-height: 100vh;
+  }
+  .vibe-circle-reveal-detail__header {
+    position: relative;
+    min-height: 70vh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  .vibe-circle-reveal-detail__surround {
+    position: absolute;
+    inset: 0;
+    background: var(--surround);
+  }
+  .vibe-circle-reveal-detail__aperture {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: var(--reveal);
+    clip-path: circle(calc(var(--mask-size) / 2) at 50% 45%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .vibe-circle-reveal-detail__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .vibe-circle-reveal-detail__header-content {
+    position: relative;
+    z-index: 2;
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
+    padding: var(--space-lg) var(--space-md);
+  }
+  .vibe-circle-reveal-detail .post__type {
+    color: var(--text-color);
+    opacity: 0.6;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .vibe-circle-reveal-detail .post__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 400;
+    line-height: 1.1;
+    margin: var(--space-sm) 0;
+    text-transform: var(--font-display-transform);
+  }
+  .vibe-circle-reveal-detail .post__meta { opacity: 0.5; font-size: 0.85rem; }
+  .vibe-circle-reveal-detail__body {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: var(--space-lg) var(--space-md);
+  }
+  .vibe-circle-reveal-detail .post__content { font-size: 1.1rem; line-height: 1.8; }
+  .vibe-circle-reveal-detail .post__content h2 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin: var(--space-md) 0 var(--space-sm);
+    text-transform: var(--font-display-transform);
+  }
+  .vibe-circle-reveal-detail .post__content p { margin-bottom: var(--space-sm); }
+  .vibe-circle-reveal-detail .post__content blockquote {
+    border-left: 3px solid var(--text-color);
+    padding-left: var(--space-sm);
+    opacity: 0.7;
+    font-style: italic;
+    margin: var(--space-sm) 0;
+  }
+  .vibe-circle-reveal-detail .post__content a {
+    color: var(--text-color);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  .vibe-circle-reveal-detail .post__content code {
+    background: rgba(255,255,255,0.1);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+  .vibe-circle-reveal-detail .post__content pre {
+    background: rgba(0,0,0,0.3);
+    padding: var(--space-sm);
+    border-radius: var(--radius);
+    overflow-x: auto;
+    margin: var(--space-sm) 0;
+  }
+  .vibe-circle-reveal-detail .card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+</style>
