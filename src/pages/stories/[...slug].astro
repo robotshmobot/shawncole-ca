@@ -1,32 +1,7 @@
 ---
-import { getCollection, render } from 'astro:content';
-import VibePost from '../../components/vibes/VibePost.astro';
-import { getFontPairing } from '../../components/vibes/vibeDefaults';
-
-export async function getStaticPaths() {
-  const entries = await getCollection('stories');
-  return entries.map((entry) => ({
-    params: { slug: entry.id },
-    props: { entry },
-  }));
+// This route is deprecated. Stories content has been moved to /ideas.
+// Delete this file when cleaning up.
+export function getStaticPaths() {
+  return [];
 }
-
-const { entry } = Astro.props;
-const { Content } = await render(entry);
 ---
-
-<VibePost
-  title={entry.data.title}
-  description={entry.data.description}
-  date={entry.data.date}
-  type="story"
-  image={entry.data.image}
-  color={entry.data.color}
-  tags={entry.data.tags}
-  customStyles={entry.data.customStyles}
-  vibe={entry.data.vibe}
-  vibeProps={entry.data.vibeProps}
-  fontPairing={getFontPairing(entry.data.fontPairing, entry.id)}
->
-  <Content />
-</VibePost>

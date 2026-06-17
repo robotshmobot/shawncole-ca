@@ -4,5 +4,30 @@ import CardFeed from '../components/CardFeed.astro';
 ---
 
 <Base>
-  <CardFeed />
+  <main class="home">
+    <p class="home__intro">
+      Welcome to Shawn Cole's party attic and fieldcraft works.
+      As a principal strategist, designer, and researcher,
+      I absorb the energy of the people that corporate would
+      rather ignore — then turn that into experiences, services, or
+      products that people not only love, but get value from.
+    </p>
+    <CardFeed />
+  </main>
 </Base>
+
+<style>
+  .home {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: var(--space-md);
+  }
+
+  .home__intro {
+    font-family: 'SRC Marker', var(--font-body);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: var(--space-lg);
+    text-transform: uppercase;
+  }
+</style>

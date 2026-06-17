@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="About — shawncole.ca">
+  <main class="about">
+    <section class="about__intro">
+      <p class="about__bio">
+        I've been living and working in the Toronto area for more
+        than 15 years. As a good ol' Niagara boy, I've lived, and at
+        times been frustrated with this province. But one thing is
+        certain. It's always been my duty to do my best by the
+        people, businesses, and environment of this lost province.
+      </p>
+      <p class="about__bio">
+        But, I do much more than design. I'm a husband, a dad-rap,
+        dirt road artist, writer, runner, camper, explorer, and I
+        take pride in understanding, absorbing, and reflecting it from where
+        I see each morning.
+      </p>
+    </section>
+
+    <section class="about__cv">
+      <h2 class="about__heading">Here's my CV</h2>
+      <!-- CV entries will be populated here -->
+    </section>
+  </main>
+</Base>
+
+<style>
+  .about {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .about__intro {
+    margin-bottom: var(--space-lg);
+  }
+
+  .about__bio {
+    font-family: 'SRC Marker', var(--font-body);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: var(--space-sm);
+  }
+
+  .about__heading {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: var(--space-md);
+  }
+</style>

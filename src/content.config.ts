@@ -18,18 +18,8 @@ const contentSchema = z.object({
   fontPairing: z.enum(['serif-sans', 'mono-serif', 'mono-sans']).optional(),
 });
 
-const blog = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/shawncole-ca/blog' }),
-  schema: contentSchema,
-});
-
 const caseStudies = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/shawncole-ca/case-studies' }),
-  schema: contentSchema,
-});
-
-const stories = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/shawncole-ca/stories' }),
   schema: contentSchema,
 });
 
@@ -38,4 +28,9 @@ const futures = defineCollection({
   schema: contentSchema,
 });
 
-export const collections = { blog, 'case-studies': caseStudies, stories, futures };
+const ideas = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/shawncole-ca/ideas' }),
+  schema: contentSchema,
+});
+
+export const collections = { 'case-studies': caseStudies, futures, ideas };

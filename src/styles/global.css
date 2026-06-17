@@ -49,9 +49,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
-  padding: var(--space-md);
-  max-width: 640px;
-  margin: 0 auto;
 }
 
 /* Card */

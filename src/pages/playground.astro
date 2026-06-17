@@ -1,0 +1,78 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Playground — shawncole.ca">
+  <main class="playground">
+    <p class="playground__intro">
+      I build things from time to time. Here are some less than
+      production things you can play with.
+    </p>
+
+    <div class="playground__grid">
+      <!-- Playground items are standalone pages, linked manually -->
+      <a href="/playground/superfabric" class="playground__card">
+        <div class="playground__card-inner" style="background-image: url('/img/playground/superfabric.jpg');">
+          <h2 class="playground__title">Superfabric</h2>
+        </div>
+      </a>
+
+      <a href="/playground/dot-fabric-generator" class="playground__card">
+        <div class="playground__card-inner" style="background-image: url('/img/playground/dot-fabric-generator.jpg');">
+          <h2 class="playground__title">Dot Fabric Generator</h2>
+        </div>
+      </a>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .playground {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .playground__intro {
+    font-family: 'SRC Marker', var(--font-body);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: var(--space-lg);
+  }
+
+  .playground__grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .playground__card {
+    display: block;
+    text-decoration: none;
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.4s var(--transition-spring);
+  }
+
+  .playground__card:hover {
+    transform: scale(1.02);
+  }
+
+  .playground__card-inner {
+    aspect-ratio: 16 / 9;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    padding: var(--space-md);
+  }
+
+  .playground__title {
+    font-family: 'Geist Mono', monospace;
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: white;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  }
+</style>
