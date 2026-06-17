@@ -7,16 +7,18 @@ interface Props {
 const { currentPath = '/', isDetailPage = false } = Astro.props;
 
 const navItems = [
-  { label: 'ALL_THE_THINGS', href: '/' },
-  { label: 'ABOUT_SHAWN', href: '/about' },
+  { label: 'ALL THE THINGS', href: '/' },
+  { label: 'CASE STUDIES', href: '/case-studies' },
   { label: 'FUTURES', href: '/futures' },
   { label: 'IDEAS', href: '/ideas' },
   { label: 'PLAYGROUND', href: '/playground' },
-  { label: 'CASE_STUDIES', href: '/case-studies' },
+  { label: 'ABOUT SHAWN', href: '/about' },
+  { label: 'CONTACT', href: 'mailto:shawnr.cole@gmail.com' },
 ];
 
 function isActive(href: string, current: string) {
   if (href === '/') return current === '/';
+  if (href.startsWith('mailto:')) return false;
   return current.startsWith(href);
 }
 ---
@@ -56,7 +58,6 @@ function isActive(href: string, current: string) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 24px;
     border-radius: 16px;
     background: #B3FF38;
     z-index: 1000;
@@ -69,7 +70,7 @@ function isActive(href: string, current: string) {
     flex-direction: column;
     align-items: center;
     gap: 24px;
-    padding: 16px 24px 8px;
+    padding: 15px 24px 0;
   }
 
   .site-nav[data-open] .site-nav__menu {
@@ -77,20 +78,30 @@ function isActive(href: string, current: string) {
   }
 
   .site-nav__link {
-    font-family: 'Geist Mono', monospace;
+    font-family: 'SRC Marker', var(--font-body);
     color: #12121a;
     text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    transition: text-decoration 0.2s;
+    font-size: 22px;
+    line-height: 1.25;
+    white-space: nowrap;
+    padding: 2px 6px;
+    transition: background 0.15s, color 0.15s;
   }
 
-  .site-nav__link:hover,
-  .site-nav__link--active {
+  .site-nav__link:hover {
     text-decoration: underline;
-    text-underline-offset: 6px;
+    text-underline-offset: 4px;
     text-decoration-thickness: 2px;
+    text-decoration-color: #12121a;
+  }
+
+  .site-nav__link--active {
+    background: #12121a;
+    color: #B3FF38;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
+    text-decoration-color: #12121a;
   }
 
   .site-nav__link:focus-visible {
