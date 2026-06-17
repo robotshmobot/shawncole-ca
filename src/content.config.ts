@@ -17,7 +17,8 @@ const contentSchema = z.object({
   vibeProps: z.record(z.string()).optional(),
   span: z.enum(['1', '2', '3']).optional(),
   fontPairing: z.enum(['serif-sans', 'mono-serif', 'mono-sans', 'hand-sans', 'hand-serif']).optional(),
-  hideTitle: z.boolean().optional(),
+  hideTitle: z.boolean().nullable().optional(),
+  footer: z.string().optional(),
 });
 
 const caseStudies = defineCollection({

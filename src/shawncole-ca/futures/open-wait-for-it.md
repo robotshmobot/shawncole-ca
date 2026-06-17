@@ -7,17 +7,21 @@ description: Graduating from college, our guy thinks he has everything he needs 
 date: 2026-06-10
 vibe: saturated-field
 vibeProps:
-  fieldColor: "#0f1419"
-  textColor: "#d1d5db"
+  fieldColor: "#FAD6D6"
+  textColor: "#1a1a1a"
 fontPairing: mono-sans
 customStyles: |
   .post__title { letter-spacing: 0.05em; }
-  .post__content blockquote { border-left-color: #1D37F9; background: rgba(29, 55, 249, 0.08); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
-  .post__content strong { color: #7aa2f7; }
-  .post__content hr { border: none; margin: 3rem auto; width: 40px; height: 2px; background: #1D37F9; }
-  .post__content h2 { color: #7aa2f7; margin-top: 4rem; font-size: 1.2rem; letter-spacing: 0.1em; }
-image: img/open-wait-for-it_20260610A.jpg
+  .post__content blockquote { border-left-color: #1a1a1a; background: rgba(0, 0, 0, 0.04); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
+  .post__content strong { color: #1a1a1a; font-weight: 700; }
+  .post__content hr { border: none; margin: 3rem auto; width: 40px; height: 2px; background: #1a1a1a; }
+  .post__content h2 { color: #1a1a1a; margin-top: 4rem; font-size: 1.2rem; letter-spacing: 0.1em; }
+image: /img/open-wait-for-it_20260610A.jpg
 alt-text: A high contrast silhouette of a man standing at a kiosk using his phone to get tokens.
+footer: >-
+  This scenario is part of a broader strategic foresight project where I look
+  for signals of change in the youth unemployment space as it relates to the
+  proliferation of AI in the workplace. [Check out the project](/futures)
 ---
 Graduation had the vibe of a funeral. Each and every graduate looking down the barrel of a gun that the economy pointed back at them. We used to say *demure* 6 or 7 years ago—now we can say *detached*. Like we've been ejected from society's corpo fodder nursery, waiting with a generative resume to be immediately rejected by a generative hiring manager. 
 
@@ -36,6 +40,8 @@ Geo meant my location data, cell tower access point data, IP address, current Ma
 ---
 
 "We suggest it's in your best interest to embrace a referral model, focus on content generation, and build an audience." **Boardly** suggested this as next steps. Apparently it had been trained on every type of business successful or otherwise since 2000. It *sounded* strategic. It was so expensive I had no other option than to follow its steering. After a couple weeks it was clear every suggestion was funneling me further from anything competitive. My business was being guided to become a blog with affiliate links.
+
+![A high-contrast silhouette of our curly-haired protagonist and Anoush, his friend comparing details on their phone](/img/open-wait-for-it_2_20260616B.jpg)
 
 Anoush seemed to be more successful. She was the one halfway through our final year that got me to rethink what I'd do after graduation. Her own thing was picking up steam, and she was maybe a couple months ahead of me—but I could see she was making moves I wasn't being guided to make. 
 
@@ -73,6 +79,8 @@ I was. WTF?!
 "So so close to the team, man. That was a special day." We cheers'd on that, he turned his head slightly, and then he went off, dancing toward a group that was full-on yoga stretching. Weird.
 
 Something guided me to a room off the main room. It was quieter, dimly lit, and had a single guy just sitting on couch rewiring what looked like a Roomba. "First time?" He didn't look up.
+
+![A high-contrast image of a man sitting on the edge of a couch, tinkering with a Roomba](/img/open-wait-for-it_3_20260616A.jpg)
 
 "Uhh, yeah. Not sure what to make of it."
 
@@ -112,3 +120,5 @@ Consumer hardware, typically older gaming PCs and retired workstations, that has
 
 **Bot-net agentic gig workers**
 Stolen compute harvested from malware-infected consumer devices to power agentic AI workflows. The mechanic mirrors the cryptojacking model that repurposed personal computers for bitcoin mining: a background process siphons processing power from infected machines, contributing it to a distributed pool that paying clients can draw on for AI task execution. The infected machines run marginally slower but the degradation rarely triggers investigation. For operators priced out of legitimate compute, bot-net gig workers represent the cheapest available processing power. The ethical calculus is uncomfortable and mostly unexamined by the people who benefit from it.
+
+---

@@ -12,9 +12,10 @@ interface Props {
   customStyles?: string;
   fontPairing?: string;
   hideTitle?: boolean;
+  footer?: string;
 }
 
-const { title, description, date, type, image, color, tags, customStyles, fontPairing, hideTitle } = Astro.props;
+const { title, description, date, type, image, color, tags, customStyles, fontPairing, hideTitle, footer } = Astro.props;
 
 const typeColorMap: Record<string, string> = {
   'futures': 'var(--color-cherry)',
@@ -51,11 +52,15 @@ const resolvedImage = image && !image.startsWith('/') && !image.startsWith('http
     </div>
 
     <footer class="detail__footer">
-      <div class="detail__callout">
-        <p class="detail__callout-text">
-          If this sparked something, <a href="mailto:shawnr.cole@gmail.com" class="detail__callout-link">let's talk about it</a>.
-        </p>
-      </div>
+      {footer ? (
+        <div class="detail__footer-box" set:html={footer.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="detail__footer-link">$1</a>')} />
+      ) : (
+        <div class="detail__callout">
+          <p class="detail__callout-text">
+            If this sparked something, <a href="mailto:shawnr.cole@gmail.com" class="detail__callout-link">let's talk about it</a>.
+          </p>
+        </div>
+      )}
     </footer>
   </article>
   {customStyles && <style set:html={customStyles} />}
@@ -222,7 +227,7 @@ const resolvedImage = image && !image.startsWith('/') && !image.startsWith('http
   }
 
   .detail__footer {
-    max-width: 720px;
+    max-width: 1432px;
     margin: 0 auto;
     padding: 64px 40px 120px;
   }
@@ -247,6 +252,25 @@ const resolvedImage = image && !image.startsWith('/') && !image.startsWith('http
     text-decoration: underline;
     text-underline-offset: 4px;
     text-decoration-thickness: 2px;
+  }
+
+  .detail__footer-box {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 48px;
+    font-family: 'SRC Marker', var(--font-body);
+    font-size: clamp(16px, 2vw, 20px);
+    line-height: 1.5;
+    text-transform: uppercase;
+    color: var(--color-dark);
+  }
+
+  .detail__footer-box :global(.detail__footer-link) {
+    color: var(--color-dark);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
+    font-weight: 700;
   }
 
   @media (max-width: 640px) {
