@@ -14,9 +14,10 @@ interface Props {
   index?: number;
   vibeProps: Record<string, string>;
   cardCustomStyles?: string;
+  hideTitle?: boolean;
 }
 
-const { title, description, date, type, href, slug, tags, index = 0, vibeProps, cardCustomStyles } = Astro.props;
+const { title, description, date, type, href, slug, tags, index = 0, vibeProps, cardCustomStyles, hideTitle } = Astro.props;
 const typeMode = vibeProps.typeMode ?? 'stacked';
 const typeFill = vibeProps.typeFill !== 'false';
 const fieldColor = vibeProps.fieldColor ?? '#f5f0eb';
@@ -51,8 +52,8 @@ if (lineCount !== 'auto' && parseInt(lineCount) > 1) {
       {cp.overlayText}
     </span>
   )}
-  <span class="card__type" style={`color: ${typeColor}; opacity: 0.5;`}>{type}</span>
-  <div class="vibe-type-wall-card__type-block">
+  {!hideTitle && <span class="card__type" style={`color: ${typeColor}; opacity: 0.5;`}>{type}</span>}
+  {!hideTitle && <div class="vibe-type-wall-card__type-block">
     {typeMode === 'single-glyph' ? (
       <h2 class="card__title vibe-type-wall-card__glyph">{title.charAt(0)}</h2>
     ) : (
@@ -60,8 +61,8 @@ if (lineCount !== 'auto' && parseInt(lineCount) > 1) {
         <h2 class="card__title vibe-type-wall-card__line">{line}</h2>
       ))
     )}
-  </div>
-  <time class="card__date" datetime={date.toISOString()} style={`color: ${typeColor}; opacity: 0.4;`}>{formattedDate}</time>
+  </div>}
+  {!hideTitle && <time class="card__date" datetime={date.toISOString()} style={`color: ${typeColor}; opacity: 0.4;`}>{formattedDate}</time>}
 </a>
 {cardCustomStyles && <style set:html={cardCustomStyles.replaceAll(':card', `[data-post="${slug}"]`)} />}
 

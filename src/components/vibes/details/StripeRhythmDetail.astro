@@ -13,9 +13,10 @@ interface Props {
   customStyles?: string;
   vibeProps: Record<string, string>;
   fontPairing?: string;
+  hideTitle?: boolean;
 }
 
-const { title, description, date, type, image, color, tags, customStyles, vibeProps, fontPairing } = Astro.props;
+const { title, description, date, type, image, color, tags, customStyles, vibeProps, fontPairing, hideTitle } = Astro.props;
 const direction = vibeProps.stripeDirection ?? 'vertical';
 const colorsStr = vibeProps.stripeColors ?? '#1a2744,#f5f0eb,#ff6b35,#1a2744';
 const colors = colorsStr.split(',').map(c => c.trim());
@@ -28,18 +29,20 @@ const compClass = compositionClasses(cp);
 
 <Base title={`${title} — shawncole.ca`} fontPairing={fontPairing}>
   <article class:list={['vibe-stripe-rhythm-detail', compClass]} style={`--dominant-color: ${dominantColor}; --text-color: ${textColor};`}>
-    <header class="vibe-stripe-rhythm-detail__header">
-      <div class="vibe-stripe-rhythm-detail__stripes" aria-hidden="true">
-        {colors.map(c => (
-          <div class="vibe-stripe-rhythm-detail__stripe" style={`background: ${c};`} />
-        ))}
-      </div>
-      <div class="vibe-stripe-rhythm-detail__header-content">
-        <span class="post__type">{type}</span>
-        <h1 class="post__title">{title}</h1>
-        <p class="post__meta">{formattedDate}</p>
-      </div>
-    </header>
+    {!hideTitle && (
+      <header class="vibe-stripe-rhythm-detail__header">
+        <div class="vibe-stripe-rhythm-detail__stripes" aria-hidden="true">
+          {colors.map(c => (
+            <div class="vibe-stripe-rhythm-detail__stripe" style={`background: ${c};`} />
+          ))}
+        </div>
+        <div class="vibe-stripe-rhythm-detail__header-content">
+          <span class="post__type">{type}</span>
+          <h1 class="post__title">{title}</h1>
+          <p class="post__meta">{formattedDate}</p>
+        </div>
+      </header>
+    )}
     <div class="vibe-stripe-rhythm-detail__body">
       {image && <img src={image} alt={title} class="post__hero" />}
       <div class="post__content">

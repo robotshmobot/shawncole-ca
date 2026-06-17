@@ -12,9 +12,10 @@ interface Props {
   index?: number;
   vibeProps: Record<string, string>;
   cardCustomStyles?: string;
+  hideTitle?: boolean;
 }
 
-const { title, description, date, type, href, slug, image, color, tags, index = 0, vibeProps, cardCustomStyles } = Astro.props;
+const { title, description, date, type, href, slug, image, color, tags, index = 0, vibeProps, cardCustomStyles, hideTitle } = Astro.props;
 const splitRatio = vibeProps.splitRatio ?? '38';
 const leftBg = vibeProps.leftBg ?? color ?? '#1a2744';
 const rightBg = vibeProps.rightBg ?? '#ffffff';
@@ -33,11 +34,11 @@ const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month:
     {image && <img src={image} alt={title} />}
   </div>
   <div class="vibe-binary-split-card__right">
-    <span class="card__type" style={`color: ${leftBg};`}>{type}</span>
-    <h2 class="card__title">{title}</h2>
-    <p class="card__description">{description}</p>
-    <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>
-    {tags && tags.length > 0 && (
+    {!hideTitle && <span class="card__type" style={`color: ${leftBg};`}>{type}</span>}
+    {!hideTitle && <h2 class="card__title">{title}</h2>}
+    {!hideTitle && <p class="card__description">{description}</p>}
+    {!hideTitle && <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>}
+    {!hideTitle && tags && tags.length > 0 && (
       <div class="card__tags">
         {tags.map(tag => <span class="card__tag">{tag}</span>)}
       </div>

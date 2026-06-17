@@ -14,9 +14,10 @@ interface Props {
   index?: number;
   vibeProps: Record<string, string>;
   cardCustomStyles?: string;
+  hideTitle?: boolean;
 }
 
-const { title, description, date, type, href, slug, tags, index = 0, vibeProps, cardCustomStyles } = Astro.props;
+const { title, description, date, type, href, slug, tags, index = 0, vibeProps, cardCustomStyles, hideTitle } = Astro.props;
 const direction = vibeProps.stripeDirection ?? 'vertical';
 const colorsStr = vibeProps.stripeColors ?? '#1a2744,#f5f0eb,#ff6b35,#1a2744';
 const colors = colorsStr.split(',').map(c => c.trim());
@@ -60,9 +61,9 @@ const textColor = ensureContrast(dominantColor, '#f5f0eb');
     ))}
   </div>
   <div class:list={['vibe-stripe-rhythm-card__content', { 'vibe-stripe-rhythm-card__content--backdrop-solid': textBackdrop === 'solid', 'vibe-stripe-rhythm-card__content--backdrop-blur': textBackdrop === 'blur' }]}>
-    <span class="card__type">{type}</span>
-    <h2 class="card__title">{title}</h2>
-    <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>
+    {!hideTitle && <span class="card__type">{type}</span>}
+    {!hideTitle && <h2 class="card__title">{title}</h2>}
+    {!hideTitle && <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>}
   </div>
 </a>
 {cardCustomStyles && <style set:html={cardCustomStyles.replaceAll(':card', `[data-post="${slug}"]`)} />}

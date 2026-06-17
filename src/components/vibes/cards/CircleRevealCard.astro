@@ -14,9 +14,10 @@ interface Props {
   index?: number;
   vibeProps: Record<string, string>;
   cardCustomStyles?: string;
+  hideTitle?: boolean;
 }
 
-const { title, description, date, type, href, slug, image, tags, index = 0, vibeProps, cardCustomStyles } = Astro.props;
+const { title, description, date, type, href, slug, image, tags, index = 0, vibeProps, cardCustomStyles, hideTitle } = Astro.props;
 const maskShape = vibeProps.maskShape ?? 'circle';
 const maskSize = vibeProps.maskSize ?? '65';
 const maskPosition = vibeProps.maskPosition ?? 'center';
@@ -62,9 +63,9 @@ if (maskShape === 'triangle') {
     {image && <img src={image} alt="" class="vibe-circle-reveal-card__image" />}
   </div>
   <div class="vibe-circle-reveal-card__content">
-    <span class="card__type">{type}</span>
-    <h2 class="card__title">{title}</h2>
-    <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>
+    {!hideTitle && <span class="card__type">{type}</span>}
+    {!hideTitle && <h2 class="card__title">{title}</h2>}
+    {!hideTitle && <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>}
   </div>
 </a>
 {cardCustomStyles && <style set:html={cardCustomStyles.replaceAll(':card', `[data-post="${slug}"]`)} />}

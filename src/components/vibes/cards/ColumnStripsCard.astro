@@ -14,9 +14,10 @@ interface Props {
   index?: number;
   vibeProps: Record<string, string>;
   cardCustomStyles?: string;
+  hideTitle?: boolean;
 }
 
-const { title, description, date, type, href, slug, tags, index = 0, vibeProps, cardCustomStyles } = Astro.props;
+const { title, description, date, type, href, slug, tags, index = 0, vibeProps, cardCustomStyles, hideTitle } = Astro.props;
 const stripCount = parseInt(vibeProps.stripCount ?? '3');
 const ratiosStr = vibeProps.stripRatios ?? '30,40,30';
 const ratios = ratiosStr.split(',').map(r => r.trim());
@@ -55,9 +56,9 @@ const textColor = ensureContrast(activeColor, '#1a1a1a');
     ))}
   </div>
   <div class="vibe-column-strips-card__content" style={`left: ${ratios.slice(0, activeStrip).reduce((a, b) => a + parseFloat(b), 0)}%; width: ${ratios[activeStrip] ?? 33}%;`}>
-    <span class="card__type">{type}</span>
-    <h2 class="card__title">{title}</h2>
-    <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>
+    {!hideTitle && <span class="card__type">{type}</span>}
+    {!hideTitle && <h2 class="card__title">{title}</h2>}
+    {!hideTitle && <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>}
   </div>
 </a>
 {cardCustomStyles && <style set:html={cardCustomStyles.replaceAll(':card', `[data-post="${slug}"]`)} />}

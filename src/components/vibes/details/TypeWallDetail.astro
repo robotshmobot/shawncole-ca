@@ -13,9 +13,10 @@ interface Props {
   customStyles?: string;
   vibeProps: Record<string, string>;
   fontPairing?: string;
+  hideTitle?: boolean;
 }
 
-const { title, description, date, type, image, color, tags, customStyles, vibeProps, fontPairing } = Astro.props;
+const { title, description, date, type, image, color, tags, customStyles, vibeProps, fontPairing, hideTitle } = Astro.props;
 const fieldColor = vibeProps.fieldColor ?? '#f5f0eb';
 const typeColor = ensureContrast(fieldColor, vibeProps.typeColor ?? '#1a1a1a');
 const typeOpacity = vibeProps.typeOpacity ?? '0.06';
@@ -26,18 +27,20 @@ const compClass = compositionClasses(cp);
 
 <Base title={`${title} — shawncole.ca`} fontPairing={fontPairing}>
   <article class:list={['vibe-type-wall-detail', compClass]} style={`--field-color: ${fieldColor}; --type-color: ${typeColor}; --type-opacity: ${typeOpacity};`}>
-    <div class="vibe-type-wall-detail__hero">
-      <div class="vibe-type-wall-detail__bg-type" aria-hidden="true">
-        {Array.from({ length: 5 }).map(() => (
-          <span>{title}</span>
-        ))}
+    {!hideTitle && (
+      <div class="vibe-type-wall-detail__hero">
+        <div class="vibe-type-wall-detail__bg-type" aria-hidden="true">
+          {Array.from({ length: 5 }).map(() => (
+            <span>{title}</span>
+          ))}
+        </div>
+        <div class="vibe-type-wall-detail__hero-content">
+          <span class="post__type">{type}</span>
+          <h1 class="post__title">{title}</h1>
+          <p class="post__meta">{formattedDate}</p>
+        </div>
       </div>
-      <div class="vibe-type-wall-detail__hero-content">
-        <span class="post__type">{type}</span>
-        <h1 class="post__title">{title}</h1>
-        <p class="post__meta">{formattedDate}</p>
-      </div>
-    </div>
+    )}
     {image && <img src={image} alt={title} class="post__hero" />}
     <div class="post__content">
       <slot />

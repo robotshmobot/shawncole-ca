@@ -12,9 +12,10 @@ interface Props {
   index?: number;
   vibeProps: Record<string, string>;
   cardCustomStyles?: string;
+  hideTitle?: boolean;
 }
 
-const { title, description, date, type, href, slug, image, color, tags, index = 0, vibeProps, cardCustomStyles } = Astro.props;
+const { title, description, date, type, href, slug, image, color, tags, index = 0, vibeProps, cardCustomStyles, hideTitle } = Astro.props;
 const frameColor = vibeProps.frameColor ?? color ?? '#8b6914';
 const frameWidth = vibeProps.frameWidth ?? '6';
 const rotation = vibeProps.rotation ?? '-0.8';
@@ -29,11 +30,11 @@ const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month:
 >
   <div class="vibe-contained-box-card__frame">
     {image && <img src={image} alt={title} class="card__image" />}
-    <span class="card__type" style={`color: ${frameColor};`}>{type}</span>
-    <h2 class="card__title">{title}</h2>
-    <p class="card__description">{description}</p>
-    <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>
-    {tags && tags.length > 0 && (
+    {!hideTitle && <span class="card__type" style={`color: ${frameColor};`}>{type}</span>}
+    {!hideTitle && <h2 class="card__title">{title}</h2>}
+    {!hideTitle && <p class="card__description">{description}</p>}
+    {!hideTitle && <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>}
+    {!hideTitle && tags && tags.length > 0 && (
       <div class="card__tags">
         {tags.map(tag => <span class="card__tag">{tag}</span>)}
       </div>

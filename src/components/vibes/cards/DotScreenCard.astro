@@ -14,9 +14,10 @@ interface Props {
   index?: number;
   vibeProps: Record<string, string>;
   cardCustomStyles?: string;
+  hideTitle?: boolean;
 }
 
-const { title, description, date, type, href, slug, tags, index = 0, vibeProps, cardCustomStyles } = Astro.props;
+const { title, description, date, type, href, slug, tags, index = 0, vibeProps, cardCustomStyles, hideTitle } = Astro.props;
 const fieldColor = vibeProps.fieldColor ?? '#1a1a2e';
 const dotColor = vibeProps.dotColor ?? '#e94560';
 const dotSize = vibeProps.dotSize ?? '8';
@@ -50,10 +51,10 @@ if (dotPattern === 'diagonal') {
 >
   <div class="vibe-dot-screen-card__dots" aria-hidden="true"></div>
   <div class="vibe-dot-screen-card__content">
-    <span class="card__type">{type}</span>
-    <h2 class="card__title">{title}</h2>
-    <p class="card__description">{description}</p>
-    <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>
+    {!hideTitle && <span class="card__type">{type}</span>}
+    {!hideTitle && <h2 class="card__title">{title}</h2>}
+    {!hideTitle && <p class="card__description">{description}</p>}
+    {!hideTitle && <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>}
   </div>
 </a>
 {cardCustomStyles && <style set:html={cardCustomStyles.replaceAll(':card', `[data-post="${slug}"]`)} />}

@@ -13,9 +13,10 @@ interface Props {
   customStyles?: string;
   vibeProps: Record<string, string>;
   fontPairing?: string;
+  hideTitle?: boolean;
 }
 
-const { title, description, date, type, image, color, tags, customStyles, vibeProps, fontPairing } = Astro.props;
+const { title, description, date, type, image, color, tags, customStyles, vibeProps, fontPairing, hideTitle } = Astro.props;
 const colorsStr = vibeProps.stripColors ?? '#1a2744,#f5f0eb,#ff6b35';
 const colors = colorsStr.split(',').map(c => c.trim());
 const ratiosStr = vibeProps.stripRatios ?? '30,40,30';
@@ -30,18 +31,20 @@ const compClass = compositionClasses(cp);
 
 <Base title={`${title} — shawncole.ca`} fontPairing={fontPairing}>
   <article class:list={['vibe-column-strips-detail', compClass]}>
-    <header class="vibe-column-strips-detail__header" style={`--text-color: ${textColor};`}>
-      <div class="vibe-column-strips-detail__strips" aria-hidden="true">
-        {colors.map((c, i) => (
-          <div class="vibe-column-strips-detail__strip" style={`background: ${c}; width: ${ratios[i] ?? 33}%;`} />
-        ))}
-      </div>
-      <div class="vibe-column-strips-detail__header-content">
-        <span class="post__type">{type}</span>
-        <h1 class="post__title">{title}</h1>
-        <p class="post__meta">{formattedDate}</p>
-      </div>
-    </header>
+    {!hideTitle && (
+      <header class="vibe-column-strips-detail__header" style={`--text-color: ${textColor};`}>
+        <div class="vibe-column-strips-detail__strips" aria-hidden="true">
+          {colors.map((c, i) => (
+            <div class="vibe-column-strips-detail__strip" style={`background: ${c}; width: ${ratios[i] ?? 33}%;`} />
+          ))}
+        </div>
+        <div class="vibe-column-strips-detail__header-content">
+          <span class="post__type">{type}</span>
+          <h1 class="post__title">{title}</h1>
+          <p class="post__meta">{formattedDate}</p>
+        </div>
+      </header>
+    )}
     <div class="vibe-column-strips-detail__body">
       {image && <img src={image} alt={title} class="post__hero" />}
       <div class="post__content">

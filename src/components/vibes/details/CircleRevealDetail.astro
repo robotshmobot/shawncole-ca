@@ -13,9 +13,10 @@ interface Props {
   customStyles?: string;
   vibeProps: Record<string, string>;
   fontPairing?: string;
+  hideTitle?: boolean;
 }
 
-const { title, description, date, type, image, color, tags, customStyles, vibeProps, fontPairing } = Astro.props;
+const { title, description, date, type, image, color, tags, customStyles, vibeProps, fontPairing, hideTitle } = Astro.props;
 const maskSize = vibeProps.maskSize ?? '65';
 const surroundColor = vibeProps.surroundColor ?? '#1a2744';
 const revealColor = vibeProps.revealColor ?? '#f5f0eb';
@@ -27,17 +28,19 @@ const compClass = compositionClasses(cp);
 
 <Base title={`${title} — shawncole.ca`} fontPairing={fontPairing}>
   <article class:list={['vibe-circle-reveal-detail', compClass]} style={`--surround: ${surroundColor}; --reveal: ${revealColor}; --text-color: ${textColor}; --mask-size: ${maskSize}%;`}>
-    <header class="vibe-circle-reveal-detail__header">
-      <div class="vibe-circle-reveal-detail__surround" aria-hidden="true"></div>
-      <div class="vibe-circle-reveal-detail__aperture" aria-hidden="true">
-        {image && <img src={image} alt="" class="vibe-circle-reveal-detail__image" />}
-      </div>
-      <div class="vibe-circle-reveal-detail__header-content">
-        <span class="post__type">{type}</span>
-        <h1 class="post__title">{title}</h1>
-        <p class="post__meta">{formattedDate}</p>
-      </div>
-    </header>
+    {!hideTitle && (
+      <header class="vibe-circle-reveal-detail__header">
+        <div class="vibe-circle-reveal-detail__surround" aria-hidden="true"></div>
+        <div class="vibe-circle-reveal-detail__aperture" aria-hidden="true">
+          {image && <img src={image} alt="" class="vibe-circle-reveal-detail__image" />}
+        </div>
+        <div class="vibe-circle-reveal-detail__header-content">
+          <span class="post__type">{type}</span>
+          <h1 class="post__title">{title}</h1>
+          <p class="post__meta">{formattedDate}</p>
+        </div>
+      </header>
+    )}
     <div class="vibe-circle-reveal-detail__body">
       <div class="post__content">
         <slot />

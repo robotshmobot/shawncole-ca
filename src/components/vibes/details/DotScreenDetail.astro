@@ -13,9 +13,10 @@ interface Props {
   customStyles?: string;
   vibeProps: Record<string, string>;
   fontPairing?: string;
+  hideTitle?: boolean;
 }
 
-const { title, description, date, type, image, color, tags, customStyles, vibeProps, fontPairing } = Astro.props;
+const { title, description, date, type, image, color, tags, customStyles, vibeProps, fontPairing, hideTitle } = Astro.props;
 const fieldColor = vibeProps.fieldColor ?? '#1a1a2e';
 const dotColor = vibeProps.dotColor ?? '#e94560';
 const dotSize = parseInt(vibeProps.dotSize ?? '6');
@@ -29,14 +30,16 @@ const compClass = compositionClasses(cp);
 
 <Base title={`${title} — shawncole.ca`} fontPairing={fontPairing}>
   <article class:list={['vibe-dot-screen-detail', compClass]} style={`--field-color: ${fieldColor}; --text-color: ${textColor}; --dot-color: ${dotColor}; --dot-size: ${dotSize}px; --pattern-size: ${patternSize}px;`}>
-    <header class="vibe-dot-screen-detail__header">
-      <div class="vibe-dot-screen-detail__dots" aria-hidden="true"></div>
-      <div class="vibe-dot-screen-detail__header-content">
-        <span class="post__type">{type}</span>
-        <h1 class="post__title">{title}</h1>
-        <p class="post__meta">{formattedDate}</p>
-      </div>
-    </header>
+    {!hideTitle && (
+      <header class="vibe-dot-screen-detail__header">
+        <div class="vibe-dot-screen-detail__dots" aria-hidden="true"></div>
+        <div class="vibe-dot-screen-detail__header-content">
+          <span class="post__type">{type}</span>
+          <h1 class="post__title">{title}</h1>
+          <p class="post__meta">{formattedDate}</p>
+        </div>
+      </header>
+    )}
     <div class="vibe-dot-screen-detail__body">
       {image && <img src={image} alt={title} class="post__hero" />}
       <div class="post__content">

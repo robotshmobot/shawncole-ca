@@ -13,9 +13,10 @@ interface Props {
   customStyles?: string;
   vibeProps: Record<string, string>;
   fontPairing?: string;
+  hideTitle?: boolean;
 }
 
-const { title, description, date, type, image, color, tags, customStyles, vibeProps, fontPairing } = Astro.props;
+const { title, description, date, type, image, color, tags, customStyles, vibeProps, fontPairing, hideTitle } = Astro.props;
 const layers = parseInt(vibeProps.layers ?? '2');
 const offsetX = parseInt(vibeProps.offsetX ?? '12');
 const offsetY = parseInt(vibeProps.offsetY ?? '8');
@@ -46,11 +47,13 @@ const shadow = shadowMap[shadowDepth] || shadowMap.medium;
         />
       ))}
       <div class="vibe-raw-frame-detail__top" style={`background: ${topColor}; transform: translate(${(layers - 1) * offsetX}px, ${(layers - 1) * offsetY}px); box-shadow: ${shadow}; z-index: ${layers};`}>
-        <header class="vibe-raw-frame-detail__header">
-          <span class="post__type" style={`color: ${textColor}; opacity: 0.6;`}>{type}</span>
-          <h1 class="post__title">{title}</h1>
-          <p class="post__meta">{formattedDate}</p>
-        </header>
+        {!hideTitle && (
+          <header class="vibe-raw-frame-detail__header">
+            <span class="post__type" style={`color: ${textColor}; opacity: 0.6;`}>{type}</span>
+            <h1 class="post__title">{title}</h1>
+            <p class="post__meta">{formattedDate}</p>
+          </header>
+        )}
         {image && <img src={image} alt={title} class="post__hero" />}
         <div class="post__content">
           <slot />

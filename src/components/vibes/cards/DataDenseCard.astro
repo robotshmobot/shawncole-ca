@@ -14,9 +14,10 @@ interface Props {
   index?: number;
   vibeProps: Record<string, string>;
   cardCustomStyles?: string;
+  hideTitle?: boolean;
 }
 
-const { title, description, date, type, href, slug, tags, index = 0, vibeProps, cardCustomStyles } = Astro.props;
+const { title, description, date, type, href, slug, tags, index = 0, vibeProps, cardCustomStyles, hideTitle } = Astro.props;
 const fieldColor = vibeProps.fieldColor ?? '#0a0a0a';
 const gridColor = ensureContrast(fieldColor, vibeProps.gridColor ?? '#00ff88');
 const accentScale = vibeProps.accentScale ?? '4';
@@ -56,11 +57,11 @@ while (gridLines.length < 12) {
       <span class="vibe-data-dense-card__line">{line}</span>
     ))}
   </div>
-  <div class="vibe-data-dense-card__focal">
+  {!hideTitle && <div class="vibe-data-dense-card__focal">
     <span class="card__type">{type}</span>
     <h2 class="card__title">{title}</h2>
-  </div>
-  <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>
+  </div>}
+  {!hideTitle && <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>}
 </a>
 {cardCustomStyles && <style set:html={cardCustomStyles.replaceAll(':card', `[data-post="${slug}"]`)} />}
 

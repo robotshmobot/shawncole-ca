@@ -14,9 +14,10 @@ interface Props {
   index?: number;
   vibeProps: Record<string, string>;
   cardCustomStyles?: string;
+  hideTitle?: boolean;
 }
 
-const { title, description, date, type, href, slug, tags, index = 0, vibeProps, cardCustomStyles } = Astro.props;
+const { title, description, date, type, href, slug, tags, index = 0, vibeProps, cardCustomStyles, hideTitle } = Astro.props;
 const layers = parseInt(vibeProps.layers ?? '2');
 const offsetX = parseInt(vibeProps.offsetX ?? '12');
 const offsetY = parseInt(vibeProps.offsetY ?? '8');
@@ -62,10 +63,10 @@ for (let i = 0; i < layers; i++) {
       >
         {i === layerData.length - 1 && (
           <div class="vibe-raw-frame-card__content">
-            <span class="card__type">{type}</span>
-            <h2 class="card__title">{title}</h2>
-            <p class="card__description">{description}</p>
-            <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>
+            {!hideTitle && <span class="card__type">{type}</span>}
+            {!hideTitle && <h2 class="card__title">{title}</h2>}
+            {!hideTitle && <p class="card__description">{description}</p>}
+            {!hideTitle && <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>}
           </div>
         )}
       </div>

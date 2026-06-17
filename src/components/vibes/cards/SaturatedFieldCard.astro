@@ -14,9 +14,10 @@ interface Props {
   index?: number;
   vibeProps: Record<string, string>;
   cardCustomStyles?: string;
+  hideTitle?: boolean;
 }
 
-const { title, description, date, type, href, slug, tags, index = 0, vibeProps, cardCustomStyles } = Astro.props;
+const { title, description, date, type, href, slug, tags, index = 0, vibeProps, cardCustomStyles, hideTitle } = Astro.props;
 const fieldColor = vibeProps.fieldColor ?? '#2a5aa8';
 const textColor = ensureContrast(fieldColor, vibeProps.textColor ?? '#f5f0eb');
 const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -28,12 +29,14 @@ const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month:
   data-post={slug}
   style={`--i: ${index}; --field-color: ${fieldColor}; --text-color: ${textColor};`}
 >
-  <div class="vibe-saturated-field-card__inner">
-    <span class="card__type" style={`color: ${textColor}; opacity: 0.7;`}>{type}</span>
-    <h2 class="card__title">{title}</h2>
-  </div>
-  <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>
-  {tags && tags.length > 0 && (
+  {!hideTitle && (
+    <div class="vibe-saturated-field-card__inner">
+      <span class="card__type" style={`color: ${textColor}; opacity: 0.7;`}>{type}</span>
+      <h2 class="card__title">{title}</h2>
+    </div>
+  )}
+  {!hideTitle && <time class="card__date" datetime={date.toISOString()}>{formattedDate}</time>}
+  {!hideTitle && tags && tags.length > 0 && (
     <div class="card__tags">
       {tags.map(tag => <span class="card__tag" style={`background: rgba(255,255,255,0.15); color: ${textColor};`}>{tag}</span>)}
     </div>

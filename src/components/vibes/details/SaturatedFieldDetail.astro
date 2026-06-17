@@ -13,9 +13,10 @@ interface Props {
   customStyles?: string;
   vibeProps: Record<string, string>;
   fontPairing?: string;
+  hideTitle?: boolean;
 }
 
-const { title, description, date, type, image, color, tags, customStyles, vibeProps, fontPairing } = Astro.props;
+const { title, description, date, type, image, color, tags, customStyles, vibeProps, fontPairing, hideTitle } = Astro.props;
 const fieldColor = vibeProps.fieldColor ?? color ?? '#2a5aa8';
 const textColor = ensureContrast(fieldColor, vibeProps.textColor ?? '#f5f0eb');
 const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -23,11 +24,13 @@ const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month:
 
 <Base title={`${title} — shawncole.ca`} fontPairing={fontPairing}>
   <article class="vibe-saturated-field-detail" style={`--field-color: ${fieldColor}; --text-color: ${textColor};`}>
-    <header class="vibe-saturated-field-detail__header">
-      <span class="post__type">{type}</span>
-      <h1 class="post__title">{title}</h1>
-      <p class="post__meta">{formattedDate}</p>
-    </header>
+    {!hideTitle && (
+      <header class="vibe-saturated-field-detail__header">
+        <span class="post__type">{type}</span>
+        <h1 class="post__title">{title}</h1>
+        <p class="post__meta">{formattedDate}</p>
+      </header>
+    )}
     {image && <img src={image} alt={title} class="post__hero" />}
     <div class="post__content">
       <slot />
