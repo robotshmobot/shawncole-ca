@@ -231,6 +231,10 @@ body {
   transition: background 0.15s, color 0.15s;
 }
 
+.action-link:visited {
+  color: inherit;
+}
+
 .action-link:hover {
   background: var(--action-bg) !important;
   color: var(--action-fg) !important;
@@ -239,6 +243,11 @@ body {
 .action-link--on-dark {
   --action-bg: #fff;
   --action-fg: #12121a;
+  color: #fff;
+}
+
+.action-link--on-dark:visited {
+  color: #fff;
 }
 
 .action-link--on-lime {
