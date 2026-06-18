@@ -2,7 +2,9 @@
 title: Contact Centre AI Enablement
 description: ""
 date: 2026-06-17
-tags: []
+tags:
+  - AI-Enablement
+  - strategy
 image: ""
 ---
 

@@ -64,20 +64,28 @@ const resolvedImage = image && !image.startsWith('/') && !image.startsWith('http
     </footer>
   </article>
   {customStyles && <style set:html={customStyles} />}
+  <style is:global>
+    body:has(.detail) {
+      max-width: none;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  </style>
 </Base>
 
 <style>
   .detail {
     background: var(--detail-bg, #ffffff);
     min-height: 100vh;
+    padding-bottom: 128px;
   }
 
   .detail__hero {
     position: relative;
     width: 100%;
-    max-width: 1432px;
+    max-width: 2400px;
     margin: 0 auto;
-    height: clamp(400px, 60vw, 946px);
+    height: 66vh;
     background: var(--hero-bg, #f0f0f0);
     overflow: hidden;
     display: flex;
@@ -108,12 +116,11 @@ const resolvedImage = image && !image.startsWith('/') && !image.startsWith('http
 
   .detail__title {
     font-family: var(--font-display);
-    font-size: clamp(48px, 10vw, 128px);
+    font-size: 72px;
     font-weight: 400;
     line-height: 1;
     color: white;
     text-transform: var(--font-display-transform);
-    margin-bottom: 24px;
   }
 
   .detail__pill {
@@ -121,6 +128,7 @@ const resolvedImage = image && !image.startsWith('/') && !image.startsWith('http
     align-items: center;
     background: var(--color-dark);
     padding: 6px 16px;
+    margin-top: 16px;
   }
 
   .detail__type {
@@ -227,9 +235,9 @@ const resolvedImage = image && !image.startsWith('/') && !image.startsWith('http
   }
 
   .detail__footer {
-    max-width: 1432px;
+    max-width: 720px;
     margin: 0 auto;
-    padding: 64px 40px 120px;
+    padding: 64px 40px 0;
   }
 
   .detail__callout {
@@ -273,26 +281,32 @@ const resolvedImage = image && !image.startsWith('/') && !image.startsWith('http
     font-weight: 700;
   }
 
+  @media (max-width: 1024px) {
+    .detail__title {
+      font-size: 64px;
+    }
+  }
+
   @media (max-width: 640px) {
-    .detail__hero {
-      height: 300px;
+    .detail__title {
+      font-size: 32px;
     }
 
-    .detail__title {
-      font-size: 36px;
+    .detail__hero-content {
+      padding: 0 16px;
     }
 
     .detail__body {
-      padding: 40px 20px 0;
+      padding: 40px 16px 0;
     }
 
     .detail__content :global(img) {
-      width: calc(100% + 40px);
-      margin-left: -20px;
+      width: calc(100% + 32px);
+      margin-left: -16px;
     }
 
     .detail__footer {
-      padding: 40px 20px 120px;
+      padding: 40px 16px 0;
     }
 
     .detail__callout {

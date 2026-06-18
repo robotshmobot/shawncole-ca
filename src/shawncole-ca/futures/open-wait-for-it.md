@@ -5,16 +5,14 @@ tags:
   - ai
 description: Graduating from college, our guy thinks he has everything he needs to start a business. He uses the latest agentic frontier model to prepare all of the details, file the paperwork, and spin up his offering—then he not only runs out of tokens, but the model starts steering his business decisions away from what could be "competitive" with entrenched enterprise. He abandons the subscription model in favour of a… less than legal foreign open-weight model.
 date: 2026-06-10
-vibeProps:
-  fieldColor: "#FAD6D6"
-  textColor: "#1a1a1a"
+color: "#FAD6D6"
 fontPairing: mono-sans
 customStyles: |
-  .post__title { letter-spacing: 0.05em; }
-  .post__content blockquote { border-left-color: #1a1a1a; background: rgba(0, 0, 0, 0.04); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
-  .post__content strong { color: #1a1a1a; font-weight: 700; }
-  .post__content hr { border: none; margin: 3rem auto; width: 40px; height: 2px; background: #1a1a1a; }
-  .post__content h2 { color: #1a1a1a; margin-top: 4rem; font-size: 1.2rem; letter-spacing: 0.1em; }
+  .detail__title { letter-spacing: 0.05em; }
+  .detail__content blockquote { border-left-color: #1a1a1a; background: rgba(0, 0, 0, 0.04); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
+  .detail__content strong { color: #1a1a1a; font-weight: 700; }
+  .detail__content hr { border: none; margin: 3rem auto; width: 40px; height: 2px; background: #1a1a1a; }
+  .detail__content h2 { color: #1a1a1a; margin-top: 4rem; font-size: 1.2rem; letter-spacing: 0.1em; }
 image: /img/open-wait-for-it_20260610A.jpg
 alt-text: A high contrast silhouette of a man standing at a kiosk using his phone to get tokens.
 footer: >-

@@ -6,7 +6,7 @@ tags:
   - strategy
   - foresight
 vibe: ""
-image: ""
+image: /img/designing for uncertainty_20240829A.jpg
 hideTitle: false
 ---
 Hands up ✋ if you’re building something and have no idea what informed the decision to build it. Chances are: you are or have been here. If you’re reading this as a decision maker, this one’s for you.

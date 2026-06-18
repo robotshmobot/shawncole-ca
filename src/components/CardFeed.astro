@@ -1,16 +1,14 @@
 ---
 import { getCollection } from 'astro:content';
-import VibeCard from './vibes/VibeCard.astro';
 import PosterCard from './PosterCard.astro';
-import type { FontPairing } from './vibes/vibeDefaults';
-import { getFontPairing } from './vibes/vibeDefaults';
+import type { FontPairing } from '../utils/fonts';
+import { getFontPairing } from '../utils/fonts';
 
 interface Props {
   filter?: string;
-  variant?: 'vibe' | 'poster';
 }
 
-const { filter, variant = 'vibe' } = Astro.props;
+const { filter } = Astro.props;
 
 const caseStudies = await getCollection('case-studies');
 const futures = await getCollection('futures');
@@ -25,9 +23,6 @@ type ContentEntry = {
     tags?: string[];
     image?: string;
     color?: string;
-    cardCustomStyles?: string;
-    vibeProps?: Record<string, string>;
-    span?: string;
     fontPairing?: FontPairing;
     hideTitle?: boolean;
   };
@@ -61,39 +56,19 @@ const filteredContent = filter
 <div class="card-feed">
   {
     filteredContent.map((entry, i) => (
-      variant === 'poster' ? (
-        <PosterCard
-          title={entry.data.title}
-          description={entry.data.description}
-          date={entry.data.date}
-          type={entry.type}
-          href={entry.href}
-          slug={entry.id}
-          image={entry.data.image}
-          color={entry.data.color}
-          tags={entry.data.tags}
-          fontPairing={getFontPairing(entry.data.fontPairing, entry.id)}
-          index={i}
-        />
-      ) : (
-        <VibeCard
-          title={entry.data.title}
-          description={entry.data.description}
-          date={entry.data.date}
-          type={entry.type}
-          href={entry.href}
-          slug={entry.id}
-          image={entry.data.image}
-          color={entry.data.color}
-          tags={entry.data.tags}
-          cardCustomStyles={entry.data.cardCustomStyles}
-          vibeProps={entry.data.vibeProps}
-          span={entry.data.span}
-          fontPairing={getFontPairing(entry.data.fontPairing, entry.id)}
-          hideTitle={entry.data.hideTitle}
-          index={i}
-        />
-      )
+      <PosterCard
+        title={entry.data.title}
+        description={entry.data.description}
+        date={entry.data.date}
+        type={entry.type}
+        href={entry.href}
+        slug={entry.id}
+        image={entry.data.image}
+        color={entry.data.color}
+        tags={entry.data.tags}
+        fontPairing={getFontPairing(entry.data.fontPairing, entry.id)}
+        index={i}
+      />
     ))
   }
 </div>
