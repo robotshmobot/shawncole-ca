@@ -1,10 +1,13 @@
 ---
+import { sentMessages } from '../data/sent-messages';
+
 interface Props {
   currentPath?: string;
   isDetailPage?: boolean;
 }
 
 const { currentPath = '/', isDetailPage = false } = Astro.props;
+const web3formsKey = import.meta.env.PUBLIC_WEB3FORMS_KEY || '';
 
 const navItems = [
   { label: 'ALL THE THINGS', href: '/' },
@@ -13,12 +16,12 @@ const navItems = [
   { label: 'IDEAS', href: '/ideas' },
   { label: 'PLAYGROUND', href: '/playground' },
   { label: 'ABOUT SHAWN', href: '/about' },
-  { label: 'CONTACT', href: 'mailto:shawnr.cole@gmail.com' },
+  { label: 'CONTACT', href: '#contact' },
 ];
 
 function isActive(href: string, current: string) {
   if (href === '/') return current === '/';
-  if (href.startsWith('mailto:')) return false;
+  if (href === '#contact') return false;
   return current.startsWith(href);
 }
 
@@ -32,11 +35,45 @@ const barLabel = activeItem && activeItem.href !== '/' ? activeItem.label : 'SHA
       <a
         href={item.href}
         class:list={['site-nav__link', { 'site-nav__link--active': isActive(item.href, currentPath) }]}
+        {...(item.href === '#contact' ? { 'data-contact-trigger': '' } : {})}
       >
         {item.label}
       </a>
     ))}
   </div>
+
+  <div class="site-nav__contact" data-contact-panel>
+    <div class="site-nav__contact-form" data-contact-form>
+      <div class="site-nav__contact-header">
+        <span class="site-nav__contact-title">CONTACT SHAWN</span>
+        <button class="site-nav__contact-close" data-contact-close aria-label="Close contact form">
+          <img src="/img/icon-close.svg" alt="" width="28" height="28" />
+        </button>
+      </div>
+      <div class="site-nav__contact-fields">
+        <input type="text" class="site-nav__contact-input" data-contact-name placeholder="Name" autocomplete="name" />
+        <input type="email" class="site-nav__contact-input" data-contact-email placeholder="Email" autocomplete="email" />
+        <textarea class="site-nav__contact-textarea" data-contact-message placeholder="Message"></textarea>
+      </div>
+      <div class="site-nav__contact-footer">
+        <div class="site-nav__contact-error" data-contact-error></div>
+        <button class="site-nav__contact-send" data-contact-send>
+          <span>SEND</span>
+          <img src="/img/icon-forward.svg" alt="" width="28" height="28" />
+        </button>
+      </div>
+    </div>
+    <div class="site-nav__contact-success" data-contact-success>
+      <p class="site-nav__contact-message" data-contact-sent-msg></p>
+      <div class="site-nav__contact-success-bar">
+        <span class="site-nav__contact-success-name">SHAWN COLE</span>
+        <button class="site-nav__contact-close" data-contact-close-success aria-label="Close">
+          <img src="/img/icon-close.svg" alt="" width="28" height="28" />
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div class="site-nav__bar">
     {isDetailPage && (
       <a href="javascript:history.back()" class="site-nav__back" aria-label="Go back" data-nav-back>
@@ -50,6 +87,11 @@ const barLabel = activeItem && activeItem.href !== '/' ? activeItem.label : 'SHA
     </button>
   </div>
 </nav>
+
+<script define:vars={{ sentMessages, web3formsKey }}>
+  window.__sentMessages = sentMessages;
+  window.__web3formsKey = web3formsKey;
+</script>
 
 <style>
   .site-nav {
@@ -176,6 +218,214 @@ const barLabel = activeItem && activeItem.href !== '/' ? activeItem.label : 'SHA
     display: block;
   }
 
+  /* Contact form — hidden by default */
+  .site-nav__contact {
+    display: none;
+  }
+
+  .site-nav[data-contact] {
+    width: 288px;
+  }
+
+  .site-nav[data-contact] .site-nav__menu,
+  .site-nav[data-contact] .site-nav__bar {
+    display: none;
+  }
+
+  .site-nav[data-contact] .site-nav__contact {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .site-nav__contact-form {
+    display: flex;
+    flex-direction: column;
+    padding: 15px 24px;
+    gap: 16px;
+  }
+
+  .site-nav[data-contact-sent] .site-nav__contact-form {
+    display: none;
+  }
+
+  .site-nav__contact-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .site-nav__contact-title {
+    font-family: 'SRC Marker', var(--font-body);
+    font-size: 22px;
+    color: #12121a;
+    line-height: 1.25;
+  }
+
+  .site-nav__contact-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+
+  .site-nav__contact-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  .site-nav__contact-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .site-nav__contact-input,
+  .site-nav__contact-textarea {
+    font-family: 'Geist', var(--font-body);
+    font-weight: 400;
+    font-size: 12px;
+    color: #12121a;
+    background: rgba(18, 18, 26, 0.08);
+    border: none;
+    border-radius: 2px;
+    padding: 10px;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    line-height: 1.25;
+  }
+
+  .site-nav__contact-input::placeholder,
+  .site-nav__contact-textarea::placeholder {
+    color: #12121a;
+    opacity: 0.4;
+  }
+
+  .site-nav__contact-input:focus,
+  .site-nav__contact-textarea:focus {
+    background: rgba(18, 18, 26, 0.12);
+  }
+
+  .site-nav__contact-input[data-error],
+  .site-nav__contact-textarea[data-error] {
+    background: rgba(255, 73, 73, 0.08);
+    color: #FF4949;
+  }
+
+  .site-nav__contact-input[data-error]::placeholder,
+  .site-nav__contact-textarea[data-error]::placeholder {
+    color: #FF4949;
+    opacity: 0.6;
+  }
+
+  .site-nav__contact-textarea {
+    height: 128px;
+    resize: none;
+    overflow-y: auto;
+  }
+
+  .site-nav__contact-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: relative;
+    min-height: 32px;
+  }
+
+  .site-nav__contact-send {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-family: 'SRC Marker', var(--font-body);
+    font-size: 22px;
+    color: #12121a;
+    text-transform: uppercase;
+    padding: 4px 0;
+    transition: opacity 0.2s;
+  }
+
+  .site-nav__contact-send:hover {
+    opacity: 0.7;
+  }
+
+  .site-nav__contact-send[data-sending] {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .site-nav__contact-error {
+    display: none;
+    width: 100%;
+    background: #FF4949;
+    color: #ffffff;
+    font-family: 'SRC Marker', var(--font-body);
+    font-size: 22px;
+    text-align: center;
+    padding: 4px 8px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    line-height: 1.25;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .site-nav__contact-error[data-visible] {
+    display: block;
+  }
+
+  .site-nav__contact-error[data-visible] + .site-nav__contact-send {
+    display: none;
+  }
+
+  /* Success state */
+  .site-nav__contact-success {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 48px 24px 0;
+    min-height: 300px;
+  }
+
+  .site-nav[data-contact-sent] .site-nav__contact-success {
+    display: flex;
+    flex: 1;
+  }
+
+  .site-nav__contact-message {
+    font-family: 'SRC Marker', var(--font-body);
+    font-size: 22px;
+    color: #12121a;
+    line-height: 1.3;
+    text-transform: uppercase;
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .site-nav__contact-success-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 0 24px;
+  }
+
+  .site-nav__contact-success-name {
+    font-family: 'SRC Marker', var(--font-body);
+    font-size: 22px;
+    color: #12121a;
+    line-height: 1.25;
+  }
+
   @media (max-width: 640px) {
     .site-nav {
       left: 32px;
@@ -187,6 +437,25 @@ const barLabel = activeItem && activeItem.href !== '/' ? activeItem.label : 'SHA
     .site-nav__bar {
       justify-content: space-between;
       width: 100%;
+    }
+
+    .site-nav[data-contact] {
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      border-radius: 0;
+      width: auto;
+      overflow-y: auto;
+    }
+
+    .site-nav__contact-success {
+      min-height: 0;
+      flex: 1;
+    }
+
+    .site-nav[data-contact] .site-nav__contact {
+      flex: 1;
     }
   }
 </style>
@@ -207,6 +476,128 @@ const barLabel = activeItem && activeItem.href !== '/' ? activeItem.label : 'SHA
         toggle.setAttribute('aria-expanded', 'true');
       }
     });
+
+    function openContact() {
+      nav.removeAttribute('data-open');
+      nav.setAttribute('data-contact', '');
+      toggle.setAttribute('aria-expanded', 'false');
+      const nameInput = nav.querySelector('[data-contact-name]') as HTMLInputElement;
+      if (nameInput) nameInput.focus();
+    }
+
+    const contactTrigger = nav.querySelector('[data-contact-trigger]');
+    if (contactTrigger) {
+      contactTrigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        openContact();
+      });
+    }
+
+    document.querySelectorAll('[data-open-contact]').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        openContact();
+      });
+    });
+
+    function closeContact() {
+      nav.removeAttribute('data-contact');
+      nav.removeAttribute('data-contact-sent');
+      const form = nav.querySelector('[data-contact-form]');
+      if (form) {
+        (form.querySelector('[data-contact-name]') as HTMLInputElement).value = '';
+        (form.querySelector('[data-contact-email]') as HTMLInputElement).value = '';
+        (form.querySelector('[data-contact-message]') as HTMLTextAreaElement).value = '';
+      }
+      const error = nav.querySelector('[data-contact-error]') as HTMLElement;
+      if (error) error.removeAttribute('data-visible');
+      nav.querySelectorAll('[data-error]').forEach(el => el.removeAttribute('data-error'));
+      const sendBtn = nav.querySelector('[data-contact-send]') as HTMLButtonElement;
+      if (sendBtn) sendBtn.removeAttribute('data-sending');
+    }
+
+    nav.querySelectorAll('[data-contact-close], [data-contact-close-success]').forEach(btn => {
+      btn.addEventListener('click', closeContact);
+    });
+
+    const errorEl = nav.querySelector('[data-contact-error]') as HTMLElement;
+    if (errorEl) {
+      errorEl.addEventListener('click', () => {
+        errorEl.removeAttribute('data-visible');
+        nav.querySelectorAll('[data-error]').forEach(el => el.removeAttribute('data-error'));
+      });
+    }
+
+    const sendBtn = nav.querySelector('[data-contact-send]');
+    if (sendBtn) {
+      sendBtn.addEventListener('click', async () => {
+        const nameInput = nav.querySelector('[data-contact-name]') as HTMLInputElement;
+        const emailInput = nav.querySelector('[data-contact-email]') as HTMLInputElement;
+        const messageInput = nav.querySelector('[data-contact-message]') as HTMLTextAreaElement;
+        const errorEl = nav.querySelector('[data-contact-error]') as HTMLElement;
+
+        errorEl.removeAttribute('data-visible');
+        nameInput.removeAttribute('data-error');
+        emailInput.removeAttribute('data-error');
+        messageInput.removeAttribute('data-error');
+
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const message = messageInput.value.trim();
+
+        if (!name) {
+          errorEl.textContent = 'NEED A NAME DUDE';
+          errorEl.setAttribute('data-visible', '');
+          nameInput.setAttribute('data-error', '');
+          return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          errorEl.textContent = 'INVALID EMAIL BUD';
+          errorEl.setAttribute('data-visible', '');
+          emailInput.setAttribute('data-error', '');
+          return;
+        }
+
+        if (!message) {
+          errorEl.textContent = 'UHH, SAY SOMETHING';
+          errorEl.setAttribute('data-visible', '');
+          messageInput.setAttribute('data-error', '');
+          return;
+        }
+
+        sendBtn.setAttribute('data-sending', '');
+
+        try {
+          const response = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              access_key: (window as any).__web3formsKey,
+              name,
+              email,
+              message,
+              subject: `Contact from ${name} via shawncole.ca`,
+            }),
+          });
+
+          if (!response.ok) throw new Error('Send failed');
+          const data = await response.json();
+          if (!data.success) throw new Error('Send failed');
+
+          const messages = (window as any).__sentMessages || ['Message sent.'];
+          const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+          const msgEl = nav.querySelector('[data-contact-sent-msg]');
+          if (msgEl) msgEl.textContent = randomMsg;
+          nav.setAttribute('data-contact-sent', '');
+        } catch {
+          errorEl.textContent = 'MY BAD - TRY AGAIN';
+          errorEl.setAttribute('data-visible', '');
+          sendBtn.removeAttribute('data-sending');
+        }
+      });
+    }
   }
 
   initNav();

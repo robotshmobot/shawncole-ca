@@ -57,7 +57,7 @@ const resolvedImage = image && !image.startsWith('/') && !image.startsWith('http
       ) : (
         <div class="detail__callout">
           <p class="detail__callout-text">
-            If this sparked something, <a href="mailto:shawnr.cole@gmail.com" class="detail__callout-link">let's talk about it</a>.
+            If this sparked something, <a href="#contact" class="detail__callout-link" data-open-contact>let's&nbsp;talk&nbsp;about&nbsp;it&nbsp;›</a>
           </p>
         </div>
       )}
@@ -257,9 +257,14 @@ const resolvedImage = image && !image.startsWith('/') && !image.startsWith('http
 
   .detail__callout-link {
     color: #0d0eda;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    text-decoration-thickness: 2px;
+    text-decoration: none;
+    padding: 2px 6px;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .detail__callout-link:hover {
+    background: #0d0eda;
+    color: #ffffff;
   }
 
   .detail__footer-box {
