@@ -53,11 +53,11 @@ const resolvedImage = image && !image.startsWith('/') && !image.startsWith('http
 
     <footer class="detail__footer">
       {footer ? (
-        <div class="detail__footer-box" set:html={footer.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="detail__footer-link">$1</a>')} />
+        <div class="detail__footer-box" set:html={footer.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="detail__footer-link action-link">$1</a>')} />
       ) : (
         <div class="detail__callout">
           <p class="detail__callout-text">
-            If this sparked something, <a href="#contact" class="detail__callout-link action-link" data-open-contact>let's&nbsp;talk&nbsp;about&nbsp;it&nbsp;›</a>
+            If this sparked something, <a href="#contact" class="detail__callout-link action-link" data-open-contact>let's&nbsp;talk&nbsp;about&nbsp;it&nbsp;></a>
           </p>
         </div>
       )}
@@ -273,11 +273,9 @@ const resolvedImage = image && !image.startsWith('/') && !image.startsWith('http
   }
 
   .detail__footer-box :global(.detail__footer-link) {
-    color: var(--color-dark);
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    text-decoration-thickness: 2px;
-    font-weight: 700;
+    color: #0d0eda;
+    --action-bg: #0d0eda;
+    --action-fg: #fff;
   }
 
   @media (max-width: 1024px) {
