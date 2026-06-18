@@ -1,54 +1,409 @@
 ---
 import Base from '../layouts/Base.astro';
+
+const cv = [
+  {
+    company: 'Koru',
+    description: 'Director of Design at the venture studio specializing in enterprise AI adoption, change management, and strategic design. Engagement lead and principal operator for enterprise financial service enablement.',
+    years: '2023-2026',
+  },
+  {
+    company: 'Humanistic',
+    description: 'Co-founder & principal of strategy, research, design, and futures advisory at Humanistic. Led the foresight practice and operations of multi-year strategic innovation work in tech, automotive, and financial services industries.',
+    years: '2018-2023',
+  },
+  {
+    company: 'Helpful',
+    description: 'Product design at the early-stage video platform startup Helpful. Joined as the third employee, owned product design end-to-end; partnered with engineering, product management, and ML/data science.',
+    years: '2016-2018',
+  },
+  {
+    company: 'Kinetic Café',
+    description: 'Multi-year digital + service design engagement operator at the agency for retail and commercial property mgmt engagements. Coached a team of interaction designers through business transitions and project needs.',
+    years: '2014-2016',
+  },
+  {
+    company: 'Xtreme/Pivotal Labs',
+    description: 'Led discovery-through-delivery on multiple iOS and Android client projects; travelling platform consultant on mobile design best practices.',
+    years: '2013-2014',
+  },
+  {
+    company: 'Pipeline Studios',
+    description: "Worked in broadcast children's animation as Technical Director and Layout Artist before transitioning into digital product design.",
+    years: '2010-2012',
+  },
+];
 ---
 
 <Base title="About — shawncole.ca">
   <main class="about">
     <section class="about__intro">
-      <p class="about__bio">
-        I've been living and working in the Toronto area for more
-        than 15 years. As a good ol' Niagara boy, I've lived, and at
-        times been frustrated with this province. But one thing is
-        certain. It's always been my duty to do my best by the
-        people, businesses, and environment of this lost province.
-      </p>
-      <p class="about__bio">
-        But, I do much more than design. I'm a husband, a dad-rap,
-        dirt road artist, writer, runner, camper, explorer, and I
-        take pride in understanding, absorbing, and reflecting it from where
-        I see each morning.
-      </p>
+      <p class="about__hero">I have been living & working in the Toronto area for more than 15 years. As a good ol' Ontario boy, I've loved, and at times, been frustrated with this place - but one thing is for certain... It's always been my duty to do my best by the people, businesses, and environment of this vast province.</p>
+    </section>
+
+    <section class="about__photos">
+      <div class="about__photos-layout">
+        <div class="about__photo-main-wrap">
+          <div class="about__photo-main">
+            <img src="/img/shawn-nova-scotia-kayaking.jpg" alt="Shawn kayaking in Nova Scotia" />
+          </div>
+          <p class="about__photo-caption">ironically, this was shot in st. peters, nova scotia</p>
+        </div>
+        <div class="about__photo-secondary-wrap">
+          <div class="about__photo-secondary">
+            <img src="/img/trillium-balsam-lake.jpg" alt="Trillium flower at Balsam Lake" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about__personal">
+      <p class="about__personal-text">I mean, I do much more than design. I'm a husband, a dog-Dad, ambient music artist, writer, runner, camper, kayaker, and I dabble in woodwork, gardening, and perfecting my pour over coffee each morning.</p>
     </section>
 
     <section class="about__cv">
-      <h2 class="about__heading">Here's my CV</h2>
-      <!-- CV entries will be populated here -->
+      <h2 class="about__cv-heading">jk here's my cv</h2>
+      <div class="about__cv-grid">
+        {cv.map(item => (
+          <div class="about__cv-card">
+            <p class="about__cv-company">{item.company}</p>
+            <p class="about__cv-desc">{item.description}</p>
+            <p class="about__cv-years">{item.years}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="about__cta-grid">
+      <div class="about__cta about__cta--blue">
+        <p class="about__cta-text">I'm currently working on a stealth advisory consultancy with aims to serve enterprise operations in their AI transformations through strategy, operational redesign, service & product design, and change management.</p>
+        <a href="#contact" class="about__cta-link action-link action-link--on-dark" data-open-contact>Get&nbsp;in&nbsp;touch&nbsp;to&nbsp;learn&nbsp;more&nbsp;›</a>
+      </div>
+      <div class="about__cta about__cta--dark">
+        <p class="about__cta-text">If you really really want to hear some of things I come up with when I pick up my guitar, switch on a synth, or compose something atmospheric, I have a small project called Sentient Spaces.</p>
+        <p class="about__cta-link-text">Listen on <a href="https://www.subvert.fm/sentientspaces" class="action-link action-link--on-dark">Subvert</a> or <a href="https://sentientspaces.bandcamp.com/" class="action-link action-link--on-dark">Bandcamp</a></p>
+      </div>
+      <div class="about__cta about__cta--lime">
+        <img src="/img/sc-monogram.svg" alt="" class="about__monogram" width="64" height="64" />
+        <p class="about__social">I don't really maintain a presence on social media other than <a href="https://www.linkedin.com/in/shawnrcole/" class="about__social-link">LinkedIn</a>. You can find things I write here mirrored on <a href="https://medium.com/@shawnrcole" class="about__social-link">Medium</a> if that matters. Otherwise, <a href="#contact" class="about__social-link" data-open-contact>say&nbsp;hi</a>!</p>
+      </div>
     </section>
   </main>
 </Base>
 
 <style>
   .about {
-    max-width: 720px;
+    max-width: 1512px;
     margin: 0 auto;
-    padding: var(--space-lg) var(--space-md);
+    padding: 40px 40px 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
   }
 
-  .about__intro {
-    margin-bottom: var(--space-lg);
-  }
-
-  .about__bio {
+  /* Hero intro */
+  .about__hero {
     font-family: 'SRC Marker', var(--font-body);
-    font-size: 1.1rem;
-    line-height: 1.7;
-    margin-bottom: var(--space-sm);
+    font-size: 48px;
+    line-height: 1;
+    text-transform: uppercase;
+    color: #12121a;
+    transform: rotate(0.5deg);
   }
 
-  .about__heading {
-    font-family: var(--font-display);
-    font-size: 1.4rem;
+  /* Photo layout */
+  .about__photos-layout {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .about__photo-main-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    margin-right: -16px;
+    z-index: 1;
+  }
+
+  .about__photo-main {
+    width: 100%;
+    height: 720px;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .about__photo-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+
+  .about__photo-caption {
+    font-family: 'Geist Mono', monospace;
+    font-size: 16px;
+    line-height: 1;
+    text-transform: uppercase;
+    color: #000;
+  }
+
+  .about__photo-secondary-wrap {
+    flex-shrink: 0;
+    width: 480px;
+    z-index: 2;
+  }
+
+  .about__photo-secondary {
+    width: 480px;
+    height: 480px;
+    border-radius: 8px;
+    overflow: hidden;
+    transform: rotate(-1deg);
+    box-shadow: 0px 16px 32px 8px rgba(18, 18, 26, 0.2);
+  }
+
+  .about__photo-secondary img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Personal blurb */
+  .about__personal-text {
+    font-family: 'Geist', var(--font-body);
+    font-size: 24px;
+    line-height: 1.35;
+    color: #12121a;
+  }
+
+  /* CV section */
+  .about__cv {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .about__cv-heading {
+    font-family: 'SRC Marker', var(--font-body);
+    font-size: 48px;
+    line-height: 1;
+    text-transform: uppercase;
+    color: #12121a;
     font-weight: 400;
-    margin-bottom: var(--space-md);
+  }
+
+  .about__cv-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 64px;
+  }
+
+  .about__cv-card {
+    background: #f7f7f7;
+    border-radius: 16px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow: hidden;
+  }
+
+  .about__cv-company {
+    font-family: 'Geist', var(--font-body);
+    font-size: 32px;
+    line-height: 1;
+    color: #000;
+  }
+
+  .about__cv-desc {
+    font-family: 'Geist', var(--font-body);
+    font-size: 17px;
+    line-height: 1.35;
+    color: #000;
+  }
+
+  .about__cv-years {
+    font-family: 'Geist Mono', monospace;
+    font-size: 17px;
+    line-height: 1;
+    color: #000;
+  }
+
+  /* CTA grid */
+  .about__cta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .about__cta {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .about__cta--blue {
+    background: #0d0eda;
+    color: #fff;
+  }
+
+  .about__cta--dark {
+    background: #12121a;
+    color: #fff;
+  }
+
+  .about__cta--lime {
+    background: #B3FF38;
+    color: #12121a;
+    grid-column: span 2;
+    flex-direction: row;
+    gap: 64px;
+    align-items: flex-start;
+  }
+
+  .about__cta-text {
+    font-family: 'Geist', var(--font-body);
+    font-size: 24px;
+    line-height: 1.35;
+  }
+
+  .about__cta-link {
+    font-family: 'SRC Marker', var(--font-body);
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  .about__cta-link-text {
+    font-family: 'SRC Marker', var(--font-body);
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  .about__monogram {
+    flex-shrink: 0;
+  }
+
+  .about__social {
+    font-family: 'Geist Mono', monospace;
+    font-size: 24px;
+    line-height: 1.35;
+    text-transform: uppercase;
+    color: #12121a;
+    flex: 1;
+  }
+
+  .about__social-link {
+    color: #12121a;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .about__social-link:hover {
+    text-decoration-thickness: 3px;
+  }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    .about {
+      padding: 16px 16px 120px;
+      gap: 32px;
+    }
+
+    .about__hero {
+      font-size: 24px;
+    }
+
+    .about__photos-layout {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .about__photo-main-wrap {
+      margin-right: 0;
+      width: 100%;
+    }
+
+    .about__photo-main {
+      height: auto;
+      aspect-ratio: 960 / 720;
+    }
+
+    .about__photo-caption {
+      font-size: 12px;
+    }
+
+    .about__photo-secondary-wrap {
+      width: 100%;
+    }
+
+    .about__photo-secondary {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1;
+    }
+
+    .about__personal-text {
+      font-size: 17px;
+    }
+
+    .about__cv-heading {
+      font-size: 24px;
+    }
+
+    .about__cv-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .about__cta-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .about__cta--lime {
+      grid-column: span 1;
+      flex-direction: column;
+    }
+
+    .about__social {
+      font-size: 17px;
+    }
+  }
+
+  /* Tablet */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .about {
+      padding: 32px 32px 120px;
+      gap: 48px;
+    }
+
+    .about__hero {
+      font-size: 36px;
+    }
+
+    .about__photo-main {
+      height: 480px;
+    }
+
+    .about__photo-secondary-wrap {
+      width: 320px;
+    }
+
+    .about__photo-secondary {
+      width: 320px;
+      height: 320px;
+    }
+
+    .about__cv-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+
+    .about__personal-text {
+      font-size: 20px;
+    }
   }
 </style>

@@ -222,6 +222,30 @@ body {
   --font-display-transform: uppercase;
 }
 
+/* Action links — span-bg inversion on hover, used in CTAs and callouts */
+.action-link {
+  --action-bg: #12121a;
+  --action-fg: #fff;
+  text-decoration: none;
+  padding: 2px 6px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.action-link:hover {
+  background: var(--action-bg) !important;
+  color: var(--action-fg) !important;
+}
+
+.action-link--on-dark {
+  --action-bg: #fff;
+  --action-fg: #12121a;
+}
+
+.action-link--on-lime {
+  --action-bg: #12121a;
+  --action-fg: #B3FF38;
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
