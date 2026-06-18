@@ -234,6 +234,21 @@ const resolvedImage = image && !image.startsWith('/') && !image.startsWith('http
     font-weight: 600;
   }
 
+  .detail__content :global(ul),
+  .detail__content :global(ol) {
+    padding-left: 16px;
+    margin: 24px 0;
+    list-style-position: outside;
+  }
+
+  .detail__content :global(li) {
+    margin-bottom: 8px;
+  }
+
+  .detail__content :global(li)::marker {
+    font-size: 0.8em;
+  }
+
   .detail__content :global(table) {
     width: 100%;
     table-layout: fixed;

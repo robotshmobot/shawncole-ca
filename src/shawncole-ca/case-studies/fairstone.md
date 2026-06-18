@@ -70,7 +70,7 @@ Most consultants would have run change through the management layer. I ran it th
 - Push harder for tech capability earlier. The only lever against eight-week approval cycles is starting more capability tracks in parallel sooner, which only works if the resources are there.
 - Spend more time sitting with agents one-on-one during onboarding. The agents I spent the most time with had the highest adoption and the most durable trust in the tools. I underweighted that as a resource-allocation question.
 
-## What this engagement is now part of how I work
+## This engagement reinforced how I work
 
 The more the world focuses on AI capability, the harder I focus on the people using it. *Adoption is ROI.* If the work isn't used, there's no ROI; if there's no ROI, the strategic initiative is a cost centre with an executive sponsor. KPIs, investment cases, and roadmaps are all downstream of whether the people doing the work choose to use what was built for them.
 
