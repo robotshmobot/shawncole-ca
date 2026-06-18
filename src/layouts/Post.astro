@@ -234,6 +234,46 @@ const resolvedImage = image && !image.startsWith('/') && !image.startsWith('http
     font-weight: 600;
   }
 
+  .detail__content :global(table) {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin: 32px 0;
+  }
+
+  .detail__content :global(th),
+  .detail__content :global(td) {
+    border: 1px solid var(--color-dark);
+    padding: 16px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .detail__content :global(th) {
+    border-bottom: none;
+  }
+
+  .detail__content :global(td) {
+    border-top: none;
+  }
+
+  .detail__content :global(th) {
+    font-family: 'Geist Mono', monospace;
+    font-size: 64px;
+    font-weight: 400;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--color-dark);
+  }
+
+  .detail__content :global(td) {
+    font-family: 'Geist', var(--font-body);
+    font-size: 12px;
+    line-height: 1.35;
+    color: var(--color-dark);
+    opacity: 0.5;
+  }
+
   .detail__footer {
     max-width: 720px;
     margin: 0 auto;
@@ -300,6 +340,15 @@ const resolvedImage = image && !image.startsWith('/') && !image.startsWith('http
     .detail__content :global(img) {
       width: calc(100% + 32px);
       margin-left: -16px;
+    }
+
+    .detail__content :global(th) {
+      font-size: 32px;
+      padding: 12px;
+    }
+
+    .detail__content :global(td) {
+      padding: 12px;
     }
 
     .detail__footer {
