@@ -1,0 +1,1225 @@
+<div id="sf-app">
+<style>
+/* ── Reset & Variables ─────────────────────────────── */
+#sf-app { --bg:#12121A; --fg:#eeeeee; --accent:#ffb937; --danger:#fb4134; --muted:#666;
+  --sec-bg:#eeeeee; --sec-text:#12121a; --sec-border:#d0d0d0; --dial-fill:#1a1a1a;
+  --dial-line:#fff; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  position:fixed; inset:0; overflow:hidden; background:var(--bg); color:var(--fg);
+  display:flex; align-items:center; justify-content:center; }
+#sf-app *,#sf-app *::before,#sf-app *::after { box-sizing:border-box; margin:0; }
+
+/* ── Background layers ─────────────────────────────── */
+#sf-bg { position:absolute; inset:0; z-index:0; pointer-events:none; }
+#sf-noise { position:absolute; inset:0; z-index:1; pointer-events:none; opacity:1; }
+
+/* ── Layout ────────────────────────────────────────── */
+#sf-root { position:relative; z-index:2; display:flex; flex-direction:column;
+  width:100%; max-width:1400px; height:100%; max-height:800px; }
+#sf-header { display:flex; justify-content:space-between; align-items:flex-end; padding:8px 20px 12px; flex-shrink:0; }
+#sf-header-left .sf-title { font-size:18px; font-weight:700; line-height:1.4; }
+#sf-header-right { display:flex; align-items:center; gap:8px; }
+#sf-subtitle { font-size:11px; color:rgba(238,238,238,0.7); }
+#sf-main { display:flex; flex:1; min-height:0; padding:0 20px 20px; gap:20px; }
+
+/* ── Canvas area ───────────────────────────────────── */
+#sf-canvas-container { flex:1; min-width:0; min-height:0; position:relative; border-radius:4px; overflow:hidden; }
+#sf-canvas { display:block; width:100%; height:100%; }
+.sf-freq-label { position:absolute; left:4px; font-size:10px; color:var(--muted); z-index:3; pointer-events:none; }
+.sf-freq-top { top:4px; }
+.sf-freq-bot { bottom:4px; }
+
+/* ── Transport ─────────────────────────────────────── */
+#sf-transport { display:flex; align-items:center; gap:12px; padding:8px 20px 0; flex-shrink:0; }
+#sf-transport button, #sf-transport label { cursor:pointer; border:none; background:none; color:var(--fg); padding:0; }
+#sf-transport .sf-play-btn { display:flex; align-items:center; gap:6px; background:var(--accent);
+  color:var(--bg); border-radius:4px; padding:2px 4px; height:24px; font-size:12px; font-weight:600; }
+#sf-transport .sf-wave-btn { display:flex; align-items:center; justify-content:center; padding:2px 4px;
+  height:24px; border-radius:4px; transition:background .15s, border-color .15s; border:1px solid transparent; }
+#sf-transport .sf-wave-btn.active { background:var(--accent); border-color:var(--accent); }
+.sf-load-label { font-size:12px; border:1px solid #3a3a3a; border-radius:4px; padding:4px 8px;
+  color:var(--muted); transition:color .15s, border-color .15s; }
+.sf-load-label:hover { color:var(--fg); border-color:var(--fg); }
+.sf-file-chip { display:flex; align-items:center; gap:6px; font-size:12px; border:1px solid #3a3a3a;
+  border-radius:4px; padding:4px 8px; color:var(--fg); }
+.sf-file-chip button { color:var(--muted); font-size:14px; padding:0; border:none; background:none; cursor:pointer; }
+
+/* ── Control panel ─────────────────────────────────── */
+#sf-panel { width:224px; flex-shrink:0; display:flex; flex-direction:column; gap:8px; }
+
+/* ── Section boxes ─────────────────────────────────── */
+.sf-section { background:var(--sec-bg); border:1px solid var(--sec-border); border-radius:6px; padding:15px;
+  flex:1; display:flex; flex-direction:column; justify-content:space-between; }
+.sf-section-header { display:flex; justify-content:space-between; align-items:center; height:28px; }
+.sf-section-title { font-size:16px; font-weight:700; color:var(--sec-text); }
+.sf-section-header-right { display:flex; align-items:center; gap:4px; }
+#sf-fabric { flex:2.5; }
+#sf-fabric-content { flex:1; display:flex; flex-direction:column; justify-content:space-between; padding-top:8px; }
+
+/* ── Dial ──────────────────────────────────────────── */
+.sf-dial-wrap { display:flex; flex-direction:column; align-items:center; gap:2px; cursor:ns-resize; user-select:none; }
+.sf-dial-label { font-size:10px; color:var(--sec-text); text-align:center; line-height:14px; }
+.sf-dial-row { display:flex; justify-content:center; gap:12px; }
+
+/* ── Direction buttons ─────────────────────────────── */
+.sf-dir-btn { width:26px; height:20px; border-radius:3px; display:flex; align-items:center;
+  justify-content:center; cursor:pointer; border:none; padding:0; background:transparent; transition:background .15s; }
+.sf-dir-btn.active { background:var(--sec-text); }
+.sf-dir-btn.active svg path { stroke:var(--sec-bg); }
+
+/* ── Toggle switch ─────────────────────────────────── */
+.sf-toggle-group { display:flex; align-items:center; gap:10px; }
+.sf-toggle-item { display:flex; align-items:center; gap:2px; }
+.sf-toggle-label { font-size:10px; color:var(--sec-text); }
+.sf-toggle { width:32px; height:16px; border-radius:3px; cursor:pointer; position:relative; padding:1px; }
+.sf-toggle-track { width:100%; height:100%; border-radius:3px; position:relative; background:#d0d0d0; transition:background .15s; }
+.sf-toggle-thumb { width:14px; height:14px; border-radius:3px; background:var(--sec-bg);
+  border:1px solid var(--sec-text); position:absolute; top:0; left:1px; transition:left .15s; }
+
+/* ── Seed display ──────────────────────────────────── */
+.sf-seed-item { display:flex; align-items:center; gap:2px; }
+.sf-seed-label { font-size:10px; color:var(--sec-text); }
+.sf-seed-display { width:36px; height:18px; background:var(--sec-text); color:var(--sec-bg);
+  border-radius:3px; font-size:11px; display:flex; align-items:center; justify-content:center;
+  cursor:ns-resize; user-select:none; }
+
+/* ── XY Pad ────────────────────────────────────────── */
+.sf-xypad { position:relative; border-radius:4px; border:1px solid var(--sec-border);
+  background:rgba(18,18,26,0.1); cursor:crosshair; overflow:hidden; }
+.sf-xypad-line { position:absolute; background:rgba(18,18,26,0.24); }
+.sf-xypad-line-h { left:0; right:0; height:1px; top:50%; }
+.sf-xypad-line-v { top:0; bottom:0; width:1px; left:50%; }
+.sf-xypad-dot { position:absolute; width:10px; height:10px; border-radius:50%;
+  background:var(--sec-text); transform:translate(-50%,-50%); pointer-events:none; }
+.sf-xypad-label { font-size:10px; color:var(--sec-text); text-align:center; margin-top:4px; }
+.sf-xypad-wrap { display:flex; flex-direction:column; align-items:center; }
+
+/* ── Dice ──────────────────────────────────────────── */
+.sf-dice { width:20px; height:20px; cursor:pointer; transition:transform .15s; }
+.sf-dice:hover { transform:scale(1.1); }
+</style>
+
+<!-- Background layers (fill full viewport) -->
+<div id="sf-bg"></div>
+<div id="sf-noise"></div>
+
+<div id="sf-root">
+  <!-- Header -->
+  <div id="sf-header">
+    <div id="sf-header-left">
+      <div class="sf-title">superfabric</div>
+      <div class="sf-title">sf-01</div>
+    </div>
+    <div id="sf-header-right">
+      <span id="sf-subtitle">generative fabric spectral filter</span>
+      <div id="sf-dice-container"></div>
+    </div>
+  </div>
+
+  <!-- Main area -->
+  <div id="sf-main">
+    <!-- Canvas -->
+    <div id="sf-canvas-container">
+      <span class="sf-freq-label sf-freq-top">20kHz</span>
+      <canvas id="sf-canvas"></canvas>
+      <span class="sf-freq-label sf-freq-bot">20Hz</span>
+    </div>
+
+    <!-- Control panel -->
+    <div id="sf-panel">
+
+      <!-- Run section -->
+      <div class="sf-section" id="sf-run" data-section="run">
+        <div class="sf-section-header">
+          <span class="sf-section-title">run</span>
+          <div class="sf-section-header-right" id="sf-run-hdr"></div>
+        </div>
+        <div class="sf-dial-row" id="sf-run-dials"></div>
+      </div>
+
+      <!-- Filter section -->
+      <div class="sf-section" id="sf-filter" data-section="filter">
+        <div class="sf-section-header">
+          <span class="sf-section-title">filter</span>
+          <div class="sf-section-header-right" id="sf-filter-hdr"></div>
+        </div>
+        <div class="sf-dial-row" id="sf-filter-dials"></div>
+      </div>
+
+      <!-- Fabric section -->
+      <div class="sf-section" id="sf-fabric" data-section="fabric">
+        <div class="sf-section-header">
+          <span class="sf-section-title">fabric</span>
+          <div class="sf-section-header-right" id="sf-fabric-hdr"></div>
+        </div>
+        <div id="sf-fabric-content">
+          <div id="sf-fabric-pad"></div>
+          <div class="sf-dial-row" id="sf-fabric-row1"></div>
+          <div class="sf-dial-row" id="sf-fabric-row2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="sf-transport"></div>
+</div>
+
+<script>
+(function() {
+'use strict';
+
+// ─── Section 1: CONSTANTS & THEME ─────────────────────────────
+var NUM_BANDS = 64, GRID_COLS = 512, GRID_ROWS = 64;
+var MIN_HZ = 20, MAX_HZ = 20000;
+var MASK_W = 1024, MASK_H = 682, MASK_PAD = 20;
+var DANGER = '#fb4134', ACCENT = '#ffb937', SEC_TEXT = '#12121a';
+var MIN_ANGLE = 210, MAX_ANGLE = -30, SWEEP = 240;
+
+// ─── Section 2: STATE ─────────────────────────────────────────
+var state = {
+  isPlaying: false, direction: 'pingpong',
+  waveform: 'sine', audioFile: null, audioFileName: '',
+  density: 144, shiftX: 0, shiftY: 0, turbulence: 0.13,
+  edge: 0.44, pinch: 0.08, dotSize: 0.26, diversity: 0.06, seed: 137,
+  runMultiplier: 120, runSize: 0.5, runBand: 0.25,
+  filterWetDry: -0.5, filterEnvelope: 0.25, filterSpread: 0.55,
+  saturation: false, resonance: false,
+  dots: [], processedGrid: null, playheadPos: 0, columnIndex: 0,
+  smoothedSpectrum: new Float32Array(8)
+};
+
+var regenTimer = null;
+var audioCtx = null, sourceNode = null, outputGain = null, analyserNode = null;
+var waveShaperNode = null, filters = [], gainNodes = [], panners = [];
+var graphBuilt = false, audioStarted = false;
+var rawAudioBuf = null, decodedBuf = null;
+var rafId = 0, playStartTime = 0, pausedElapsed = 0;
+var randomTarget = 0, lastCycleBoundary = -1;
+var baseQ = 1;
+
+// ─── Section 3: NOISE & DOT FABRIC ───────────────────────────
+
+function ihash(ix, iy, seed) {
+  var n = (ix * 374761393 + iy * 668265263 + (seed * 999983 | 0)) | 0;
+  n = Math.imul(n ^ (n >>> 15), 2246822519) | 0;
+  n = Math.imul(n ^ (n >>> 13), 3266489917) | 0;
+  n ^= n >>> 16;
+  return (n >>> 0) / 4294967296;
+}
+
+function noise2d(x, y, seed) {
+  var ix = Math.floor(x), iy = Math.floor(y);
+  var fx = x - ix, fy = y - iy;
+  var u = fx * fx * (3 - 2 * fx), v = fy * fy * (3 - 2 * fy);
+  var T = 2 * Math.PI;
+  var a00 = ihash(ix, iy, seed) * T, a10 = ihash(ix+1, iy, seed) * T;
+  var a01 = ihash(ix, iy+1, seed) * T, a11 = ihash(ix+1, iy+1, seed) * T;
+  var d00 = Math.cos(a00)*fx + Math.sin(a00)*fy;
+  var d10 = Math.cos(a10)*(fx-1) + Math.sin(a10)*fy;
+  var d01 = Math.cos(a01)*fx + Math.sin(a01)*(fy-1);
+  var d11 = Math.cos(a11)*(fx-1) + Math.sin(a11)*(fy-1);
+  var x0 = d00 + u*(d10-d00), x1 = d01 + u*(d11-d01);
+  return x0 + v*(x1-x0);
+}
+
+function fbm(x, y, seed, octaves) {
+  var value = 0, amp = 1, freq = 1, ampSum = 0;
+  for (var i = 0; i < octaves; i++) {
+    value += amp * noise2d(x*freq, y*freq, seed+i);
+    ampSum += amp; amp *= 0.5; freq *= 2.1;
+  }
+  return value / ampSum;
+}
+
+function buildParams(c) {
+  return {
+    cols: c.density, rows: c.density, hexOffset: 0.5,
+    shiftX: c.shiftX, shiftY: c.shiftY,
+    turbStrength: c.turbulence * 0.4,
+    turbScale: 0.5 + Math.log1p(c.turbulence * 9) * 2.5,
+    turbOctaves: 3, turbPasses: 2, turbFeedback: 0.5,
+    edge: c.edge, pinch: c.pinch, dotSize: c.dotSize,
+    diversity: c.diversity, seed: c.seed
+  };
+}
+
+function warpPoint(nx, ny, p) {
+  var wx = nx, wy = ny;
+  var feedbackMul = 1.0;
+  for (var pass = 0; pass < p.turbPasses; pass++) {
+    var dx = fbm(wx*p.turbScale, wy*p.turbScale, p.seed+200+pass*31, p.turbOctaves) * p.turbStrength * feedbackMul;
+    var dy = fbm(wx*p.turbScale, wy*p.turbScale, p.seed+400+pass*31, p.turbOctaves) * p.turbStrength * feedbackMul;
+    wx += dx; wy += dy; feedbackMul *= p.turbFeedback;
+  }
+  if (p.shiftX !== 0 && wx > 0 && wx < 1) {
+    var sx = Math.sign(p.shiftX) * Math.pow(Math.abs(p.shiftX), 3);
+    wx = Math.pow(wx, Math.pow(5, -sx));
+  }
+  if (p.shiftY !== 0 && wy > 0 && wy < 1) {
+    var sy = Math.sign(p.shiftY) * Math.pow(Math.abs(p.shiftY), 3);
+    wy = Math.pow(wy, Math.pow(5, -sy));
+  }
+  var cx = wx - 0.5, cy = wy - 0.5;
+  var dist = Math.sqrt(cx*cx + cy*cy);
+  if (dist > 0.0001) {
+    var netForce = (p.edge - p.pinch) * 0.8;
+    var angle = Math.atan2(cy, cx);
+    var nd = dist * (1 + netForce);
+    wx = 0.5 + Math.cos(angle)*nd;
+    wy = 0.5 + Math.sin(angle)*nd;
+  }
+  return [wx, wy];
+}
+
+function generateDots(params, w, h) {
+  var p = params, dots = [];
+  var cellW = w / p.cols, cellH = h / p.rows, cellSize = Math.min(cellW, cellH);
+  var margin = 4;
+  for (var row = -margin; row < p.rows + margin; row++) {
+    for (var col = -margin; col < p.cols + margin; col++) {
+      var nx = (col + (row % 2) * p.hexOffset) / p.cols;
+      var ny = row / p.rows;
+      var wp = warpPoint(nx, ny, p);
+      var baseR = cellSize * p.dotSize * 0.5;
+      var divAmt = p.diversity * (1 + p.dotSize);
+      var sizeFactor = Math.max(0.1, 1 + fbm(nx*6, ny*6, p.seed+401, 2) * divAmt);
+      var r = Math.max(0.5, baseR * sizeFactor);
+      var x = wp[0] * w, y = wp[1] * h;
+      if (x+r < 0 || x-r > w || y+r < 0 || y-r > h) continue;
+      dots.push({ x: x, y: y, r: r });
+    }
+  }
+  return dots;
+}
+
+function renderMaskCanvas(dots, w, h) {
+  var canvas = document.createElement('canvas');
+  canvas.width = w + MASK_PAD*2;
+  canvas.height = h + MASK_PAD*2;
+  var ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#ffffff';
+  for (var i = 0; i < dots.length; i++) {
+    var d = dots[i];
+    ctx.beginPath();
+    ctx.arc(d.x + MASK_PAD, d.y + MASK_PAD, Math.max(0.1, d.r), 0, Math.PI*2);
+    ctx.fill();
+  }
+  return canvas;
+}
+
+function extractGrid(maskCanvas) {
+  var srcW = maskCanvas.width - MASK_PAD*2, srcH = maskCanvas.height - MASK_PAD*2;
+  var tmp = document.createElement('canvas');
+  tmp.width = GRID_COLS; tmp.height = GRID_ROWS;
+  var ctx = tmp.getContext('2d');
+  ctx.drawImage(maskCanvas, MASK_PAD, MASK_PAD, srcW, srcH, 0, 0, GRID_COLS, GRID_ROWS);
+  var data = ctx.getImageData(0, 0, GRID_COLS, GRID_ROWS).data;
+  var grid = [];
+  for (var y = 0; y < GRID_ROWS; y++) {
+    var row = new Float32Array(GRID_COLS);
+    for (var x = 0; x < GRID_COLS; x++) {
+      row[x] = data[(y * GRID_COLS + x) * 4] / 255;
+    }
+    grid.push(row);
+  }
+  return grid;
+}
+
+function regenerateFabric() {
+  var controls = {
+    density: state.density, shiftX: state.shiftX, shiftY: state.shiftY,
+    turbulence: state.turbulence, edge: state.edge, pinch: state.pinch,
+    dotSize: state.dotSize, diversity: state.diversity, seed: state.seed
+  };
+  var params = buildParams(controls);
+  state.dots = generateDots(params, MASK_W, MASK_H);
+  var mask = renderMaskCanvas(state.dots, MASK_W, MASK_H);
+  state.processedGrid = extractGrid(mask);
+  if (!state.isPlaying) paintCanvas();
+}
+
+function scheduleFabricRegen() {
+  if (regenTimer) clearTimeout(regenTimer);
+  regenTimer = setTimeout(regenerateFabric, 100);
+}
+
+// ─── Section 4: AUDIO WAVEFORM GENERATOR ──────────────────────
+
+var CHORD_FREQS = [65.41, 164.81, 196.0, 493.88];
+var VOICE_AMP = 0.15;
+
+function sineWave(phase) { return Math.sin(phase); }
+function sawWave(phase) { var t = ((phase % (2*Math.PI)) + 2*Math.PI) % (2*Math.PI); return t/Math.PI - 1; }
+function squareWave(phase) { return Math.sin(phase) >= 0 ? 1 : -1; }
+
+var waveFns = { sine: sineWave, saw: sawWave, square: squareWave };
+
+function generateChordAudio(waveform) {
+  var sr = 44100, dur = 10, len = sr * dur;
+  var buf = new ArrayBuffer(44 + len * 2);
+  var v = new DataView(buf);
+  function ws(off, s) { for (var i=0;i<s.length;i++) v.setUint8(off+i, s.charCodeAt(i)); }
+  ws(0,'RIFF'); v.setUint32(4,36+len*2,true); ws(8,'WAVE'); ws(12,'fmt ');
+  v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,1,true);
+  v.setUint32(24,sr,true); v.setUint32(28,sr*2,true); v.setUint16(32,2,true);
+  v.setUint16(34,16,true); ws(36,'data'); v.setUint32(40,len*2,true);
+  var fn = waveFns[waveform], off = 44;
+  for (var i = 0; i < len; i++) {
+    var t = i / sr, s = 0;
+    for (var j = 0; j < CHORD_FREQS.length; j++) s += fn(2*Math.PI*CHORD_FREQS[j]*t) * VOICE_AMP;
+    v.setInt16(off + i*2, s * 32767, true);
+  }
+  return new Blob([buf], { type: 'audio/wav' });
+}
+
+// ─── Section 5: AUDIO ENGINE ──────────────────────────────────
+
+function initAudioCtx() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  return audioCtx;
+}
+
+function logFreq(i) { return MAX_HZ * Math.pow(MIN_HZ / MAX_HZ, i / (NUM_BANDS - 1)); }
+
+function buildSatCurve(drive) {
+  var n = 8192, curve = new Float32Array(n);
+  var inv = 1 / Math.tanh(drive);
+  for (var i = 0; i < n; i++) {
+    var x = (2*i/(n-1)) - 1;
+    curve[i] = Math.tanh(x * drive) * inv;
+  }
+  return curve;
+}
+
+function buildGraph() {
+  if (graphBuilt) return;
+  var ctx = audioCtx;
+  var r = Math.pow(MAX_HZ / MIN_HZ, 1 / (NUM_BANDS - 1));
+  baseQ = Math.sqrt(r) / (r - 1);
+
+  outputGain = ctx.createGain();
+  analyserNode = ctx.createAnalyser();
+  analyserNode.fftSize = 256;
+  analyserNode.smoothingTimeConstant = 0.85;
+  waveShaperNode = ctx.createWaveShaper();
+  waveShaperNode.oversample = '2x';
+
+  filters = []; gainNodes = []; panners = [];
+  for (var i = 0; i < NUM_BANDS; i++) {
+    var bpf = ctx.createBiquadFilter();
+    bpf.type = 'bandpass';
+    bpf.frequency.value = logFreq(i);
+    bpf.Q.value = baseQ;
+    var gain = ctx.createGain();
+    gain.gain.value = 1.0;
+    var panner = ctx.createStereoPanner();
+    panner.pan.value = i % 2 === 0 ? state.filterSpread : -state.filterSpread;
+    bpf.connect(gain); gain.connect(panner); panner.connect(outputGain);
+    filters.push(bpf); gainNodes.push(gain); panners.push(panner);
+  }
+
+  outputGain.connect(analyserNode);
+  analyserNode.connect(waveShaperNode);
+  waveShaperNode.connect(ctx.destination);
+  graphBuilt = true;
+}
+
+function updateSpread() {
+  for (var i = 0; i < panners.length; i++) {
+    panners[i].pan.value = i % 2 === 0 ? state.filterSpread : -state.filterSpread;
+  }
+}
+
+function updateSaturation() {
+  if (!waveShaperNode) return;
+  waveShaperNode.curve = state.saturation ? buildSatCurve(20) : null;
+}
+
+function updateResonance() {
+  if (!filters.length) return;
+  var q = state.resonance ? baseQ * Math.pow(6.4, 1.0) : baseQ;
+  for (var i = 0; i < filters.length; i++) filters[i].Q.value = q;
+}
+
+function updateGains(colIdx) {
+  if (!state.processedGrid || !gainNodes.length || !audioCtx) return;
+  var t = audioCtx.currentTime;
+  var tc = Math.max(0.005, state.filterEnvelope * 0.5);
+  var dryAmt = (state.filterWetDry + 1) / 2;
+  var center = Math.round(((1 - state.runBand) / 2) * (NUM_BANDS - 1));
+  var half = Math.max(0.5, (state.runSize * NUM_BANDS) / 2);
+  var startB = Math.round(center - half), endB = Math.round(center + half);
+  for (var i = 0; i < NUM_BANDS; i++) {
+    if (i < startB || i > endB) {
+      gainNodes[i].gain.setTargetAtTime(0, t, tc);
+    } else {
+      var row = Math.min(i, state.processedGrid.length - 1);
+      var col = Math.min(colIdx, (state.processedGrid[0] || []).length - 1);
+      var brightness = state.processedGrid[row][col];
+      var g = brightness + (1 - brightness) * dryAmt;
+      gainNodes[i].gain.setTargetAtTime(g, t, tc);
+    }
+  }
+}
+
+async function loadAudioBuffer() {
+  var blob;
+  if (state.audioFile) {
+    blob = state.audioFile;
+  } else {
+    blob = generateChordAudio(state.waveform);
+  }
+  rawAudioBuf = await blob.arrayBuffer();
+  decodedBuf = null;
+}
+
+async function startAudio() {
+  var ctx = initAudioCtx();
+  if (ctx.state === 'suspended') await ctx.resume();
+  if (!rawAudioBuf) await loadAudioBuffer();
+  if (!decodedBuf) {
+    decodedBuf = await ctx.decodeAudioData(rawAudioBuf.slice(0));
+  }
+  buildGraph();
+  if (sourceNode) { try { sourceNode.stop(); } catch(e){} sourceNode.disconnect(); }
+  sourceNode = ctx.createBufferSource();
+  sourceNode.buffer = decodedBuf;
+  sourceNode.loop = true;
+  for (var i = 0; i < filters.length; i++) sourceNode.connect(filters[i]);
+  sourceNode.start(0);
+  audioStarted = true;
+}
+
+function stopAudio() {
+  if (sourceNode) { try { sourceNode.stop(); } catch(e){} sourceNode.disconnect(); sourceNode = null; }
+}
+
+async function restartAudioSource() {
+  rawAudioBuf = null; decodedBuf = null;
+  if (audioStarted) { stopAudio(); audioStarted = false; }
+  if (state.isPlaying) {
+    await loadAudioBuffer();
+    await startAudio();
+  }
+}
+
+// ─── Section 6: PLAYHEAD ──────────────────────────────────────
+
+function startPlayhead() {
+  var ctx = audioCtx;
+  if (!ctx) return;
+  playStartTime = ctx.currentTime - pausedElapsed;
+  tick();
+}
+
+function stopPlayhead() {
+  cancelAnimationFrame(rafId);
+  if (audioCtx) pausedElapsed = audioCtx.currentTime - playStartTime;
+}
+
+function resetPlayhead() {
+  cancelAnimationFrame(rafId);
+  playStartTime = 0; pausedElapsed = 0;
+  state.playheadPos = 0; state.columnIndex = 0;
+  lastCycleBoundary = -1;
+}
+
+function tick() {
+  if (!state.isPlaying || !audioCtx) return;
+  var cycleDur = (60 / state.runMultiplier) * 4;
+  var elapsed = audioCtx.currentTime - playStartTime;
+  var pos;
+
+  if (state.direction === 'pingpong') {
+    var full = cycleDur * 2;
+    var ce = elapsed % full;
+    pos = ce < cycleDur ? ce / cycleDur : 1 - (ce - cycleDur) / cycleDur;
+  } else if (state.direction === 'reverse') {
+    pos = 1 - (elapsed % cycleDur) / cycleDur;
+  } else if (state.direction === 'random') {
+    var curCycle = Math.floor(elapsed / cycleDur);
+    if (curCycle !== lastCycleBoundary) {
+      lastCycleBoundary = curCycle;
+      randomTarget = Math.random();
+    }
+    pos = randomTarget;
+  } else {
+    pos = (elapsed % cycleDur) / cycleDur;
+  }
+
+  state.playheadPos = pos;
+  state.columnIndex = Math.min(Math.floor(pos * GRID_COLS), GRID_COLS - 1);
+  updateGains(state.columnIndex);
+  paintCanvas();
+  updateGradient();
+  rafId = requestAnimationFrame(tick);
+}
+
+// ─── Section 7: CANVAS RENDERER ──────────────────────────────
+
+var canvasEl, canvasCtx, canvasContainer;
+
+function initCanvas() {
+  canvasEl = document.getElementById('sf-canvas');
+  canvasContainer = document.getElementById('sf-canvas-container');
+  canvasCtx = canvasEl.getContext('2d');
+  var ro = new ResizeObserver(function(entries) {
+    var r = entries[0].contentRect;
+    if (r.width > 0 && r.height > 0) resizeCanvas(r.width, r.height);
+  });
+  ro.observe(canvasContainer);
+}
+
+function resizeCanvas(w, h) {
+  var dpr = window.devicePixelRatio || 1;
+  canvasEl.width = w * dpr;
+  canvasEl.height = h * dpr;
+  canvasEl.style.width = w + 'px';
+  canvasEl.style.height = h + 'px';
+  canvasCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  paintCanvas();
+}
+
+function paintCanvas() {
+  if (!canvasCtx) return;
+  var w = canvasEl.clientWidth, h = canvasEl.clientHeight;
+  if (w === 0 || h === 0) return;
+  var ctx = canvasCtx;
+  ctx.clearRect(0, 0, w, h);
+
+  var dots = state.dots;
+  if (!dots.length) return;
+
+  var scaleX = w / MASK_W, scaleY = h / MASK_H;
+  var minScale = Math.min(scaleX, scaleY);
+  var phRefX = state.playheadPos * MASK_W;
+
+  // Active band range
+  var center = Math.round(((1 - state.runBand) / 2) * (NUM_BANDS - 1));
+  var half = Math.max(0.5, (state.runSize * NUM_BANDS) / 2);
+  var bandStart = Math.max(0, Math.round(center - half));
+  var bandEnd = Math.min(NUM_BANDS - 1, Math.round(center + half));
+
+  for (var i = 0; i < dots.length; i++) {
+    var d = dots[i];
+    var cx = d.x * scaleX, cy = d.y * scaleY, r = d.r * minScale;
+    var dotBand = (d.y / MASK_H) * NUM_BANDS;
+    var inBand = dotBand >= bandStart && dotBand <= bandEnd + 1;
+    var dist = Math.abs(d.x - phRefX);
+    var overlaps = dist < (d.r * 1.5 + 8);
+
+    if (state.isPlaying && overlaps && inBand) {
+      // Active: danger red with 3-layer glow
+      ctx.fillStyle = 'rgba(251,65,52,0.06)';
+      ctx.beginPath(); ctx.arc(cx, cy, r*3, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = 'rgba(251,65,52,0.12)';
+      ctx.beginPath(); ctx.arc(cx, cy, r*2.2, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = 'rgba(251,65,52,0.25)';
+      ctx.beginPath(); ctx.arc(cx, cy, r*1.5, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = DANGER;
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.fill();
+    } else {
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.fill();
+    }
+  }
+
+}
+
+// Audio-reactive gradient
+function updateGradient() {
+  var bgEl = document.getElementById('sf-bg');
+  if (!analyserNode || !state.isPlaying) {
+    bgEl.style.background = '';
+    return;
+  }
+  var freqData = new Uint8Array(analyserNode.frequencyBinCount);
+  analyserNode.getByteFrequencyData(freqData);
+  var weights = [0.05, 0.05, 0.08, 0.10, 0.12, 0.15, 0.20, 0.25];
+  var totalEnergy = 0;
+  var binsPerBand = Math.floor(freqData.length / 8);
+  for (var g = 0; g < 8; g++) {
+    var sum = 0;
+    for (var b = g*binsPerBand; b < (g+1)*binsPerBand; b++) sum += freqData[b] / 255;
+    var raw = sum / binsPerBand;
+    state.smoothedSpectrum[g] = Math.max(raw, state.smoothedSpectrum[g] * 0.85);
+    totalEnergy += state.smoothedSpectrum[g] * weights[g];
+  }
+  totalEnergy = Math.min(totalEnergy * 18, 1);
+  var alpha = 0.3 + 0.6 * totalEnergy;
+  var maxR = bgEl.clientWidth * 0.9;
+  var radius = Math.round(maxR * (0.4 + 0.6 * totalEnergy));
+  bgEl.style.background = 'radial-gradient(circle ' + radius + 'px at 50% 110%, ' +
+    'rgba(251,65,52,' + alpha.toFixed(3) + '), ' +
+    'rgba(255,185,55,' + (alpha*0.35).toFixed(3) + ') 50%, transparent)';
+}
+
+// Noise texture
+function generateNoiseTexture() {
+  var size = 256, c = document.createElement('canvas');
+  c.width = size; c.height = size;
+  var ctx = c.getContext('2d');
+  var imgData = ctx.createImageData(size, size);
+  var d = imgData.data;
+  for (var i = 0; i < d.length; i += 4) {
+    var v = Math.floor(Math.random() * 256);
+    d[i] = v; d[i+1] = v; d[i+2] = v; d[i+3] = 18;
+  }
+  ctx.putImageData(imgData, 0, 0);
+  var noiseEl = document.getElementById('sf-noise');
+  noiseEl.style.backgroundImage = 'url(' + c.toDataURL() + ')';
+  noiseEl.style.backgroundRepeat = 'repeat';
+}
+
+// ─── Section 8: UI COMPONENTS ─────────────────────────────────
+
+// — Rotary Dial —
+function createDial(opts) {
+  // opts: { min, max, step, defaultValue, label, value, onChange, id }
+  var size = 56, r = 26, center = 28;
+  var wrap = document.createElement('div');
+  wrap.className = 'sf-dial-wrap';
+  if (opts.id) wrap.setAttribute('data-dial', opts.id);
+
+  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', size); svg.setAttribute('height', size);
+  svg.style.touchAction = 'none'; svg.style.display = 'block';
+  wrap.setAttribute('data-dial-knob', '');
+
+  var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  circle.setAttribute('cx', center); circle.setAttribute('cy', center);
+  circle.setAttribute('r', r); circle.setAttribute('fill', '#1a1a1a');
+  svg.appendChild(circle);
+
+  var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  line.setAttribute('stroke', '#ffffff'); line.setAttribute('stroke-width', '2');
+  line.setAttribute('stroke-linecap', 'round');
+  svg.appendChild(line);
+
+  var label = document.createElement('span');
+  label.className = 'sf-dial-label';
+  label.textContent = opts.label;
+
+  wrap.appendChild(svg);
+  wrap.appendChild(label);
+
+  var currentVal = opts.value;
+  var dragState = null;
+  var sensitivity = (opts.max - opts.min) / 200;
+
+  function updateVisual(val) {
+    currentVal = val;
+    var t = (val - opts.min) / (opts.max - opts.min);
+    var deg = MIN_ANGLE - t * SWEEP;
+    var rad = deg * Math.PI / 180;
+    var iLen = r * 0.35;
+    var x1 = center + Math.cos(rad) * (r - iLen - 2);
+    var y1 = center - Math.sin(rad) * (r - iLen - 2);
+    var x2 = center + Math.cos(rad) * (r - 3);
+    var y2 = center - Math.sin(rad) * (r - 3);
+    line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+    line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+  }
+
+  function snap(v) {
+    var c = Math.max(opts.min, Math.min(opts.max, v));
+    return Math.round((c - opts.min) / opts.step) * opts.step + opts.min;
+  }
+
+  svg.addEventListener('pointerdown', function(e) {
+    e.preventDefault(); e.target.setPointerCapture(e.pointerId);
+    dragState = { startY: e.clientY, startValue: currentVal };
+  });
+  svg.addEventListener('pointermove', function(e) {
+    if (!dragState) return;
+    var dy = dragState.startY - e.clientY;
+    var raw = dragState.startValue + dy * sensitivity;
+    var v = snap(raw);
+    updateVisual(v);
+    if (opts.onChange) opts.onChange(v);
+  });
+  svg.addEventListener('pointerup', function() { dragState = null; });
+  svg.addEventListener('lostpointercapture', function() { dragState = null; });
+  svg.addEventListener('dblclick', function() {
+    updateVisual(opts.defaultValue);
+    if (opts.onChange) opts.onChange(opts.defaultValue);
+  });
+
+  updateVisual(currentVal);
+
+  return { el: wrap, update: function(v) { updateVisual(v); } };
+}
+
+// — XY Pad —
+function createXYPad(opts) {
+  // opts: { width, height, onChangeX, onChangeY }
+  var container = document.createElement('div');
+  container.className = 'sf-xypad';
+  container.style.width = (opts.width || 192) + 'px';
+  container.style.height = (opts.height || 80) + 'px';
+
+  var lineH = document.createElement('div');
+  lineH.className = 'sf-xypad-line sf-xypad-line-h';
+  var lineV = document.createElement('div');
+  lineV.className = 'sf-xypad-line sf-xypad-line-v';
+  var dot = document.createElement('div');
+  dot.className = 'sf-xypad-dot';
+
+  container.appendChild(lineH);
+  container.appendChild(lineV);
+  container.appendChild(dot);
+
+  var labelEl = document.createElement('div');
+  labelEl.className = 'sf-xypad-label';
+  labelEl.textContent = 'shift';
+
+  function updateDot(xVal, yVal) {
+    var px = ((xVal + 1) / 2) * container.clientWidth;
+    var py = ((yVal + 1) / 2) * container.clientHeight;
+    dot.style.left = px + 'px';
+    dot.style.top = py + 'px';
+  }
+
+  function handleMouse(e) {
+    var rect = container.getBoundingClientRect();
+    var nx = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    var ny = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+    var xv = Math.round((nx * 2 - 1) * 100) / 100;
+    var yv = Math.round((ny * 2 - 1) * 100) / 100;
+    updateDot(xv, yv);
+    if (opts.onChange) opts.onChange(xv, yv);
+  }
+
+  container.addEventListener('pointerdown', function(e) {
+    e.preventDefault(); container.setPointerCapture(e.pointerId);
+    handleMouse(e);
+  });
+  container.addEventListener('pointermove', function(e) {
+    if (!container.hasPointerCapture(e.pointerId)) return;
+    handleMouse(e);
+  });
+  container.addEventListener('dblclick', function() {
+    updateDot(0, 0);
+    if (opts.onChange) opts.onChange(0, 0);
+  });
+
+  var wrap = document.createElement('div');
+  wrap.className = 'sf-xypad-wrap';
+  wrap.appendChild(container);
+  wrap.appendChild(labelEl);
+
+  // Defer initial position until element is in DOM (clientWidth=0 before then)
+  requestAnimationFrame(function() { updateDot(state.shiftX, state.shiftY); });
+
+  return { el: wrap, update: function(x, y) { updateDot(x, y); } };
+}
+
+// — Toggle Switch —
+function createToggle(opts) {
+  // opts: { label, value, onChange }
+  var item = document.createElement('div');
+  item.className = 'sf-toggle-item';
+
+  var lbl = document.createElement('span');
+  lbl.className = 'sf-toggle-label';
+  lbl.textContent = opts.label;
+
+  var toggle = document.createElement('div');
+  toggle.className = 'sf-toggle';
+  var track = document.createElement('div');
+  track.className = 'sf-toggle-track';
+  var thumb = document.createElement('div');
+  thumb.className = 'sf-toggle-thumb';
+  track.appendChild(thumb);
+  toggle.appendChild(track);
+
+  item.appendChild(lbl);
+  item.appendChild(toggle);
+
+  var isOn = opts.value || false;
+
+  function updateVisual() {
+    track.style.background = isOn ? DANGER : '#d0d0d0';
+    thumb.style.left = isOn ? '16px' : '1px';
+  }
+
+  toggle.addEventListener('click', function() {
+    isOn = !isOn;
+    updateVisual();
+    if (opts.onChange) opts.onChange(isOn);
+  });
+
+  updateVisual();
+
+  return { el: item, update: function(v) { isOn = v; updateVisual(); } };
+}
+
+// — Seed Display —
+function createSeedDisplay(opts) {
+  // opts: { value, onChange }
+  var item = document.createElement('div');
+  item.className = 'sf-seed-item';
+
+  var lbl = document.createElement('span');
+  lbl.className = 'sf-seed-label';
+  lbl.textContent = 'seed';
+
+  var display = document.createElement('div');
+  display.className = 'sf-seed-display';
+  display.textContent = Math.round(opts.value);
+
+  item.appendChild(lbl);
+  item.appendChild(display);
+
+  var val = opts.value, lastY = 0;
+
+  display.addEventListener('pointerdown', function(e) {
+    e.preventDefault(); display.setPointerCapture(e.pointerId);
+    lastY = e.clientY;
+  });
+  display.addEventListener('pointermove', function(e) {
+    if (!display.hasPointerCapture(e.pointerId)) return;
+    var delta = (lastY - e.clientY) * 0.5;
+    lastY = e.clientY;
+    val = Math.max(1, Math.min(999, Math.round(val + delta)));
+    display.textContent = val;
+    if (opts.onChange) opts.onChange(val);
+  });
+  display.addEventListener('dblclick', function() {
+    val = 137; display.textContent = val;
+    if (opts.onChange) opts.onChange(val);
+  });
+
+  return { el: item, update: function(v) { val = v; display.textContent = Math.round(v); } };
+}
+
+// — Direction Buttons —
+var svgPaths = {
+  sync: '<path d="M8.5 2.5V4.5C8.5 5.60457 7.60457 6.5 6.5 6.5H4.5H2.5C1.39543 6.5 0.5 5.60457 0.5 4.5V2.5C0.5 1.39543 1.39543 0.5 2.5 0.5H3.5M4.5 4.5V2.5C4.5 1.39543 5.39543 0.5 6.5 0.5H8.5H10.5C11.6046 0.5 12.5 1.39543 12.5 2.5V4.5C12.5 5.60457 11.6046 6.5 10.5 6.5H9.5" stroke="currentColor" stroke-width="1" fill="none"/>',
+  forward: '<path d="M0 3.35355H12M9 6.35355L12 3.35355L9 0.353546" stroke="currentColor" stroke-width="1" fill="none"/>',
+  pingpong: '<path d="M0.707031 3.35355H12.707M3.70703 6.35355L0.707031 3.35355L3.70703 0.353546M9.70703 6.35355L12.707 3.35355L9.70703 0.353546" stroke="currentColor" stroke-width="1" fill="none"/>',
+  random: '<path d="M0.5 0V4M2.5 2V5M4.5 1V4M6.5 0V6M8.5 1V4M10.5 2V3M12.5 0V5" stroke="currentColor" stroke-width="1.5" fill="none"/>'
+};
+
+var svgViewBoxes = {
+  sync: '0 0 13 7', forward: '0 0 13 7', pingpong: '0 0 14 7', random: '0 0 13 6'
+};
+
+function createDirButtons(container, onChange) {
+  var dirs = ['sync', 'forward', 'pingpong', 'random'];
+  var btns = [];
+  dirs.forEach(function(dir) {
+    var btn = document.createElement('button');
+    btn.className = 'sf-dir-btn';
+    btn.title = dir;
+    btn.innerHTML = '<svg width="13" height="7" viewBox="' + svgViewBoxes[dir] + '" fill="none" style="color:' + SEC_TEXT + '">' + svgPaths[dir] + '</svg>';
+    btn.addEventListener('click', function() {
+      onChange(dir);
+      updateDirBtns(dir);
+    });
+    container.appendChild(btn);
+    btns.push({ el: btn, dir: dir });
+  });
+
+  function updateDirBtns(active) {
+    btns.forEach(function(b) {
+      b.el.classList.toggle('active', b.dir === active);
+      var svg = b.el.querySelector('svg');
+      if (svg) svg.style.color = b.dir === active ? '#eeeeee' : SEC_TEXT;
+    });
+  }
+  updateDirBtns(state.direction);
+  return { update: updateDirBtns };
+}
+
+// — Transport Controls —
+var waveSvgs = {
+  sine: '<path d="M0.487549 3.44448C0.487549 3.44448 1.15422 0.5 3.48758 0.5C7.15422 0.5 5.82088 6.5 9.66402 6.5C11.8209 6.5 12.4875 3.44448 12.4875 3.44448" stroke="CCC" stroke-width="1.2" fill="none"/>',
+  saw: '<path d="M0.223633 3.80896L6.22363 0.80896V6.80896L12.2236 3.80896" stroke="CCC" stroke-width="1.2" fill="none"/>',
+  square: '<path d="M0.5 6.5V0.5H6.5V6.5H12.5V0.5" stroke="CCC" stroke-width="1.2" fill="none"/>'
+};
+
+function buildTransport(container) {
+  // File upload / filename
+  var fileWrap = document.createElement('div');
+  fileWrap.id = 'sf-file-wrap';
+
+  var fileLabel = document.createElement('label');
+  fileLabel.className = 'sf-load-label';
+  fileLabel.textContent = 'load audio';
+  var fileInput = document.createElement('input');
+  fileInput.type = 'file'; fileInput.accept = 'audio/*';
+  fileInput.style.display = 'none';
+  fileLabel.appendChild(fileInput);
+
+  var fileChip = document.createElement('div');
+  fileChip.className = 'sf-file-chip';
+  fileChip.style.display = 'none';
+  var fileName = document.createElement('span');
+  fileName.style.maxWidth = '140px'; fileName.style.overflow = 'hidden';
+  fileName.style.textOverflow = 'ellipsis'; fileName.style.whiteSpace = 'nowrap';
+  var clearBtn = document.createElement('button');
+  clearBtn.textContent = '×';
+  fileChip.appendChild(fileName); fileChip.appendChild(clearBtn);
+
+  fileWrap.appendChild(fileLabel);
+  fileWrap.appendChild(fileChip);
+
+  fileInput.addEventListener('change', function() {
+    var f = fileInput.files[0];
+    if (!f) return;
+    state.audioFile = f; state.audioFileName = f.name;
+    fileName.textContent = f.name;
+    fileLabel.style.display = 'none';
+    fileChip.style.display = 'flex';
+    restartAudioSource();
+  });
+
+  clearBtn.addEventListener('click', function() {
+    state.audioFile = null; state.audioFileName = '';
+    fileLabel.style.display = ''; fileChip.style.display = 'none';
+    fileInput.value = '';
+    if (state.isPlaying) { handlePause(); }
+    stopAudio(); audioStarted = false; resetPlayhead();
+    paintCanvas();
+  });
+
+  // Waveform buttons
+  var waveWrap = document.createElement('div');
+  waveWrap.style.display = 'flex'; waveWrap.style.gap = '4px';
+  var waveTypes = ['sine', 'saw', 'square'];
+  var waveBtns = {};
+  waveTypes.forEach(function(type) {
+    var btn = document.createElement('button');
+    btn.className = 'sf-wave-btn';
+    btn.title = type;
+    var svgStr = waveSvgs[type];
+    var isActive = state.waveform === type && !state.audioFile;
+    var color = isActive ? '#12121a' : '#666666';
+    btn.innerHTML = '<svg width="13" height="8" viewBox="0 0 13 8" fill="none">' +
+      svgStr.replace(/CCC/g, color) + '</svg>';
+    if (isActive) btn.classList.add('active');
+    btn.addEventListener('click', function() {
+      state.waveform = type; state.audioFile = null; state.audioFileName = '';
+      fileLabel.style.display = ''; fileChip.style.display = 'none';
+      updateWaveBtns();
+      restartAudioSource();
+    });
+    waveWrap.appendChild(btn);
+    waveBtns[type] = btn;
+  });
+
+  function updateWaveBtns() {
+    waveTypes.forEach(function(t) {
+      var isActive = state.waveform === t && !state.audioFile;
+      waveBtns[t].classList.toggle('active', isActive);
+      var color = isActive ? '#12121a' : '#666666';
+      waveBtns[t].innerHTML = '<svg width="13" height="8" viewBox="0 0 13 8" fill="none">' +
+        waveSvgs[t].replace(/CCC/g, color) + '</svg>';
+    });
+  }
+
+  // Play/Pause button
+  var playBtn = document.createElement('button');
+  playBtn.className = 'sf-play-btn';
+  playBtn.innerHTML = '<svg width="8" height="10" viewBox="0 0 12 14" fill="currentColor"><path d="M1 1.5v11l10-5.5L1 1.5z"/></svg> Play';
+
+  playBtn.addEventListener('click', function() {
+    if (state.isPlaying) handlePause(); else handlePlay();
+  });
+
+  container.appendChild(fileWrap);
+  container.appendChild(waveWrap);
+  container.appendChild(playBtn);
+
+  return {
+    updatePlayBtn: function() {
+      if (state.isPlaying) {
+        playBtn.innerHTML = '<svg width="7" height="9" viewBox="0 0 10 12" fill="currentColor"><rect x="0" y="0" width="3" height="12" rx="0.5"/><rect x="7" y="0" width="3" height="12" rx="0.5"/></svg> Pause';
+      } else {
+        playBtn.innerHTML = '<svg width="8" height="10" viewBox="0 0 12 14" fill="currentColor"><path d="M1 1.5v11l10-5.5L1 1.5z"/></svg> Play';
+      }
+    }
+  };
+}
+
+// — Dice Button —
+function createDice(container) {
+  var dice = document.createElement('div');
+  dice.className = 'sf-dice';
+  dice.title = 'Randomize all';
+  dice.innerHTML = '<svg width="20" height="20" viewBox="0 0 17 17" fill="none"><rect x="0.5" y="0.5" width="16" height="16" rx="2" fill="' + DANGER + '"/>' +
+    '<circle cx="5.5" cy="5.5" r="1" fill="#12121a"/><circle cx="5.5" cy="11.5" r="1" fill="#12121a"/>' +
+    '<circle cx="11.5" cy="5.5" r="1" fill="#12121a"/><circle cx="11.5" cy="11.5" r="1" fill="#12121a"/>' +
+    '<circle cx="8.5" cy="8.5" r="1" fill="#12121a"/></svg>';
+  dice.addEventListener('click', randomizeAll);
+  container.appendChild(dice);
+}
+
+function randomInRange(min, max, step) {
+  var steps = Math.round((max - min) / step);
+  return min + Math.round(Math.random() * steps) * step;
+}
+
+function randomizeAll() {
+  state.runMultiplier = randomInRange(1, 3200, 1);
+  state.runSize = randomInRange(0, 1, 0.01);
+  state.runBand = randomInRange(-1, 1, 0.01);
+  state.density = randomInRange(20, 200, 1);
+  state.shiftX = randomInRange(-1, 1, 0.01);
+  state.shiftY = randomInRange(-1, 1, 0.01);
+  state.turbulence = randomInRange(0, 1, 0.01);
+  state.edge = randomInRange(0, 1, 0.01);
+  state.pinch = randomInRange(0, 1, 0.01);
+  state.dotSize = randomInRange(0.1, 2, 0.01);
+  state.diversity = randomInRange(0, 1, 0.01);
+  state.filterWetDry = randomInRange(-1, 1, 0.01);
+  state.filterEnvelope = randomInRange(0, 1, 0.01);
+  state.filterSpread = randomInRange(0, 1, 0.01);
+  updateAllDials();
+  scheduleFabricRegen();
+  updateSpread();
+}
+
+// ─── Section 9: LAYOUT & DOM WIRING ──────────────────────────
+
+var allDials = {};
+var xyPadWidget, seedWidget, transportWidget;
+
+async function handlePlay() {
+  await startAudio();
+  state.isPlaying = true;
+  transportWidget.updatePlayBtn();
+  startPlayhead();
+}
+
+function handlePause() {
+  state.isPlaying = false;
+  stopPlayhead();
+  if (audioCtx) audioCtx.suspend();
+  transportWidget.updatePlayBtn();
+  var bgEl = document.getElementById('sf-bg');
+  bgEl.style.background = '';
+}
+
+function updateAllDials() {
+  var map = {
+    'run.multiplier': state.runMultiplier, 'run.size': state.runSize, 'run.band': state.runBand,
+    'filter.wetDry': state.filterWetDry, 'filter.envelope': state.filterEnvelope, 'filter.spread': state.filterSpread,
+    'fabric.dotSize': state.dotSize, 'fabric.density': state.density, 'fabric.diversity': state.diversity,
+    'fabric.turbulence': state.turbulence, 'fabric.edge': state.edge, 'fabric.pinch': state.pinch
+  };
+  for (var k in map) {
+    if (allDials[k]) allDials[k].update(map[k]);
+  }
+  if (xyPadWidget) xyPadWidget.update(state.shiftX, state.shiftY);
+  if (seedWidget) seedWidget.update(state.seed);
+}
+
+function init() {
+  initCanvas();
+  generateNoiseTexture();
+
+  // ── Run section ──
+  var runHdr = document.getElementById('sf-run-hdr');
+  createDirButtons(runHdr, function(dir) {
+    state.direction = dir;
+    lastCycleBoundary = -1;
+  });
+
+  var runDials = document.getElementById('sf-run-dials');
+  allDials['run.multiplier'] = createDial({ min:1, max:3200, step:1, defaultValue:120, label:'multiplier', value:state.runMultiplier, id:'run.multiplier',
+    onChange: function(v) { state.runMultiplier = v; } });
+  allDials['run.size'] = createDial({ min:0, max:1, step:0.01, defaultValue:1, label:'size', value:state.runSize, id:'run.size',
+    onChange: function(v) { state.runSize = v; } });
+  allDials['run.band'] = createDial({ min:-1, max:1, step:0.01, defaultValue:0, label:'band', value:state.runBand, id:'run.band',
+    onChange: function(v) { state.runBand = v; } });
+  runDials.appendChild(allDials['run.multiplier'].el);
+  runDials.appendChild(allDials['run.size'].el);
+  runDials.appendChild(allDials['run.band'].el);
+
+  // ── Filter section ──
+  var filterHdr = document.getElementById('sf-filter-hdr');
+  var toggleGroup = document.createElement('div');
+  toggleGroup.className = 'sf-toggle-group';
+  var satToggle = createToggle({ label: 'sat', value: state.saturation, onChange: function(v) { state.saturation = v; updateSaturation(); } });
+  var resToggle = createToggle({ label: 'res', value: state.resonance, onChange: function(v) { state.resonance = v; updateResonance(); } });
+  toggleGroup.appendChild(satToggle.el);
+  toggleGroup.appendChild(resToggle.el);
+  filterHdr.appendChild(toggleGroup);
+
+  var filterDials = document.getElementById('sf-filter-dials');
+  allDials['filter.wetDry'] = createDial({ min:-1, max:1, step:0.01, defaultValue:0, label:'wet/dry', value:state.filterWetDry, id:'filter.wetDry',
+    onChange: function(v) { state.filterWetDry = v; } });
+  allDials['filter.envelope'] = createDial({ min:0, max:1, step:0.01, defaultValue:0, label:'envelope', value:state.filterEnvelope, id:'filter.envelope',
+    onChange: function(v) { state.filterEnvelope = v; } });
+  allDials['filter.spread'] = createDial({ min:0, max:1, step:0.01, defaultValue:0, label:'spread', value:state.filterSpread, id:'filter.spread',
+    onChange: function(v) { state.filterSpread = v; updateSpread(); } });
+  filterDials.appendChild(allDials['filter.wetDry'].el);
+  filterDials.appendChild(allDials['filter.envelope'].el);
+  filterDials.appendChild(allDials['filter.spread'].el);
+
+  // ── Fabric section ──
+  var fabricHdr = document.getElementById('sf-fabric-hdr');
+  seedWidget = createSeedDisplay({ value: state.seed, onChange: function(v) { state.seed = v; scheduleFabricRegen(); } });
+  fabricHdr.appendChild(seedWidget.el);
+
+  var fabricPad = document.getElementById('sf-fabric-pad');
+  xyPadWidget = createXYPad({ width: 192, height: 80,
+    onChange: function(x, y) { state.shiftX = x; state.shiftY = y; scheduleFabricRegen(); } });
+  fabricPad.appendChild(xyPadWidget.el);
+
+  var row1 = document.getElementById('sf-fabric-row1');
+  allDials['fabric.dotSize'] = createDial({ min:0.1, max:2, step:0.01, defaultValue:0.65, label:'dot size', value:state.dotSize, id:'fabric.dotSize',
+    onChange: function(v) { state.dotSize = v; scheduleFabricRegen(); } });
+  allDials['fabric.diversity'] = createDial({ min:0, max:1, step:0.01, defaultValue:0.3, label:'diversity', value:state.diversity, id:'fabric.diversity',
+    onChange: function(v) { state.diversity = v; scheduleFabricRegen(); } });
+  allDials['fabric.density'] = createDial({ min:20, max:200, step:1, defaultValue:80, label:'density', value:state.density, id:'fabric.density',
+    onChange: function(v) { state.density = v; scheduleFabricRegen(); } });
+  row1.appendChild(allDials['fabric.dotSize'].el);
+  row1.appendChild(allDials['fabric.diversity'].el);
+  row1.appendChild(allDials['fabric.density'].el);
+
+  var row2 = document.getElementById('sf-fabric-row2');
+  allDials['fabric.turbulence'] = createDial({ min:0, max:1, step:0.01, defaultValue:0.3, label:'turbulence', value:state.turbulence, id:'fabric.turbulence',
+    onChange: function(v) { state.turbulence = v; scheduleFabricRegen(); } });
+  allDials['fabric.edge'] = createDial({ min:0, max:1, step:0.01, defaultValue:0, label:'edge', value:state.edge, id:'fabric.edge',
+    onChange: function(v) { state.edge = v; scheduleFabricRegen(); } });
+  allDials['fabric.pinch'] = createDial({ min:0, max:1, step:0.01, defaultValue:0, label:'pinch', value:state.pinch, id:'fabric.pinch',
+    onChange: function(v) { state.pinch = v; scheduleFabricRegen(); } });
+  row2.appendChild(allDials['fabric.turbulence'].el);
+  row2.appendChild(allDials['fabric.edge'].el);
+  row2.appendChild(allDials['fabric.pinch'].el);
+
+  // ── Transport ──
+  transportWidget = buildTransport(document.getElementById('sf-transport'));
+
+  // ── Dice ──
+  createDice(document.getElementById('sf-dice-container'));
+
+  // ── Spacebar ──
+  window.addEventListener('keydown', function(e) {
+    if (e.code === 'Space' && !e.repeat) {
+      var tag = (e.target || {}).tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+      e.preventDefault();
+      if (state.isPlaying) handlePause(); else handlePlay();
+    }
+  });
+
+  // ── Initial fabric generation ──
+  regenerateFabric();
+  paintCanvas();
+}
+
+// Boot
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+</div>

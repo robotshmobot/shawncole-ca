@@ -1,0 +1,87 @@
+---
+import Base from '../../layouts/Base.astro';
+import CardFeed from '../../components/CardFeed.astro';
+---
+
+<Base title="Playground — shawncole.ca">
+  <main class="category">
+    <h1 class="category__title category__title--rotated">Playground</h1>
+    <div class="category__intro">
+      <p class="category__intro-text">I build things from time to time to satisfy an itch, a need, or just because. Here are some less-than-production things you can play with.</p>
+    </div>
+    <div class="category__feed">
+      <CardFeed filter="playground" />
+    </div>
+  </main>
+</Base>
+
+<style>
+  .category {
+    padding: 40px 40px 120px;
+  }
+
+  .category__title {
+    font-family: 'SRC Marker', var(--font-body);
+    font-size: 72px;
+    font-weight: 400;
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--color-dark);
+    margin-bottom: 64px;
+  }
+
+  .category__title--rotated {
+    transform: rotate(-0.5deg);
+  }
+
+  .category__intro {
+    max-width: 960px;
+    margin: 0 auto 64px;
+  }
+
+  .category__intro-text {
+    font-family: 'Geist', var(--font-body);
+    font-size: 24px;
+    line-height: 1.35;
+    color: var(--color-dark);
+  }
+
+  .category__feed {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 1024px) {
+    .category__title {
+      font-size: 64px;
+    }
+
+    .category__feed {
+      max-width: 100%;
+    }
+
+    .category__intro {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .category {
+      padding: 16px 0 120px;
+    }
+
+    .category__title {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .category__intro {
+      margin-bottom: 32px;
+      padding: 0 16px;
+    }
+
+    .category__intro-text {
+      font-size: 17px;
+    }
+  }
+</style>

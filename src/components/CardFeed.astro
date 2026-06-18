@@ -13,6 +13,7 @@ const { filter } = Astro.props;
 const caseStudies = await getCollection('case-studies');
 const futures = await getCollection('futures');
 const ideas = await getCollection('ideas');
+const playgroundItems = await getCollection('playground');
 
 type ContentEntry = {
   id: string;
@@ -28,6 +29,7 @@ type ContentEntry = {
   };
   type: string;
   href: string;
+  target?: string;
 };
 
 const allContent: ContentEntry[] = [
@@ -45,6 +47,16 @@ const allContent: ContentEntry[] = [
     ...entry,
     type: 'idea',
     href: `/ideas/${entry.id}`,
+  })),
+  ...playgroundItems.map((entry) => ({
+    ...entry,
+    data: {
+      ...entry.data,
+      tags: [entry.data.tag],
+    },
+    type: 'playground',
+    href: `/playground/${entry.id}`,
+    target: '_blank',
   })),
 ].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
@@ -68,6 +80,7 @@ const filteredContent = filter
         tags={entry.data.tags}
         fontPairing={getFontPairing(entry.data.fontPairing, entry.id)}
         index={i}
+        target={entry.target}
       />
     ))
   }

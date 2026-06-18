@@ -11,20 +11,24 @@ interface Props {
   tags?: string[];
   index?: number;
   fontPairing?: string;
+  target?: string;
 }
 
-const { title, type, href, slug, image, color, tags, index = 0, fontPairing } = Astro.props;
+const { title, type, href, slug, image, color, tags, index = 0, fontPairing, target } = Astro.props;
 
 const typeColorMap: Record<string, string> = {
   'futures': 'var(--color-cherry)',
   'case study': 'var(--color-lime)',
   'idea': '#ffffff',
+  'playground': 'var(--color-lime)',
 };
 const pillColor = typeColorMap[type] ?? '#ffffff';
 
 const resolvedImage = image && !image.startsWith('/') && !image.startsWith('http') ? `/${image}` : image;
 
-const pillText = [...(tags || []), type].join(' ');
+const pillText = type === 'playground'
+  ? (tags || []).join(' ')
+  : [...(tags || []), type].join(' ');
 ---
 
 <a
@@ -32,6 +36,7 @@ const pillText = [...(tags || []), type].join(' ');
   class:list={['poster-card', fontPairing ? `font-pair-${fontPairing}` : '']}
   data-post={slug}
   style={`--i: ${index}; --pill-color: ${pillColor}; ${color ? `--poster-bg: ${color};` : ''}`}
+  {...(target ? { target, rel: 'noopener' } : {})}
 >
   {resolvedImage && (
     <img src={resolvedImage} alt={title} class="poster-card__image" />

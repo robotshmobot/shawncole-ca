@@ -1,0 +1,26 @@
+---
+import { getCollection, render } from 'astro:content';
+import PlaygroundPost from '../../layouts/PlaygroundPost.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('playground');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<PlaygroundPost
+  title={entry.data.title}
+  designation={entry.data.designation}
+  link={entry.data.link}
+  warning={entry.data.warning}
+>
+  <Fragment slot="overlay">
+    <Content />
+  </Fragment>
+</PlaygroundPost>

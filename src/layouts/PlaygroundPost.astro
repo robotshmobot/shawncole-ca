@@ -1,0 +1,204 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  designation: string;
+  link: string;
+  warning?: string;
+}
+
+const { title, designation, link, warning } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} — shawncole.ca</title>
+  </head>
+  <body class="pg-body">
+    <div class="pg-demo">
+      <iframe src={link} title={title} allowfullscreen></iframe>
+    </div>
+
+    <div class="pg-overlay" data-pg-overlay>
+      <div class="pg-modal">
+        <div class="pg-modal__header">
+          <div class="pg-modal__title">
+            <p>{title}</p>
+            <p>{designation}</p>
+          </div>
+          <button class="pg-modal__close" data-pg-close aria-label="Close overlay">
+            <img src="/img/icon-close.svg" alt="" width="28" height="28" />
+          </button>
+        </div>
+
+        <div class="pg-modal__body">
+          <slot name="overlay" />
+        </div>
+
+        {warning && (
+          <div class="pg-modal__warning">
+            <p>{warning}</p>
+          </div>
+        )}
+      </div>
+    </div>
+
+    <script>
+      const overlay = document.querySelector('[data-pg-overlay]');
+      const closeBtn = document.querySelector('[data-pg-close]');
+
+      closeBtn?.addEventListener('click', () => {
+        overlay?.classList.add('pg-overlay--hidden');
+      });
+
+      overlay?.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+          overlay.classList.add('pg-overlay--hidden');
+        }
+      });
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    max-width: none;
+    padding-left: 0;
+    padding-right: 0;
+  }
+</style>
+
+<style>
+  .pg-body {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .pg-demo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .pg-demo :global(iframe) {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .pg-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(18, 18, 26, 0.66);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: opacity 0.3s ease;
+  }
+
+  .pg-overlay--hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .pg-modal {
+    background: #12121a;
+    border-radius: 16px;
+    padding: 32px;
+    width: 480px;
+    max-width: calc(100vw - 32px);
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .pg-modal__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .pg-modal__title {
+    font-family: 'Geist', var(--font-body);
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #fff;
+  }
+
+  .pg-modal__close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+  }
+
+  .pg-modal__close img {
+    width: 28px;
+    height: 28px;
+    filter: invert(1);
+  }
+
+  .pg-modal__body {
+    font-family: 'Geist', var(--font-body);
+    font-size: 17px;
+    line-height: 1.25;
+    color: #fff;
+  }
+
+  .pg-modal__body :global(p) {
+    margin-bottom: 16px;
+  }
+
+  .pg-modal__body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .pg-modal__warning {
+    background: #FF4949;
+    border-radius: 2px;
+    padding: 16px;
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px;
+    line-height: 1.25;
+    color: #fff;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 640px) {
+    .pg-modal {
+      width: 100%;
+      max-width: 100%;
+      border-radius: 0;
+      min-height: 100vh;
+      max-height: 100vh;
+    }
+
+    .pg-modal__title {
+      font-size: 24px;
+    }
+  }
+</style>

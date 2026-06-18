@@ -1,0 +1,572 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
+
+#df-app *,
+#df-app *::before,
+#df-app *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+#df-app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Space Mono', monospace;
+}
+
+#df-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* ── Panel ─────────────────────────────────────────────────── */
+
+#df-app .df-panel {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 320px;
+  background: #f2eee7;
+  border: 2px solid #000;
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 0 #000;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#df-app .df-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+#df-app .df-title { font-size: 24px; font-weight: 400; text-transform: uppercase; color: #000; line-height: 1.2; }
+#df-app .df-subtitle { font-size: 16px; color: #000; }
+
+#df-app .df-minimize-btn {
+  font-family: inherit;
+  font-size: 10px;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #000;
+  padding: 0;
+  align-self: flex-start;
+  margin-top: 2px;
+  letter-spacing: 0;
+}
+
+#df-app .df-panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Sliders ────────────────────────────────────────────────── */
+
+#df-app .df-ctrl-row {
+  display: flex;
+  align-items: stretch;
+  height: 16px;
+}
+
+#df-app .df-chip {
+  display: flex;
+  align-items: center;
+  background: #000;
+  color: #fff;
+  font-family: inherit;
+  font-size: 10px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+#df-app .df-chip.df-label { width: 64px; padding: 0 2px; }
+#df-app .df-chip.df-value { min-width: 32px; padding: 0 4px; justify-content: flex-end; cursor: pointer; user-select: none; }
+
+#df-app .df-ctrl-track {
+  flex: 1;
+  height: 16px;
+  background: #f2eee7;
+  border: 2px solid #000;
+  position: relative;
+  cursor: pointer;
+}
+
+#df-app .df-ctrl-fill {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  background: #3bcaf5;
+  pointer-events: none;
+}
+
+#df-app .df-ctrl-track input[type="range"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  margin: 0;
+}
+
+#df-app .df-value-input {
+  min-width: 32px;
+  background: #000;
+  color: #fff;
+  font-family: inherit;
+  font-size: 10px;
+  height: 16px;
+  border: none;
+  outline: 1px solid #3bcaf5;
+  text-align: right;
+  padding: 0 4px;
+}
+
+/* ── Shift XY Pad ───────────────────────────────────────────── */
+
+#df-app .df-xy-section {
+  position: relative;
+  width: 288px;
+  height: 128px;
+  background-color: #f2eee7;
+  background-image:
+    linear-gradient(to right, #000 1px, transparent 1px),
+    linear-gradient(to bottom, #000 1px, transparent 1px);
+  background-size: 16px 16px;
+  box-shadow: 0 0 0 1px #000, 1px 1px 0 1px #000;
+  cursor: crosshair;
+  touch-action: none;
+  user-select: none;
+}
+
+#df-app .df-shift-chip { position: absolute; top: 0; left: 0; height: 16px; z-index: 2; }
+
+#df-app .df-xy-dot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #000;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  pointer-events: none;
+}
+
+/* ── Colors ─────────────────────────────────────────────────── */
+
+#df-app .df-colors-section { display: flex; gap: 16px; }
+#df-app .df-color-col { flex: 1; display: flex; flex-direction: column; }
+#df-app .df-color-chip { width: 100% !important; }
+#df-app .df-color-swatch { height: 64px; cursor: pointer; box-shadow: inset 0 0 0 2px #000; }
+
+/* ── Buttons ────────────────────────────────────────────────── */
+
+#df-app .df-btn-section { display: flex; flex-direction: column; gap: 8px; }
+
+#df-app .df-btn-ghost {
+  width: 100%;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 10px;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: #000;
+  text-align: center;
+  padding: 0;
+  height: 16px;
+}
+
+#df-app .df-btn-primary {
+  width: 100%;
+  height: 32px;
+  background: #000;
+  border: 2px solid #000;
+  font-family: inherit;
+  font-size: 10px;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: #fff;
+}
+
+#df-app .df-btn-ghost:hover { opacity: 0.6; }
+#df-app .df-btn-primary:hover { background: #3bcaf5; color: #000; }
+
+/* ── Minimized panel ────────────────────────────────────────── */
+
+#df-app .df-panel.minimized { width: fit-content; gap: 0; padding: 16px; }
+#df-app .df-panel.minimized .df-panel-header { gap: 16px; justify-content: flex-start; align-items: baseline; }
+#df-app .df-panel.minimized .df-minimize-btn { align-self: auto; margin-top: 0; }
+#df-app .df-panel.minimized .df-title { font-size: 10px; }
+#df-app .df-panel.minimized .df-subtitle { display: none; }
+</style>
+
+<div id="df-app">
+  <canvas id="df-canvas"></canvas>
+
+  <div class="df-panel" id="df-panel">
+    <div class="df-panel-header">
+      <div>
+        <div class="df-title">DOT_FABRIC</div>
+        <div class="df-subtitle">gen-02</div>
+      </div>
+      <button class="df-minimize-btn" id="df-minimizeBtn">[MINIMIZE]</button>
+    </div>
+
+    <div class="df-panel-body" id="df-panelBody">
+
+      <div id="df-slidersList"></div>
+
+      <div class="df-xy-section" id="df-shiftPad">
+        <div class="df-chip df-label df-shift-chip">SHIFT</div>
+        <input type="hidden" id="df-shiftX" value="0">
+        <input type="hidden" id="df-shiftY" value="0">
+        <div class="df-xy-dot" id="df-shiftDot"></div>
+      </div>
+
+      <div class="df-colors-section">
+        <div class="df-color-col">
+          <div class="df-chip df-label df-color-chip">FOREGROUND</div>
+          <div class="df-color-swatch" id="df-fgSwatch" style="background:#000000"></div>
+          <div class="df-chip df-value df-color-chip" id="df-fgHex">#000000</div>
+          <input type="color" id="df-dotColor" value="#000000" style="display:none">
+        </div>
+        <div class="df-color-col">
+          <div class="df-chip df-label df-color-chip">BACKGROUND</div>
+          <div class="df-color-swatch" id="df-bgSwatch" style="background:#ffffff"></div>
+          <div class="df-chip df-value df-color-chip" id="df-bgHex">#ffffff</div>
+          <input type="color" id="df-backgroundColor" value="#ffffff" style="display:none">
+        </div>
+      </div>
+
+      <div class="df-btn-section">
+        <button class="df-btn-ghost" id="df-randomize">[RANDOMIZE]</button>
+        <button class="df-btn-primary" id="df-exportSvgBtn">[EXPORT_SVG]</button>
+        <button class="df-btn-ghost" id="df-exportPngBtn">[EXPORT_PNG]</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+
+var dfApp = document.getElementById('df-app');
+
+// ── Math primitives ────────────────────────────────────────────
+
+function ihash(ix, iy, seed) {
+  var n = (ix * 374761393 + iy * 668265263 + (seed * 999983 | 0)) | 0;
+  n = Math.imul(n ^ (n >>> 15), 2246822519) | 0;
+  n = Math.imul(n ^ (n >>> 13), 3266489917) | 0;
+  n ^= n >>> 16;
+  return (n >>> 0) / 4294967296;
+}
+
+function noise2d(x, y, seed) {
+  var ix = Math.floor(x), iy = Math.floor(y);
+  var fx = x - ix, fy = y - iy;
+  var u = fx * fx * (3 - 2 * fx), v = fy * fy * (3 - 2 * fy);
+  var T = 2 * Math.PI;
+  var a00 = ihash(ix,   iy,   seed)*T, a10 = ihash(ix+1, iy,   seed)*T;
+  var a01 = ihash(ix,   iy+1, seed)*T, a11 = ihash(ix+1, iy+1, seed)*T;
+  var d00 = Math.cos(a00)*fx     + Math.sin(a00)*fy;
+  var d10 = Math.cos(a10)*(fx-1) + Math.sin(a10)*fy;
+  var d01 = Math.cos(a01)*fx     + Math.sin(a01)*(fy-1);
+  var d11 = Math.cos(a11)*(fx-1) + Math.sin(a11)*(fy-1);
+  return (d00 + u*(d10-d00)) + v*((d01 + u*(d11-d01)) - (d00 + u*(d10-d00)));
+}
+
+function fbm(x, y, seed, octaves) {
+  var val = 0, amp = 1, freq = 1, ampSum = 0;
+  for (var i = 0; i < octaves; i++) {
+    val += amp * noise2d(x*freq, y*freq, seed+i);
+    ampSum += amp; amp *= 0.5; freq *= 2.1;
+  }
+  return val / ampSum;
+}
+
+// ── Warp pipeline ──────────────────────────────────────────────
+
+function warpPoint(nx, ny, p) {
+  var wx = nx, wy = ny, fm = 1.0;
+  for (var pass = 0; pass < p.turbPasses; pass++) {
+    wx += fbm(wx*p.turbScale, wy*p.turbScale, p.seed+200+pass*31, p.turbOctaves) * p.turbStrength * fm;
+    wy += fbm(wx*p.turbScale, wy*p.turbScale, p.seed+400+pass*31, p.turbOctaves) * p.turbStrength * fm;
+    fm *= p.turbFeedback;
+  }
+  if (p.shiftX !== 0 && wx > 0 && wx < 1)
+    wx = Math.pow(wx, Math.pow(5, -Math.sign(p.shiftX)*Math.pow(Math.abs(p.shiftX),3)));
+  if (p.shiftY !== 0 && wy > 0 && wy < 1)
+    wy = Math.pow(wy, Math.pow(5, -Math.sign(p.shiftY)*Math.pow(Math.abs(p.shiftY),3)));
+  var cx = wx-0.5, cy = wy-0.5, dist = Math.sqrt(cx*cx+cy*cy);
+  if (dist > 0.0001) {
+    var nd = dist * (1 - p.pinch*0.8), ang = Math.atan2(cy, cx);
+    wx = 0.5 + Math.cos(ang)*nd; wy = 0.5 + Math.sin(ang)*nd;
+  }
+  return [wx, wy];
+}
+
+// ── Dot generation ─────────────────────────────────────────────
+
+function generateDots(p, W, H) {
+  var dots = [], cellSize = Math.min(W/p.cols, H/p.rows), mg = 4;
+  for (var row = -mg; row < p.rows+mg; row++) {
+    for (var col = -mg; col < p.cols+mg; col++) {
+      var nx = (col + (row%2)*p.hexOffset) / p.cols, ny = row / p.rows;
+      var w = warpPoint(nx, ny, p);
+      var r = Math.max(0.5, cellSize*p.dotSize*0.5 * Math.max(0.1, 1 + fbm(nx*6,ny*6,p.seed+401,2)*p.diversity*(1+p.dotSize)));
+      var x = w[0]*W, y = w[1]*H;
+      if (x+r<0||x-r>W||y+r<0||y-r>H) continue;
+      dots.push({x:x,y:y,r:r});
+    }
+  }
+  return dots;
+}
+
+function renderToCanvas(p, cvs) {
+  var ctx = cvs.getContext('2d');
+  ctx.fillStyle = p.backgroundColor;
+  ctx.fillRect(0, 0, cvs.width, cvs.height);
+  var dots = generateDots(p, cvs.width, cvs.height);
+  ctx.fillStyle = p.dotColor;
+  for (var i = 0; i < dots.length; i++) {
+    ctx.beginPath();
+    ctx.arc(dots[i].x, dots[i].y, Math.max(0.1, dots[i].r), 0, 2*Math.PI);
+    ctx.fill();
+  }
+}
+
+function exportSVG(p, W, H) {
+  var dots = generateDots(p, W, H);
+  var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+W+' '+H+'">\n';
+  svg += '<rect width="'+W+'" height="'+H+'" fill="'+p.backgroundColor+'"/>\n';
+  for (var i = 0; i < dots.length; i++)
+    svg += '<circle cx="'+dots[i].x.toFixed(2)+'" cy="'+dots[i].y.toFixed(2)+'" r="'+Math.max(0.1,dots[i].r).toFixed(2)+'" fill="'+p.dotColor+'"/>\n';
+  return svg + '</svg>';
+}
+
+// ── Controls ───────────────────────────────────────────────────
+
+var CONTROLS = [
+  { id:'dotSize',    label:'DOT_SIZE',   min:0.1, max:2,   step:0.01, val:0.65 },
+  { id:'density',    label:'DENSITY',    min:20,  max:200, step:1,    val:80,  isInt:true },
+  { id:'hexOffset',  label:'OFFSET',     min:0,   max:0.5, step:0.01, val:0.5  },
+  { id:'diversity',  label:'DIVERSITY',  min:0,   max:1,   step:0.01, val:0.3  },
+  { id:'turbulence', label:'TURBULENCE', min:0,   max:1,   step:0.01, val:0.3  },
+  { id:'pinch',      label:'PINCH',      min:0,   max:1,   step:0.01, val:0    },
+  { id:'seed',       label:'SEED',       min:1,   max:999, step:1,    val:137, isInt:true },
+];
+
+function $df(id) { return document.getElementById('df-' + id); }
+
+function readParams() {
+  var t = parseFloat($df('turbulence').value), d = parseInt($df('density').value, 10);
+  return {
+    cols:d, rows:d,
+    hexOffset:   parseFloat($df('hexOffset').value),
+    shiftX:      parseFloat($df('shiftX').value),
+    shiftY:      parseFloat($df('shiftY').value),
+    turbStrength:t * 0.4,
+    turbScale:   0.5 + Math.log1p(t*9) * 2.5,
+    turbOctaves: 3, turbPasses: 2, turbFeedback: 0.5,
+    pinch:       parseFloat($df('pinch').value),
+    dotSize:     parseFloat($df('dotSize').value),
+    diversity:   parseFloat($df('diversity').value),
+    seed:        parseInt($df('seed').value, 10),
+    backgroundColor: $df('backgroundColor').value,
+    dotColor:        $df('dotColor').value,
+  };
+}
+
+function fmtVal(ctrl, v) {
+  return ctrl.isInt ? String(Math.round(v)) : String(parseFloat(parseFloat(v).toFixed(2)));
+}
+
+function updateFill(ctrl) {
+  var pct = (parseFloat($df(ctrl.id).value) - ctrl.min) / (ctrl.max - ctrl.min) * 100;
+  $df('fill-' + ctrl.id).style.width = pct + '%';
+}
+
+// ── Build sliders ──────────────────────────────────────────────
+
+var slidersList = $df('slidersList');
+slidersList.style.cssText = 'display:flex;flex-direction:column;gap:16px';
+
+CONTROLS.forEach(function(ctrl) {
+  var row = document.createElement('div');
+  row.className = 'df-ctrl-row';
+
+  var lbl = document.createElement('div');
+  lbl.className = 'df-chip df-label';
+  lbl.textContent = ctrl.label;
+  row.appendChild(lbl);
+
+  var track = document.createElement('div');
+  track.className = 'df-ctrl-track';
+  var fill = document.createElement('div');
+  fill.className = 'df-ctrl-fill';
+  fill.id = 'df-fill-' + ctrl.id;
+  fill.style.width = ((ctrl.val - ctrl.min) / (ctrl.max - ctrl.min) * 100) + '%';
+  track.appendChild(fill);
+  var input = document.createElement('input');
+  input.type = 'range'; input.id = 'df-' + ctrl.id;
+  input.min = ctrl.min; input.max = ctrl.max;
+  input.step = ctrl.step; input.value = ctrl.val;
+  track.appendChild(input);
+  row.appendChild(track);
+
+  var valChip = document.createElement('div');
+  valChip.className = 'df-chip df-value';
+  valChip.id = 'df-val-' + ctrl.id;
+  valChip.textContent = fmtVal(ctrl, ctrl.val);
+  row.appendChild(valChip);
+  slidersList.appendChild(row);
+
+  input.addEventListener('input', function() {
+    updateFill(ctrl); valChip.textContent = fmtVal(ctrl, input.value); scheduleRedraw();
+  });
+
+  valChip.addEventListener('click', function() {
+    var ei = document.createElement('input');
+    ei.type = 'text'; ei.value = valChip.textContent; ei.className = 'df-value-input';
+    valChip.replaceWith(ei); ei.focus(); ei.select();
+    function commit() {
+      var v = parseFloat(ei.value);
+      if (!isNaN(v)) {
+        input.value = Math.max(ctrl.min, Math.min(ctrl.max, v));
+        valChip.textContent = fmtVal(ctrl, parseFloat(input.value));
+        updateFill(ctrl); scheduleRedraw();
+      }
+      ei.replaceWith(valChip);
+    }
+    ei.addEventListener('blur', commit);
+    ei.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); ei.blur(); }
+      if (e.key === 'Escape') ei.replaceWith(valChip);
+    });
+  });
+});
+
+// ── Shift XY pad ───────────────────────────────────────────────
+
+var shiftPad = $df('shiftPad'), shiftDot = $df('shiftDot');
+var shiftXEl = $df('shiftX'), shiftYEl = $df('shiftY');
+var xyDragging = false;
+
+function setShiftXY(x, y) {
+  x = Math.max(-1, Math.min(1, x)); y = Math.max(-1, Math.min(1, y));
+  shiftXEl.value = x.toFixed(2); shiftYEl.value = y.toFixed(2);
+  shiftDot.style.left = ((x+1)/2*100) + '%';
+  shiftDot.style.top  = ((y+1)/2*100) + '%';
+}
+
+function xyFromEvent(e) {
+  var r = shiftPad.getBoundingClientRect();
+  var cx = e.touches ? e.touches[0].clientX : e.clientX;
+  var cy = e.touches ? e.touches[0].clientY : e.clientY;
+  return [Math.max(-1,Math.min(1,(cx-r.left)/r.width*2-1)),
+          Math.max(-1,Math.min(1,(cy-r.top)/r.height*2-1))];
+}
+
+shiftPad.addEventListener('mousedown', function(e) { xyDragging=true; var xy=xyFromEvent(e); setShiftXY(xy[0],xy[1]); scheduleRedraw(); });
+document.addEventListener('mousemove', function(e) { if(!xyDragging) return; var xy=xyFromEvent(e); setShiftXY(xy[0],xy[1]); scheduleRedraw(); });
+document.addEventListener('mouseup', function() { xyDragging=false; });
+shiftPad.addEventListener('touchstart', function(e) { xyDragging=true; var xy=xyFromEvent(e); setShiftXY(xy[0],xy[1]); scheduleRedraw(); e.preventDefault(); },{passive:false});
+document.addEventListener('touchmove', function(e) { if(!xyDragging) return; var xy=xyFromEvent(e); setShiftXY(xy[0],xy[1]); scheduleRedraw(); },{passive:true});
+document.addEventListener('touchend', function() { xyDragging=false; });
+
+// ── Colors ─────────────────────────────────────────────────────
+
+var fgSwatch=$df('fgSwatch'), fgHex=$df('fgHex'), dotColorInput=$df('dotColor');
+var bgSwatch=$df('bgSwatch'), bgHex=$df('bgHex'), bgColorInput=$df('backgroundColor');
+
+[fgSwatch,fgHex].forEach(function(el){ el.addEventListener('click', function(){ dotColorInput.click(); }); });
+dotColorInput.addEventListener('input', function(e){ fgSwatch.style.background=e.target.value; fgHex.textContent=e.target.value; scheduleRedraw(); });
+[bgSwatch,bgHex].forEach(function(el){ el.addEventListener('click', function(){ bgColorInput.click(); }); });
+bgColorInput.addEventListener('input', function(e){ bgSwatch.style.background=e.target.value; bgHex.textContent=e.target.value; scheduleRedraw(); });
+
+// ── Minimize ───────────────────────────────────────────────────
+
+$df('minimizeBtn').addEventListener('click', function() {
+  var panel=$df('panel'), body=$df('panelBody');
+  var minimizing = body.style.display !== 'none';
+  body.style.display = minimizing ? 'none' : 'flex';
+  this.textContent = minimizing ? '[EXPAND]' : '[MINIMIZE]';
+  panel.classList.toggle('minimized', minimizing);
+});
+
+// ── Canvas & render ────────────────────────────────────────────
+
+var canvas = $df('canvas'), rafId = null;
+
+function scheduleRedraw() {
+  if (rafId) return;
+  rafId = requestAnimationFrame(function() { rafId = null; render(); });
+}
+
+function render() {
+  canvas.width  = dfApp.clientWidth;
+  canvas.height = dfApp.clientHeight;
+  renderToCanvas(readParams(), canvas);
+}
+
+new ResizeObserver(scheduleRedraw).observe(dfApp);
+
+// ── Randomize ──────────────────────────────────────────────────
+
+$df('randomize').addEventListener('click', function() {
+  CONTROLS.forEach(function(ctrl) {
+    var el = $df(ctrl.id);
+    el.value = ctrl.min + Math.floor(Math.random() * (Math.round((ctrl.max-ctrl.min)/ctrl.step)+1)) * ctrl.step;
+    updateFill(ctrl);
+    $df('val-'+ctrl.id).textContent = fmtVal(ctrl, parseFloat(el.value));
+  });
+  setShiftXY(Math.random()*2-1, Math.random()*2-1);
+  function rh() { return '#'+Math.floor(Math.random()*16777216).toString(16).padStart(6,'0'); }
+  var fg=rh(), bg=rh();
+  dotColorInput.value=fg; fgSwatch.style.background=fg; fgHex.textContent=fg;
+  bgColorInput.value=bg;  bgSwatch.style.background=bg; bgHex.textContent=bg;
+  scheduleRedraw();
+});
+
+// ── Export PNG ─────────────────────────────────────────────────
+
+$df('exportPngBtn').addEventListener('click', function() {
+  var btn=this; btn.textContent='[EXPORTING...]'; btn.disabled=true;
+  setTimeout(function() {
+    var p=readParams(), off=document.createElement('canvas');
+    off.width=2400; off.height=3200;
+    renderToCanvas(p, off);
+    off.toBlob(function(blob) {
+      var url=URL.createObjectURL(blob), a=document.createElement('a');
+      a.href=url; a.download='dotfabric-seed'+p.seed+'.png'; a.click();
+      URL.revokeObjectURL(url);
+      btn.textContent='[EXPORT_PNG]'; btn.disabled=false;
+    }, 'image/png');
+  }, 50);
+});
+
+// ── Export SVG ─────────────────────────────────────────────────
+
+$df('exportSvgBtn').addEventListener('click', function() {
+  var p=readParams(), svg=exportSVG(p,800,1067);
+  var blob=new Blob([svg],{type:'image/svg+xml'}), url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url; a.download='dotfabric-seed'+p.seed+'.svg'; a.click();
+  URL.revokeObjectURL(url);
+});
+
+// ── Init ───────────────────────────────────────────────────────
+
+render();
+
+})();
+</script>

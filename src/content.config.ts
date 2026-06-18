@@ -15,6 +15,17 @@ const contentSchema = z.object({
   footer: z.string().optional(),
 });
 
+const playgroundSchema = z.object({
+  title: z.string(),
+  designation: z.string(),
+  description: z.string(),
+  link: z.string(),
+  image: z.string(),
+  tag: z.string(),
+  date: z.coerce.date(),
+  warning: z.string().optional(),
+});
+
 const caseStudies = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/shawncole-ca/case-studies' }),
   schema: contentSchema,
@@ -30,4 +41,9 @@ const ideas = defineCollection({
   schema: contentSchema,
 });
 
-export const collections = { 'case-studies': caseStudies, futures, ideas };
+const playground = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/shawncole-ca/playground' }),
+  schema: playgroundSchema,
+});
+
+export const collections = { 'case-studies': caseStudies, futures, ideas, playground };
