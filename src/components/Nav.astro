@@ -21,6 +21,9 @@ function isActive(href: string, current: string) {
   if (href.startsWith('mailto:')) return false;
   return current.startsWith(href);
 }
+
+const activeItem = navItems.find(item => isActive(item.href, currentPath));
+const barLabel = activeItem && activeItem.href !== '/' ? activeItem.label : 'SHAWN COLE';
 ---
 
 <nav class="site-nav" data-nav>
@@ -40,7 +43,7 @@ function isActive(href: string, current: string) {
         <img src="/img/icon-back.svg" alt="" width="28" height="28" />
       </a>
     )}
-    {!isDetailPage && <span class="site-nav__name">SHAWN COLE</span>}
+    {!isDetailPage && <span class="site-nav__name">{barLabel}</span>}
     <button class="site-nav__toggle" data-nav-toggle aria-label="Toggle menu" aria-expanded="false">
       <img class="site-nav__icon-menu" src="/img/icon-menu.svg" alt="" width="28" height="28" />
       <img class="site-nav__icon-close" src="/img/icon-close.svg" alt="" width="28" height="28" />

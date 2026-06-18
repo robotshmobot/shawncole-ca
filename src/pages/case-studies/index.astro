@@ -1,0 +1,55 @@
+---
+import Base from '../../layouts/Base.astro';
+import CardFeed from '../../components/CardFeed.astro';
+---
+
+<Base title="Case Studies — shawncole.ca">
+  <main class="category">
+    <h1 class="category__title">Case Studies</h1>
+    <div class="category__feed">
+      <CardFeed filter="case study" />
+    </div>
+  </main>
+</Base>
+
+<style>
+  .category {
+    padding: 40px 40px 120px;
+  }
+
+  .category__title {
+    font-family: 'SRC Marker', var(--font-body);
+    font-size: 72px;
+    font-weight: 400;
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--color-dark);
+    margin-bottom: 64px;
+  }
+
+  .category__feed {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 1024px) {
+    .category__title {
+      font-size: 64px;
+    }
+
+    .category__feed {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .category {
+      padding: 16px 0 120px;
+    }
+
+    .category__title {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+  }
+</style>

@@ -3,8 +3,7 @@ title: Designing for uncertainty
 description: 👀 Businesses that fall into strategic tunnel vision tend to stay there unless something trips a wire. In order to overcome being blindsided by disruptors, we need to jumpstart forward thinking cultures. How do you do it?
 date: 2024-09-03
 tags:
-  - strategy
-  - foresight
+  - strategic-foresight
 vibe: ""
 image: /img/designing for uncertainty_20240829A.jpg
 hideTitle: false
