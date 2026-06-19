@@ -31,42 +31,157 @@ const pillText = type === 'playground'
   : [...(tags || []), type].join(' ');
 ---
 
-<a
-  href={href}
-  class:list={['poster-card', fontPairing ? `font-pair-${fontPairing}` : '']}
-  data-post={slug}
+<div
+  class:list={['poster-card-wrap', fontPairing ? `font-pair-${fontPairing}` : '']}
+  data-magnetic
   style={`--i: ${index}; --pill-color: ${pillColor}; ${color ? `--poster-bg: ${color};` : ''}`}
-  {...(target ? { target, rel: 'noopener' } : {})}
 >
-  {resolvedImage && (
-    <img src={resolvedImage} alt={title} class="poster-card__image" />
-  )}
-  <div class="poster-card__overlay">
+  <a
+    href={href}
+    class="poster-card"
+    data-post={slug}
+    data-magnetic-surface
+    {...(target ? { target, rel: 'noopener' } : {})}
+  >
+    {resolvedImage && (
+      <img src={resolvedImage} alt={title} class="poster-card__image" />
+    )}
+  </a>
+  <div class="poster-card__glass" data-magnetic-glass>
     <h2 class="poster-card__title">{title}</h2>
     <div class="poster-card__pill">
       <span class="poster-card__type">{pillText}</span>
     </div>
   </div>
-</a>
+</div>
+
+<script>
+  function initMagneticCards() {
+    const MAX_TILT = 1.8;
+    const MAX_SHIFT = 4;
+    const PROXIMITY = 200;
+    const LERP_SPEED = 0.16;
+
+    document.querySelectorAll<HTMLElement>('[data-magnetic]').forEach(wrap => {
+      if (wrap.dataset.magneticInit) return;
+      wrap.dataset.magneticInit = '1';
+
+      const surface = wrap.querySelector<HTMLElement>('[data-magnetic-surface]');
+      const glass = wrap.querySelector<HTMLElement>('[data-magnetic-glass]');
+      if (!surface || !glass) return;
+
+      let rafId: number | null = null;
+      let currentTiltX = 0, currentTiltY = 0, currentShiftX = 0, currentShiftY = 0;
+      let targetTiltX = 0, targetTiltY = 0, targetShiftX = 0, targetShiftY = 0;
+      let lastMouseX = 0, lastMouseY = 0;
+
+      function lerp(a: number, b: number, t: number) {
+        return a + (b - a) * t;
+      }
+
+      function animate() {
+        currentTiltX = lerp(currentTiltX, targetTiltX, LERP_SPEED);
+        currentTiltY = lerp(currentTiltY, targetTiltY, LERP_SPEED);
+        currentShiftX = lerp(currentShiftX, targetShiftX, LERP_SPEED);
+        currentShiftY = lerp(currentShiftY, targetShiftY, LERP_SPEED);
+
+        const transform =
+          `perspective(1000px) rotateX(${-currentTiltY}deg) rotateY(${currentTiltX}deg) translate(${currentShiftX}px, ${currentShiftY}px)`;
+
+        surface!.style.transform = transform;
+        glass!.style.transform =
+          `perspective(1000px) rotateX(${currentTiltY}deg) rotateY(${-currentTiltX}deg) translate(${-currentShiftX}px, ${-currentShiftY}px)`;
+
+        const settled =
+          Math.abs(currentTiltX - targetTiltX) < 0.005 &&
+          Math.abs(currentTiltY - targetTiltY) < 0.005 &&
+          Math.abs(currentShiftX - targetShiftX) < 0.005 &&
+          Math.abs(currentShiftY - targetShiftY) < 0.005;
+
+        if (!settled) {
+          rafId = requestAnimationFrame(animate);
+        } else {
+          rafId = null;
+        }
+      }
+
+      function startAnimation() {
+        if (!rafId) rafId = requestAnimationFrame(animate);
+      }
+
+      function updateTargets() {
+        const rect = wrap.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const isInside =
+          lastMouseX >= rect.left && lastMouseX <= rect.right &&
+          lastMouseY >= rect.top && lastMouseY <= rect.bottom;
+
+        if (isInside) {
+          const dx = (lastMouseX - cx) / (rect.width / 2);
+          const dy = (lastMouseY - cy) / (rect.height / 2);
+          targetTiltX = dx * MAX_TILT;
+          targetTiltY = dy * MAX_TILT;
+          targetShiftX = dx * MAX_SHIFT;
+          targetShiftY = dy * MAX_SHIFT;
+        } else {
+          const distX = lastMouseX - cx;
+          const distY = lastMouseY - cy;
+          const dist = Math.sqrt(distX * distX + distY * distY);
+          const maxDist = PROXIMITY + Math.max(rect.width, rect.height) / 2;
+
+          if (dist < maxDist) {
+            const strength = 1 - dist / maxDist;
+            const eased = strength * strength;
+            targetTiltX = (distX / maxDist) * MAX_TILT * eased * 0.3;
+            targetTiltY = (distY / maxDist) * MAX_TILT * eased * 0.3;
+            targetShiftX = (distX / maxDist) * MAX_SHIFT * eased * 0.3;
+            targetShiftY = (distY / maxDist) * MAX_SHIFT * eased * 0.3;
+          } else {
+            targetTiltX = 0;
+            targetTiltY = 0;
+            targetShiftX = 0;
+            targetShiftY = 0;
+          }
+        }
+        startAnimation();
+      }
+
+      document.addEventListener('mousemove', (e: MouseEvent) => {
+        lastMouseX = e.clientX;
+        lastMouseY = e.clientY;
+        updateTargets();
+      });
+
+      window.addEventListener('scroll', () => {
+        updateTargets();
+      }, { passive: true });
+    });
+  }
+
+  initMagneticCards();
+  document.addEventListener('astro:after-swap', initMagneticCards);
+</script>
 
 <style>
-  .poster-card {
-    display: block;
+  .poster-card-wrap {
     position: relative;
     width: 100%;
     aspect-ratio: 16 / 9;
+    animation: slideUp 0.6s var(--transition-smooth) both;
+    animation-delay: calc(var(--i, 0) * 0.08s);
+  }
+
+  .poster-card {
+    display: block;
+    position: absolute;
+    inset: 0;
     border-radius: 64px;
     overflow: hidden;
     text-decoration: none;
     background: var(--poster-bg, var(--color-dark));
-    animation: slideUp 0.6s var(--transition-smooth) both;
-    animation-delay: calc(var(--i, 0) * 0.08s);
     cursor: crosshair;
-    transition: transform 0.4s var(--transition-spring);
-  }
-
-  .poster-card:hover {
-    transform: scale(1.01);
+    will-change: transform;
   }
 
   .poster-card:focus-visible {
@@ -83,7 +198,7 @@ const pillText = type === 'playground'
     pointer-events: none;
   }
 
-  .poster-card__overlay {
+  .poster-card__glass {
     position: absolute;
     inset: 0;
     display: flex;
@@ -92,6 +207,8 @@ const pillText = type === 'playground'
     justify-content: center;
     z-index: 1;
     padding: 32px;
+    pointer-events: none;
+    will-change: transform;
   }
 
   .poster-card__title {
@@ -128,7 +245,7 @@ const pillText = type === 'playground'
       border-radius: 48px;
     }
 
-    .poster-card__overlay {
+    .poster-card__glass {
       padding: 24px;
     }
 
@@ -142,12 +259,19 @@ const pillText = type === 'playground'
       border-radius: 32px;
     }
 
-    .poster-card__overlay {
+    .poster-card__glass {
       padding: 16px;
     }
 
     .poster-card__title {
       font-size: 24px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .poster-card,
+    .poster-card__glass {
+      transform: none !important;
     }
   }
 </style>
