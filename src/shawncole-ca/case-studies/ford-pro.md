@@ -6,7 +6,7 @@ tags:
   - strategy
 image: /img/cs-ford-pro_hero_20260617A.jpg
 color: "#E0DAD4"
-customStyles: |
+customStyles: |-
   .detail__content h3 {
     font-family: 'Geist', sans-serif;
     font-weight: 700;
