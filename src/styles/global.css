@@ -211,6 +211,11 @@ body {
   --font-body: 'Geist', system-ui, sans-serif;
   --font-display-transform: uppercase;
 }
+.font-pair-sans-sans {
+  --font-display: 'Geist', system-ui, sans-serif;
+  --font-body: 'Geist', system-ui, sans-serif;
+  --font-display-transform: none;
+}
 .font-pair-hand-sans {
   --font-display: 'SRC Marker', cursive;
   --font-body: 'Geist', system-ui, sans-serif;

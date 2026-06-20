@@ -10,7 +10,7 @@ const contentSchema = z.object({
   color: z.string().optional(),
   'alt-text': z.string().optional(),
   customStyles: z.string().optional(),
-  fontPairing: z.enum(['serif-sans', 'mono-serif', 'mono-sans', 'hand-sans', 'hand-serif']).optional(),
+  fontPairing: z.enum(['serif-sans', 'mono-serif', 'mono-sans', 'sans-sans', 'hand-sans', 'hand-serif']).optional(),
   hideTitle: z.boolean().nullable().optional(),
   footer: z.string().optional(),
 });

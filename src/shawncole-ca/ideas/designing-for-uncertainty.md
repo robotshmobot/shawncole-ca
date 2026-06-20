@@ -4,9 +4,9 @@ description: 👀 Businesses that fall into strategic tunnel vision tend to stay
 date: 2024-09-03
 tags:
   - strategic-foresight
-vibe: ""
 image: /img/designing for uncertainty_20240829A.jpg
 hideTitle: false
+fontPairing: mono-sans
 ---
 Hands up ✋ if you’re building something and have no idea what informed the decision to build it. Chances are: you are or have been here. If you’re reading this as a decision maker, this one’s for you.
 

@@ -6,12 +6,12 @@ description: Graduating from college, our guy thinks he has everything he needs 
 date: 2026-06-10
 color: "#FAD6D6"
 fontPairing: mono-sans
-customStyles: |
+customStyles: |-
   .detail__title { letter-spacing: 0.05em; }
-  .detail__content blockquote { border-left-color: #1a1a1a; background: rgba(0, 0, 0, 0.04); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
+  .detail__content blockquote { border-left-color: #1a1a1a; background: rgba(0, 0, 0, 0.04); padding: 1rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
   .detail__content strong { color: #1a1a1a; font-weight: 700; }
   .detail__content hr { border: none; margin: 3rem auto; width: 40px; height: 2px; background: #1a1a1a; }
-  .detail__content h2 { color: #1a1a1a; margin-top: 4rem; font-size: 1.2rem; letter-spacing: 0.1em; }
+  .detail__content h2 { color: #1a1a1a; margin-top: 4rem; letter-spacing: 0.1em; }
 image: /img/open-wait-for-it_20260610A.jpg
 alt-text: A high contrast silhouette of a man standing at a kiosk using his phone to get tokens.
 footer: This scenario is part of a broader strategic foresight project where I look for signals of change in the youth unemployment space as it relates to the proliferation of AI in the workplace. [Check out the project >](/futures)
