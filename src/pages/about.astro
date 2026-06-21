@@ -77,7 +77,7 @@ const cv = [
     <section class="about__cta-grid">
       <div class="about__cta about__cta--blue">
         <p class="about__cta-text">I'm currently working on a stealth advisory consultancy with aims to serve enterprise operations in their AI transformations through strategy, operational redesign, service & product design, and change management.</p>
-        <a href="#contact" class="about__cta-link action-link action-link--on-dark" data-open-contact>Get&nbsp;in&nbsp;touch&nbsp;to&nbsp;learn&nbsp;more&nbsp;></a>
+        <a href="#contact" class="about__cta-link action-link action-link--on-dark" data-open-contact>Get in touch to learn more ></a>
       </div>
       <div class="about__cta about__cta--dark">
         <p class="about__cta-text">If you really really want to hear some of things I come up with when I pick up my guitar, switch on a synth, or compose something atmospheric, I have a small project called Sentient Spaces.</p>
@@ -366,6 +366,26 @@ const cv = [
     .about__cta--lime {
       grid-column: span 1;
       flex-direction: column;
+    }
+
+    .about__cta {
+      min-width: 0;
+    }
+
+    .about__cta-text {
+      font-size: 17px;
+    }
+
+    .about__cta-link {
+      font-size: 20px;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+
+    .about__cta-link-text {
+      font-size: 20px;
+      overflow-wrap: break-word;
+      word-break: break-word;
     }
 
     .about__social {
