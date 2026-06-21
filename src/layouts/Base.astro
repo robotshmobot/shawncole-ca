@@ -17,6 +17,9 @@ const { title = 'shawncole.ca', fontPairing } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    <link rel="preload" href="/fonts/src-marker.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Geist-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/GeistMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <ViewTransitions />
   </head>
   <body class={fontPairing ? `font-pair-${fontPairing}` : ''}>

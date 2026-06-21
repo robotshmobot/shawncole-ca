@@ -94,7 +94,7 @@
   src: url('/fonts/src-marker.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
-  font-display: optional;
+  font-display: swap;
 }
 
 :root {
@@ -210,6 +210,11 @@ body {
   --font-display: 'Geist Mono', monospace;
   --font-body: 'Geist', system-ui, sans-serif;
   --font-display-transform: uppercase;
+}
+.font-pair-sans-serif {
+  --font-display: 'Geist', system-ui, sans-serif;
+  --font-body: 'Source Serif 4', Georgia, serif;
+  --font-display-transform: none;
 }
 .font-pair-sans-sans {
   --font-display: 'Geist', system-ui, sans-serif;
