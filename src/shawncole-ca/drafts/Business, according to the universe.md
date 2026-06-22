@@ -1,0 +1,1 @@
+Business, like all human activity, must play by the rules of the universe, even if it chooses to ignore the rules of society. A business is energy, it's motion, it's order, it's probability. 
