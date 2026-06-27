@@ -10,7 +10,7 @@ fontPairing: sans-serif
 ---
 Ford Pro only captured value at the point of vehicle sale to dealers. Everything downstream — finding an upfitter, sourcing parts, coordinating installation, arranging delivery — happened in a fragmented ecosystem running on phone calls, paper catalogues, and personal referrals. The upfitting industry, worth an estimated $9–12B in North America, was operating with almost no technological sophistication. Ford Pro's CTO wanted the full picture: behaviours, relationships, pain points, and hidden dynamics across the commercial upfitting value web, with the goal of finding strategic openings to move downstream and build something defensible.
 
-## What I did
+## What do upfitters do, and how?
 
 I co-led a 4-person Humanistic team through an 8-week engagement structured around two parallel workstreams: ethnographic research with industry insiders and a comprehensive market and competitive landscape analysis.
 
@@ -21,6 +21,8 @@ We conducted in-depth interviews across five upfitting shops, speaking with 15�
 ![A large table of competitors and their details](https://cdn.prod.website-files.com/5e4c90288db0e4298d4d02f7/6a1c8a985999bd4226adf93c_Upfitter%20Marketplace%20Strategy%20-%20Module%201%20-%20Market%20Scan.jpg) `The output of the competitive marketplace scan`
 
 I chose to map the ecosystem as an actor-based value web rather than a linear journey. The value web showed the flow of value, information, and dependency between six actor types (OEMs, dealers, upfitters, parts manufacturers, used vehicle sellers, and services vendors), exposing where Ford sat in the system (upstream, one-directional) and where it could insert itself to create reciprocal value downstream. In parallel, I led a competitive scan profiling dozens of players — Ranger Design, Work Truck Solutions, Knapheide, Adrian Steel, and others — evaluating each across business viability, technology sophistication, UX, risk, and customer value.
+
+## The road to a marketplace play
 
 ![A largescroll showing sticky notes and a table of text](https://cdn.prod.website-files.com/5e4c90288db0e4298d4d02f7/6a1c8f1e6251df8cb0bb3a1a_work-huron-02.jpg) `A multi-sided marketplace meta-analysis to determine functionality coverage`
 
@@ -54,6 +56,6 @@ The three-phase strategy provided a sequenced roadmap balancing speed-to-market 
 
 In March 2025, Ford Pro launched LocateFordWorkTrucks.com in direct partnership with Work Truck Solutions — the specific Phase 1 partnership we recommended in 2022. The tool enables customers to search for and locate work-ready trucks and vans from Ford dealer inventory nationwide, embedded directly into FordPro.com. By May 2026, Ford Pro began requiring all Commercial Vehicle Center dealers to maintain an active Work Truck Solutions subscription, making what we recommended as a strategic partnership into mandatory dealer infrastructure.
 
-## What I learned
+## I upfitted myself
 
-Operating at arm's length from the client during research wasn't just a tactic for candid interviews. It surfaced an entire category of insight about industry power dynamics and technology resistance that would have been invisible in a direct OEM engagement. That framing decision shaped every recommendation, including the arm's-length marketplace brand proposal, which echoed the same principle at a strategic level.
+Operating at arm's length from the client during research became a solid tactic for candid interviews—blinded research for the win. It surfaced an entire category of insight about industry power dynamics and technology resistance that would have been invisible in a direct OEM engagement. That framing decision shaped every recommendation, including the arm's-length marketplace brand proposal, which echoed the same principle at a strategic level.
