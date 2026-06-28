@@ -98,6 +98,7 @@ const resolvedImage = image && !image.startsWith('/') && !image.startsWith('http
     </footer>
   </article>
   {customStyles && <style set:html={customStyles} />}
+  <style set:html={`body { background: ${pageBg}; }`} />
   <style is:global>
     body:has(.detail) {
       max-width: none;
@@ -111,7 +112,7 @@ const resolvedImage = image && !image.startsWith('/') && !image.startsWith('http
   .detail {
     background: var(--detail-bg, #ffffff);
     min-height: 100vh;
-    padding-bottom: 128px;
+    padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px));
   }
 
   .detail__hero {
