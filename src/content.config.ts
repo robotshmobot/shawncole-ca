@@ -13,6 +13,11 @@ const contentSchema = z.object({
   fontPairing: z.enum(['serif-sans', 'sans-serif', 'mono-serif', 'mono-sans', 'sans-sans', 'hand-sans', 'hand-serif']).optional(),
   hideTitle: z.boolean().nullable().optional(),
   footer: z.string().optional(),
+  clientLogo: z.string().optional(),
+  clientName: z.string().optional(),
+  role: z.string().optional(),
+  projectDate: z.string().optional(),
+  lede: z.string().optional(),
 });
 
 const playgroundSchema = z.object({
