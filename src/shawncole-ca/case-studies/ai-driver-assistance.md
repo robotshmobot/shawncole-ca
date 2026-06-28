@@ -5,7 +5,7 @@ date: 2020-04-14
 tags:
   - embodied-AI
   - research
-image: ai-driver-assistance_0_20260627A
+image: /img/ai-driver-assistance_0_20260627A.jpg
 hideTitle: false
 alt-text: An illustration of a woman driving through a snow storm, while the AI assistant  provides guidance
 fontPairing: serif-sans
@@ -40,10 +40,13 @@ To make the architecture tangible, I designed three detailed scenarios that walk
 
 Beyond the response architecture, I produced a complete Emotional Coding Architecture that enumerates the discriminative features for each sensory output channel. For motion, this covers kinematic forms from simple 2D planes through articulated arms to legged robots, with translation, rotation, and scale parameters for each axis. For visual, it covers color, 2D/3D form, facial expression geometry, and posture. For audio, it specifies emotional utterances mapped to 16 affect states plus voice parameters (tempo, intensity, onset, pitch, contour, variability). For haptic, it maps frequency channels, amplitude levels, 2D contact area patterns, temperature range, and timing parameters.
 
-![Huawei's fuzzy, expressive announced AI companion robot for in-car assistance](/img/ai-driver-assistance_03_20260627A.jpg)
+![Huawei's fuzzy, expressive announced AI companion robot for in-car assistance](/img/ai-driver-assistance_3_20260627A.jpg)
 `Why did you turn there, driver guy?`
 
 We also sketched two additional tools: a crowdsourced "Be the Assistant" game that would let large groups of people seed appropriate responses for different context combinations, and a debugging interface for analysts to inspect, create, and test agent response chains against specific parameter sets. I also did some articulating robotic arm exploration to understand what could provide the most expressive robotic forms for in-car assistance.
+
+![Some sketches of potential in-car robotics solutions](/img/ai-driver-assistance_5_20260627A.jpg)
+`Some of the robotics sketches that influenced HAMOMO`
 
 ## The destination
 
