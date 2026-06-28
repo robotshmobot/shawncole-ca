@@ -17,6 +17,7 @@ lede: |-
   Huawei's robotics research group was developing a physical in-car agent. It was a small anthropomorphic robot mounted on the vehicle dashboard, equipped with cameras and sensors, designed to interact with drivers throughout the entire journey. They had the hardware concept and the deep learning infrastructure, but no coherent model for how the agent should _behave_. When should it speak? What should it say? How should its tone, posture, and expression change based on what the driver is feeling or what the road looks like? The robotics team needed a behavioural foundation grounded in how humans actually build relationships, read emotion, and respond to social cues.
 
   Huawei also wanted the framework to apply to educational contexts, where a similar agent might interact with students during remote learning sessions. Very pandemic-coded.
+color: "#B2DBCD"
 ---
 ## Driving is emotional, even though it shouldn't be
 
