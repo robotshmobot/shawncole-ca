@@ -14,7 +14,7 @@ clientName: Huawei
 projectDate: April 2020
 role: Principal Researcher & Designer
 lede: |-
-  Huawei's robotics research group was developing a physical in-car agent. It was a small anthropomorphic robot mounted on the vehicle dashboard, equipped with cameras and sensors, designed to interact with drivers throughout the entire journey. They had the hardware concept and the deep learning infrastructure, but no coherent model for how the agent should _behave_. When should it speak? What should it say? How should its tone, posture, and expression change based on what the driver is feeling or what the road looks like? The robotics team needed a behavioural foundation grounded in how humans actually build relationships, read emotion, and respond to social cues.
+  Huawei's robotics research group was developing a physical in-car agent. It was a small anthropomorphic robot mounted on the vehicle dashboard, equipped with cameras and sensors, designed to interact with drivers throughout the entire journey. They had the hardware concept and the deep learning infrastructure, but no coherent model for how the agent should behave. When should it speak? What should it say? How should its tone, posture, and expression change based on what the driver is feeling or what the road looks like? The robotics team needed a behavioural foundation grounded in how humans actually build relationships, read emotion, and respond to social cues.
 
   Huawei also wanted the framework to apply to educational contexts, where a similar agent might interact with students during remote learning sessions. Very pandemic-coded.
 color: "#B2DBCD"
@@ -40,8 +40,7 @@ To make the architecture tangible, I designed three detailed scenarios that walk
 
 Beyond the response architecture, I produced a complete Emotional Coding Architecture that enumerates the discriminative features for each sensory output channel. For motion, this covers kinematic forms from simple 2D planes through articulated arms to legged robots, with translation, rotation, and scale parameters for each axis. For visual, it covers color, 2D/3D form, facial expression geometry, and posture. For audio, it specifies emotional utterances mapped to 16 affect states plus voice parameters (tempo, intensity, onset, pitch, contour, variability). For haptic, it maps frequency channels, amplitude levels, 2D contact area patterns, temperature range, and timing parameters.
 
-![Huawei's fuzzy, expressive announced AI companion robot for in-car assistance](/img/ai-driver-assistance_3_20260627A
-.jpg)
+![Huawei's fuzzy, expressive announced AI companion robot for in-car assistance](/img/ai-driver-assistance_3_20260627A.jpg)
 `Why did you turn there, driver guy?`
 
 We also sketched two additional tools: a crowdsourced "Be the Assistant" game that would let large groups of people seed appropriate responses for different context combinations, and a debugging interface for analysts to inspect, create, and test agent response chains against specific parameter sets. I also did some articulating robotic arm exploration to understand what could provide the most expressive robotic forms for in-car assistance.
