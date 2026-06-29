@@ -15,11 +15,13 @@ import CardFeed from '../../components/CardFeed.astro';
 <style>
   .category {
     padding: 40px 40px 120px;
+    max-width: 1280px;
+    margin: 0 auto;
   }
 
   .category__title {
     font-family: 'SRC Marker', var(--font-body);
-    font-size: 72px;
+    font-size: 64px;
     font-weight: 400;
     text-align: center;
     text-transform: uppercase;
@@ -28,13 +30,13 @@ import CardFeed from '../../components/CardFeed.astro';
   }
 
   .category__feed {
-    max-width: 960px;
+    max-width: 1200px;
     margin: 0 auto;
   }
 
   @media (max-width: 1024px) {
     .category__title {
-      font-size: 64px;
+      font-size: 48px;
     }
 
     .category__feed {
@@ -44,11 +46,11 @@ import CardFeed from '../../components/CardFeed.astro';
 
   @media (max-width: 640px) {
     .category {
-      padding: 16px 0 120px;
+      padding: 16px 16px 120px;
     }
 
     .category__title {
-      font-size: 48px;
+      font-size: 32px;
       margin-bottom: 16px;
     }
   }

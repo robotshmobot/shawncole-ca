@@ -5,8 +5,12 @@ import CardFeed from '../components/CardFeed.astro';
 
 <Base>
   <main class="home">
+    <h1 class="home__title">HEY! IT'S SHAWN COLE</h1>
     <p class="home__intro">
-      welcome to shawn cole's party attic and <span class="home__intro-highlight">fieldcraft</span> works. As a principal strategist, designer, and researcher, I absorb the energy of the people that corporate would rather ignore - then turn that into experiences, services, or products that people not only love, but get value from.
+      I'm a principal strategist, designer, and researcher with a habit of following interesting problems wherever they go. Sometimes that's a tricky enterprise service redesign. Sometimes it's a wild scenario about a future. Sometimes it's a synthesizer plugin I built on a Sunday.
+    </p>
+    <p class="home__intro">
+      Either way, welcome to my party attic.
     </p>
     <div class="home__feed">
       <CardFeed />
@@ -17,29 +21,48 @@ import CardFeed from '../components/CardFeed.astro';
 <style>
   .home {
     padding: 40px 40px 120px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .home__title {
+    font-family: 'SRC Marker', var(--font-body);
+    font-size: 64px;
+    font-weight: 400;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--color-dark);
+    margin-bottom: 24px;
   }
 
   .home__intro {
-    font-family: 'SRC Marker', var(--font-body);
-    font-size: clamp(28px, 5vw, 48px);
-    line-height: 1.15;
-    margin-bottom: 64px;
-    text-transform: uppercase;
-    transform: rotate(-0.5deg);
+    font-family: 'Geist', var(--font-body);
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.35;
     color: var(--color-dark);
-    width: 100%;
+    margin-bottom: 16px;
+    max-width: 1200px;
   }
 
-  .home__intro-highlight {
-    color: #0d0eda;
+  .home__intro:last-of-type {
+    margin-bottom: 64px;
   }
 
   .home__feed {
-    max-width: 960px;
+    max-width: 1200px;
     margin: 0 auto;
   }
 
   @media (max-width: 1024px) {
+    .home__title {
+      font-size: 48px;
+    }
+
+    .home__intro {
+      font-size: 24px;
+    }
+
     .home__feed {
       max-width: 100%;
     }
@@ -47,12 +70,20 @@ import CardFeed from '../components/CardFeed.astro';
 
   @media (max-width: 640px) {
     .home {
-      padding: 16px 0 120px;
+      padding: 16px 16px 120px;
+    }
+
+    .home__title {
+      font-size: 32px;
     }
 
     .home__intro {
-      line-height: 1;
-      margin-bottom: 16px;
+      font-size: 17px;
+      margin-bottom: 12px;
+    }
+
+    .home__intro:last-of-type {
+      margin-bottom: 32px;
     }
   }
 </style>

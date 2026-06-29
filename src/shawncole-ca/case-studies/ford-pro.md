@@ -3,6 +3,7 @@ title: FORD PRO
 description: Ford Pro is the commercial vehicles group of Ford Motor co. We worked with their CTO over 14 weeks to uncover and define a 3-phase marketplace strategy for commercial vehicle upfitting.
 date: 2022-05-01
 tags:
+  - marketplace
   - strategy
 image: /img/cs-ford-pro_hero_20260617A.jpg
 color: "#E0DAD4"
