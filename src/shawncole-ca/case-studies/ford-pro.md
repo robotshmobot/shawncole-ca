@@ -1,18 +1,14 @@
 ---
-title: FORD PRO
-description: Ford Pro is the commercial vehicles group of Ford Motor co. We worked with their CTO over 14 weeks to uncover and define a 3-phase marketplace strategy for commercial vehicle upfitting.
-date: 2022-05-01
+title: Strategic Marketplace for Commercial Vehicle Upfitting
+description: Research into the commercial automotive aftermarket for Ford's CTO
+date: 2022-04-22
 tags:
   - marketplace
   - strategy
 image: /img/cs-ford-pro_hero_20260617A.jpg
-color: "#E0DAD4"
-fontPairing: sans-serif
-clientLogo: /img/client-ford-pro.svg
-clientName: Ford Pro
+context: Ford Pro
 role: Principal Researcher & Strategist
 projectDate: April 2022
-lede: "Ford Pro only captured value at the point of vehicle sale to dealers. Everything downstream — finding an upfitter, sourcing parts, coordinating installation, arranging delivery — happened in a fragmented ecosystem running on phone calls, paper catalogues, and personal referrals. The upfitting industry, worth an estimated $9–12B in North America, was operating with almost no technological sophistication. Ford Pro's CTO wanted the full picture: behaviours, relationships, pain points, and hidden dynamics across the commercial upfitting value web, with the goal of finding strategic openings to move downstream and build something defensible."
 ---
 
 ## What do upfitters do, and how?

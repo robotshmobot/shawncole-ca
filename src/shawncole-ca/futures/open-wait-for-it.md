@@ -1,20 +1,12 @@
 ---
 title: Open-wait for it
+context: Futures Scenario
 tags:
   - youth-unemployment
-description: Graduating from college, our guy thinks he has everything he needs to start a business. He uses the latest agentic frontier model to prepare all of the details, file the paperwork, and spin up his offering—then he not only runs out of tokens, but the model starts steering his business decisions away from what could be "competitive" with entrenched enterprise. He abandons the subscription model in favour of a… less than legal foreign open-weight model.
+description: Youth are getting creative to compete in a token-driven job market
 date: 2026-06-10
-color: "#FAD6D6"
-fontPairing: mono-sans
-customStyles: |-
-  .detail__title { letter-spacing: 0.05em; }
-  .detail__content blockquote { border-left-color: #1a1a1a; background: rgba(0, 0, 0, 0.04); padding: 1rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
-  .detail__content strong { color: #1a1a1a; font-weight: 700; }
-  .detail__content hr { border: none; margin: 3rem auto; width: 40px; height: 2px; background: #1a1a1a; }
-  .detail__content h2 { color: #1a1a1a; margin-top: 4rem; letter-spacing: 0.1em; }
 image: /img/open-wait-for-it_20260610A.jpg
-alt-text: A high contrast silhouette of a man standing at a kiosk using his phone to get tokens.
-footer: This scenario is part of a broader strategic foresight project where I look for signals of change in the youth unemployment space as it relates to the proliferation of AI in the workplace. [Check out the project >](/futures)
+alt-text: A high contrast silhouette of a man standing at a kiosk using his phone to get tokens
 ---
 Graduation had the vibe of a funeral. Each and every graduate looking down the barrel of a gun that the economy pointed back at them. We used to say *demure* 6 or 7 years ago—now we can say *detached*. Like we've been ejected from society's corpo fodder nursery, waiting with a generative resume to be immediately rejected by a generative hiring manager. 
 

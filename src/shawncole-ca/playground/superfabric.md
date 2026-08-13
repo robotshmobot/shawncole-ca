@@ -1,10 +1,10 @@
 ---
 title: superfabric
 designation: sf-01
-description: superfabric is a filter plugin for digital audio workstations (DAWs) that takes audio input, then passes it through the dot fabric. Depending on where the dot is located on the y axis, the audio will be high or low cut frequency.
+description: A DAW filter plugin that routes audio through a dot fabric
 link: /playground/superfabric_20260522A.html
 image: /img/superfabric_preview.jpg
-tag: daw plugin + web demo
+context: DAW Plugin & Web Demo
 date: 2026-06-10
 warning: Be careful with the [sat] toggle. It can produce a wild amount of saturation (distortion) that could be dangerous. Turn your volume down before enabling. Don't say I didn't warn you.
 ---

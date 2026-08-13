@@ -1,0 +1,94 @@
+---
+
+---
+
+<section class="hero">
+  <h1 class="hero__title" data-parallax="title">SHAWN COLE</h1>
+  <div class="hero__portrait" data-parallax="image">
+    <img src="/img/shawn-portrait.jpg" alt="Shawn Cole" class="hero__portrait-img" />
+  </div>
+</section>
+
+<script>
+  function initParallax() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    const title = document.querySelector<HTMLElement>('[data-parallax="title"]');
+    const image = document.querySelector<HTMLElement>('[data-parallax="image"]');
+    if (!title || !image) return;
+
+    let ticking = false;
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const scrollY = window.scrollY;
+        title.style.transform = `translateY(${scrollY * 0.4}px)`;
+        ticking = false;
+      });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  initParallax();
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    padding: 40px 40px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero__title {
+    font-family: var(--font-display);
+    font-size: min(calc((100vw - 80px) / 6.2), 254px);
+    font-weight: 900;
+    line-height: 0.85;
+    text-transform: uppercase;
+    color: var(--color-text);
+    width: 100%;
+    text-align: left;
+    white-space: nowrap;
+    position: relative;
+    z-index: 1;
+    will-change: transform;
+    margin-top: -0.005em;
+  }
+
+  .hero__portrait {
+    position: relative;
+    z-index: 2;
+    width: clamp(240px, 35vw, 480px);
+    margin-top: -20px;
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+  }
+
+  .hero__portrait-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding: 40px 16px 0;
+    }
+
+    .hero__title {
+      font-size: calc((100vw - 32px) / 6.2);
+    }
+
+    .hero__portrait {
+      width: 60vw;
+      aspect-ratio: 1 / 1;
+    }
+  }
+</style>

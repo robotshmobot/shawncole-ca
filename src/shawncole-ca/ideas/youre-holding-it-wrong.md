@@ -1,11 +1,11 @@
 ---
 title: You're holding it wrong
-description: I discuss what's really wrong with AI adoption in the enterprise
+description: What's really wrong with AI adoption in the enterprise
 date: 2026-06-01
+context: AI Enablement
 tags:
   - AI-Enablement
 image: /img/steve-jobs-iphone-4.jpg
-hideTitle: false
 alt-text: Steve Jobs holding the iPhone 4 on stage
 ---
 AI spending is on track to hit [_$2.6 trillion_](https://www.gartner.com/en/newsroom/press-releases/2026-05-19-gartner-forecasts-worldwide-ai-spending-to-grow-47-percent-in-2026) [this year](https://www.gartner.com/en/newsroom/press-releases/2026-05-19-gartner-forecasts-worldwide-ai-spending-to-grow-47-percent-in-2026). That’s a 47% jump from last year. And yet [72% of CXOs](https://www.gartner.com/en/articles/ai-value) report their organizations have barely broken even or lost money on their AI investments.

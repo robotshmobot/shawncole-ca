@@ -1,0 +1,98 @@
+---
+
+---
+
+<div class="theme-toggle" data-theme-toggle>
+  <button class="theme-toggle__btn" data-theme-btn="light" aria-label="Light mode">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="8" cy="8" r="3.5" stroke="currentColor" stroke-width="1.2"/>
+      <path d="M8 1.5V3M8 13V14.5M1.5 8H3M13 8H14.5M3.11 3.11L4.17 4.17M11.83 11.83L12.89 12.89M3.11 12.89L4.17 11.83M11.83 4.17L12.89 3.11" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+    </svg>
+  </button>
+  <button class="theme-toggle__btn" data-theme-btn="dark" aria-label="Dark mode">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M13.5 10.07A6.5 6.5 0 015.93 2.5 6 6 0 1013.5 10.07z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+</div>
+
+<script>
+  function initThemeToggle() {
+    const toggle = document.querySelector<HTMLElement>('[data-theme-toggle]')!;
+    const lightBtn = document.querySelector<HTMLButtonElement>('[data-theme-btn="light"]')!;
+    const darkBtn = document.querySelector<HTMLButtonElement>('[data-theme-btn="dark"]')!;
+
+    function updateButtons() {
+      const theme = document.documentElement.getAttribute('data-theme');
+      const isDark = theme === 'dark' ||
+        (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+      lightBtn.classList.toggle('theme-toggle__btn--active', !isDark);
+      darkBtn.classList.toggle('theme-toggle__btn--active', isDark);
+    }
+
+    lightBtn.addEventListener('click', () => {
+      document.documentElement.setAttribute('data-theme', 'light');
+      localStorage.setItem('theme', 'light');
+      updateButtons();
+    });
+
+    darkBtn.addEventListener('click', () => {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+      updateButtons();
+    });
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateButtons);
+
+    updateButtons();
+  }
+
+  initThemeToggle();
+</script>
+
+<style>
+  .theme-toggle {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 50;
+    display: flex;
+    gap: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--color-close-bg);
+    backdrop-filter: blur(12px);
+    padding: 4px;
+  }
+
+  .theme-toggle__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 28px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--color-text);
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.15s, background 0.15s;
+  }
+
+  .theme-toggle__btn--active {
+    opacity: 1;
+    background: var(--color-bg);
+  }
+
+  .theme-toggle__btn:hover {
+    opacity: 0.8;
+  }
+
+  @media (max-width: 640px) {
+    .theme-toggle {
+      bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    }
+  }
+</style>

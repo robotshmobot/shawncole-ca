@@ -1,14 +1,11 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
 import '../styles/global.css';
-import Nav from '../components/Nav.astro';
 
 interface Props {
   title?: string;
-  fontPairing?: string;
 }
 
-const { title = 'shawncole.ca', fontPairing } = Astro.props;
+const { title = 'shawncole.ca' } = Astro.props;
 ---
 
 <!doctype html>
@@ -21,13 +18,19 @@ const { title = 'shawncole.ca', fontPairing } = Astro.props;
     <link rel="icon" href="/sc-favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/sc-favicon-apple.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <link rel="preload" href="/fonts/src-marker.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/faune-display-black.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/Geist-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/GeistMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
-    <ViewTransitions />
+    <script is:inline>
+      (function() {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || t === 'light') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      })();
+    </script>
   </head>
-  <body class={fontPairing ? `font-pair-${fontPairing}` : ''}>
+  <body>
     <slot />
-    <Nav currentPath={Astro.url.pathname} isDetailPage={Astro.url.pathname.split('/').filter(Boolean).length >= 2} />
   </body>
 </html>

@@ -1,89 +1,130 @@
 ---
 import Base from '../layouts/Base.astro';
-import CardFeed from '../components/CardFeed.astro';
+import Hero from '../components/Hero.astro';
+import Bio from '../components/Bio.astro';
+import Monogram from '../components/Monogram.astro';
+import ContentTable from '../components/ContentTable.astro';
+import ContentPopover from '../components/ContentPopover.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import { getCollection, render } from 'astro:content';
+const caseStudies = await getCollection('case-studies');
+const futures = await getCollection('futures');
+const ideas = await getCollection('ideas');
+const playground = await getCollection('playground');
+const cvEntries = await getCollection('cv');
+
+type ContentEntry = {
+  id: string;
+  title: string;
+  description: string;
+  context?: string;
+  date: Date;
+  type: string;
+  image?: string | null;
+  altText?: string;
+  role?: string;
+  projectDate?: string;
+  link?: string;
+};
+
+const allContent: ContentEntry[] = [
+  ...caseStudies.map(e => ({
+    id: e.id,
+    title: e.data.title,
+    description: e.data.description,
+    context: e.data.context,
+    date: e.data.date,
+    type: 'case-study',
+    image: e.data.image,
+    altText: e.data['alt-text'],
+    role: e.data.role,
+    projectDate: e.data.projectDate,
+  })),
+  ...futures.map(e => ({
+    id: e.id,
+    title: e.data.title,
+    description: e.data.description,
+    context: e.data.context,
+    date: e.data.date,
+    type: 'futures',
+    image: e.data.image,
+    altText: e.data['alt-text'],
+    role: e.data.role,
+    projectDate: e.data.projectDate,
+  })),
+  ...ideas.map(e => ({
+    id: e.id,
+    title: e.data.title,
+    description: e.data.description,
+    context: e.data.context,
+    date: e.data.date,
+    type: 'idea',
+    image: e.data.image,
+    altText: e.data['alt-text'],
+    role: e.data.role,
+    projectDate: e.data.projectDate,
+  })),
+  ...playground.map(e => ({
+    id: e.id,
+    title: e.data.title,
+    description: e.data.description,
+    context: e.data.context,
+    date: e.data.date,
+    type: 'playground',
+    image: e.data.image,
+    link: e.data.link,
+  })),
+  ...cvEntries.map(e => ({
+    id: e.id,
+    title: e.data.company,
+    description: e.data.description,
+    context: e.data.company,
+    date: e.data.date,
+    type: 'cv',
+    image: e.data.image,
+    role: e.data.role,
+    projectDate: e.data.dates,
+  })),
+];
+
+allContent.sort((a, b) => b.date.getTime() - a.date.getTime());
+
+const renderedContent = await Promise.all(
+  [...caseStudies, ...futures, ...ideas, ...playground, ...cvEntries].map(async (entry) => {
+    const { Content } = await render(entry);
+    return { id: entry.id, Content };
+  })
+);
+
+const dataIsland = allContent.map(e => ({
+  id: e.id,
+  title: e.title,
+  image: e.image || null,
+  altText: e.altText || null,
+  context: e.context || null,
+  role: e.role || null,
+  projectDate: e.projectDate || null,
+  type: e.type,
+  link: e.link || null,
+}));
 ---
 
 <Base>
-  <main class="home">
-    <h1 class="home__title">HEY! IT'S SHAWN COLE</h1>
-    <p class="home__intro">
-      I'm a principal strategist, designer, and researcher with a habit of following interesting problems wherever they go. Sometimes that's a tricky enterprise service redesign. Sometimes it's a wild scenario about a future. Sometimes it's a synthesizer plugin I built on a Sunday.
-    </p>
-    <p class="home__intro">
-      Either way, welcome to my party attic.
-    </p>
-    <div class="home__feed">
-      <CardFeed />
-    </div>
+  <main>
+    <Hero />
+    <Bio />
+    <Monogram />
+    <ContentTable entries={allContent} />
+
+    {renderedContent.map(({ id, Content }) => (
+      <div id={`content-${id}`} hidden>
+        <Content />
+      </div>
+    ))}
+
+    <script type="application/json" id="content-data" set:html={JSON.stringify(dataIsland)} />
+
+    <ContentPopover />
+    <ThemeToggle />
   </main>
 </Base>
-
-<style>
-  .home {
-    padding: 40px 40px 120px;
-    max-width: 1280px;
-    margin: 0 auto;
-  }
-
-  .home__title {
-    font-family: 'SRC Marker', var(--font-body);
-    font-size: 64px;
-    font-weight: 400;
-    line-height: 1;
-    text-transform: uppercase;
-    color: var(--color-dark);
-    margin-bottom: 24px;
-  }
-
-  .home__intro {
-    font-family: 'Geist', var(--font-body);
-    font-size: 32px;
-    font-weight: 400;
-    line-height: 1.35;
-    color: var(--color-dark);
-    margin-bottom: 16px;
-    max-width: 1200px;
-  }
-
-  .home__intro:last-of-type {
-    margin-bottom: 64px;
-  }
-
-  .home__feed {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  @media (max-width: 1024px) {
-    .home__title {
-      font-size: 48px;
-    }
-
-    .home__intro {
-      font-size: 24px;
-    }
-
-    .home__feed {
-      max-width: 100%;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .home {
-      padding: 16px 16px 120px;
-    }
-
-    .home__title {
-      font-size: 32px;
-    }
-
-    .home__intro {
-      font-size: 17px;
-      margin-bottom: 12px;
-    }
-
-    .home__intro:last-of-type {
-      margin-bottom: 32px;
-    }
-  }
-</style>

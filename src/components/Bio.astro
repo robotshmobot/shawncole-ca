@@ -1,0 +1,101 @@
+---
+
+---
+
+<section class="bio">
+  <div class="bio__text">
+    <p>I'm a principal strategist, designer, and researcher with a habit of following interesting problems wherever they go. Sometimes that's a tricky enterprise service redesign. Sometimes it's a wild scenario about a future. Sometimes it's a synthesizer plugin I built on a Sunday.</p>
+    <p>Either way, welcome to my party attic.</p>
+  </div>
+  <div class="bio__destinations">
+    <h3 class="bio__destinations-heading">Destinations</h3>
+    <a href="https://www.linkedin.com/in/shawnrcole/" target="_blank" rel="noopener" class="bio__dest-row">
+      <span class="bio__dest-name">LinkedIn</span>
+      <span class="bio__dest-arrow">&rarr;</span>
+    </a>
+    <a href="https://medium.com/@shawnrcole" target="_blank" rel="noopener" class="bio__dest-row">
+      <span class="bio__dest-name">Medium</span>
+      <span class="bio__dest-arrow">&rarr;</span>
+    </a>
+    <a href="https://sentientspaces.bandcamp.com/" target="_blank" rel="noopener" class="bio__dest-row">
+      <span class="bio__dest-name">Sentient Spaces</span>
+      <span class="bio__dest-arrow">&rarr;</span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .bio {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    padding: 64px 40px;
+  }
+
+  .bio__text {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .bio__text p {
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--color-text);
+  }
+
+  .bio__destinations {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bio__destinations-heading {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text);
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--color-text);
+  }
+
+  .bio__dest-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 8px;
+    border-bottom: 1px solid var(--color-text);
+    text-decoration: none;
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 18px;
+    transition: background 0.1s, color 0.1s;
+  }
+
+  .bio__dest-row:hover {
+    background: var(--color-header-bg);
+    color: var(--color-header-text);
+  }
+
+  .bio__dest-arrow {
+    font-size: 20px;
+  }
+
+  @media (max-width: 640px) {
+    .bio {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding: 40px 16px;
+    }
+
+    .bio__text p {
+      font-size: 15px;
+    }
+
+    .bio__dest-row {
+      font-size: 15px;
+    }
+  }
+</style>

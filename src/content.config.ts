@@ -7,17 +7,21 @@ const contentSchema = z.object({
   date: z.coerce.date(),
   tags: z.array(z.string()).optional(),
   image: z.string().nullable().optional(),
-  color: z.string().optional(),
   'alt-text': z.string().optional(),
-  customStyles: z.string().optional(),
-  fontPairing: z.enum(['serif-sans', 'sans-serif', 'mono-serif', 'mono-sans', 'sans-sans', 'hand-sans', 'hand-serif']).optional(),
-  hideTitle: z.boolean().nullable().optional(),
-  footer: z.string().optional(),
-  clientLogo: z.string().optional(),
-  clientName: z.string().optional(),
+  context: z.string().optional(),
   role: z.string().optional(),
   projectDate: z.string().optional(),
-  lede: z.string().optional(),
+});
+
+const cvSchema = z.object({
+  company: z.string(),
+  description: z.string(),
+  role: z.string(),
+  dates: z.string(),
+  location: z.string().optional(),
+  url: z.string().optional(),
+  date: z.coerce.date(),
+  image: z.string().nullable().optional(),
 });
 
 const playgroundSchema = z.object({
@@ -26,7 +30,7 @@ const playgroundSchema = z.object({
   description: z.string(),
   link: z.string(),
   image: z.string(),
-  tag: z.string(),
+  context: z.string(),
   date: z.coerce.date(),
   warning: z.string().optional(),
 });
@@ -51,4 +55,9 @@ const playground = defineCollection({
   schema: playgroundSchema,
 });
 
-export const collections = { 'case-studies': caseStudies, futures, ideas, playground };
+const cv = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/shawncole-ca/cv' }),
+  schema: cvSchema,
+});
+
+export const collections = { 'case-studies': caseStudies, futures, ideas, playground, cv };

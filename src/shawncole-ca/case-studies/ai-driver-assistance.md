@@ -1,23 +1,14 @@
 ---
-title: AI Driver Assistance
-description: "Designed the behavioural architecture for Huawei's in-car AI agent: an affective computing framework covering emotional theory selection, social response design, and multimodal expression across motion, visual, audio, and haptic channels. The framework spanned 100+ contextual parameters across 2 domains. Huawei filed a related intelligent robot patent within 5 months of delivery."
+title: Developing in-car emotion detection & AI driver assistance
+description: Behavioural architecture for Huawei's in-car AI agent
 date: 2020-04-14
 tags:
   - embodied-AI
   - research
 image: /img/ai-driver-assistance_0_20260627A.jpg
-hideTitle: false
-alt-text: An illustration of a woman driving through a snow storm, while the AI assistant  provides guidance
-fontPairing: serif-sans
-clientLogo: /img/client-huawei.svg
-clientName: Huawei
-projectDate: April 2020
+alt-text: An illustration of a woman driving through a snow storm, while the AI assistant provides guidance
+context: Huawei
 role: Principal Researcher & Designer
-lede: |-
-  Huawei's robotics research group was developing a physical in-car agent. It was a small anthropomorphic robot mounted on the vehicle dashboard, equipped with cameras and sensors, designed to interact with drivers throughout the entire journey. They had the hardware concept and the deep learning infrastructure, but no coherent model for how the agent should behave. When should it speak? What should it say? How should its tone, posture, and expression change based on what the driver is feeling or what the road looks like? The robotics team needed a behavioural foundation grounded in how humans actually build relationships, read emotion, and respond to social cues.
-
-  Huawei also wanted the framework to apply to educational contexts, where a similar agent might interact with students during remote learning sessions. Very pandemic-coded.
-color: "#B2DBCD"
 ---
 ## Driving is emotional, even though it shouldn't be
 

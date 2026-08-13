@@ -1,0 +1,413 @@
+---
+
+---
+
+<div class="popover-overlay" data-popover-overlay hidden>
+  <div class="popover-panel" data-popover-panel>
+    <div class="popover-close-wrap">
+      <button class="popover-close" data-popover-close>
+        <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0.5 0.5L7.5 7.5M7.5 0.5L0.5 7.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <span>Close</span>
+      </button>
+    </div>
+    <div class="popover-hero" data-popover-hero hidden>
+      <img class="popover-hero__image" data-popover-image alt="" />
+    </div>
+    <div class="popover-content">
+      <div class="popover-header" data-popover-header>
+        <h2 class="popover-title" data-popover-title></h2>
+        <div class="popover-chips" data-popover-chips></div>
+      </div>
+      <div class="popover-body" data-popover-body></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initPopover() {
+    const overlay = document.querySelector<HTMLElement>('[data-popover-overlay]')!;
+    const panel = document.querySelector<HTMLElement>('[data-popover-panel]')!;
+    const closeBtn = document.querySelector<HTMLButtonElement>('[data-popover-close]')!;
+    const body = document.querySelector<HTMLElement>('[data-popover-body]')!;
+    const heroSection = document.querySelector<HTMLElement>('[data-popover-hero]')!;
+    const imageEl = document.querySelector<HTMLImageElement>('[data-popover-image]')!;
+    const titleEl = document.querySelector<HTMLElement>('[data-popover-title]')!;
+    const chipsEl = document.querySelector<HTMLElement>('[data-popover-chips]')!;
+
+    let dataStore: any[] = [];
+
+    const dataEl = document.getElementById('content-data');
+    if (dataEl) {
+      try { dataStore = JSON.parse(dataEl.textContent || '[]'); } catch {}
+    }
+
+    function typeLabel(type: string): string {
+      const map: Record<string, string> = {
+        'case-study': 'Project',
+        'idea': 'Idea',
+        'futures': 'Futures',
+        'playground': 'Play',
+        'cv': 'CV',
+      };
+      return map[type] || type;
+    }
+
+    function openPopover(entryId: string) {
+      const contentDiv = document.getElementById(`content-${entryId}`);
+      if (!contentDiv) return;
+
+      const meta = dataStore.find((d: any) => d.id === entryId);
+
+      body.innerHTML = contentDiv.innerHTML;
+
+      if (meta?.image) {
+        imageEl.src = meta.image;
+        imageEl.alt = meta.altText || meta.title || '';
+        heroSection.hidden = false;
+      } else {
+        heroSection.hidden = true;
+      }
+
+      titleEl.textContent = meta?.title || '';
+
+      chipsEl.innerHTML = '';
+      const chips: string[] = [];
+      if (meta?.type) chips.push(typeLabel(meta.type));
+      if (meta?.context) chips.push(meta.context);
+      if (meta?.role) chips.push(meta.role);
+      if (meta?.projectDate) chips.push(meta.projectDate);
+
+      chips.forEach(label => {
+        const chip = document.createElement('span');
+        chip.className = 'popover-chip';
+        chip.textContent = label;
+        chipsEl.appendChild(chip);
+      });
+
+      overlay.hidden = false;
+      panel.scrollTop = 0;
+      requestAnimationFrame(() => {
+        overlay.classList.add('popover-overlay--visible');
+        panel.classList.add('popover-panel--visible');
+      });
+      document.body.style.overflow = 'hidden';
+      history.pushState(null, '', `#${entryId}`);
+    }
+
+    function closePopover() {
+      overlay.classList.remove('popover-overlay--visible');
+      panel.classList.remove('popover-panel--visible');
+
+      setTimeout(() => {
+        overlay.hidden = true;
+        body.innerHTML = '';
+        document.body.style.overflow = '';
+        history.pushState(null, '', location.pathname);
+      }, 300);
+    }
+
+    document.querySelectorAll<HTMLElement>('[data-popover-trigger]').forEach(row => {
+      row.addEventListener('click', () => {
+        const link = (row as HTMLElement).dataset.entryLink;
+        if (link) {
+          window.open(link, '_blank', 'noopener');
+          return;
+        }
+        const id = row.dataset.entryId;
+        if (id) openPopover(id);
+      });
+    });
+
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closePopover();
+    });
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closePopover();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !overlay.hidden) closePopover();
+    });
+
+    if (location.hash) {
+      const id = location.hash.slice(1);
+      if (id) openPopover(id);
+    }
+
+    window.addEventListener('popstate', () => {
+      if (location.hash) {
+        openPopover(location.hash.slice(1));
+      } else if (!overlay.hidden) {
+        closePopover();
+      }
+    });
+  }
+
+  initPopover();
+</script>
+
+<style>
+  .popover-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: var(--color-overlay);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .popover-overlay[hidden] {
+    display: none;
+  }
+
+  .popover-overlay--visible {
+    opacity: 1;
+  }
+
+  .popover-panel {
+    position: relative;
+    width: 960px;
+    max-width: 100%;
+    max-height: 100vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: var(--color-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-text);
+    transition: transform 0.3s var(--transition-smooth), opacity 0.3s ease;
+    z-index: 101;
+    transform: translateY(40px);
+    opacity: 0;
+  }
+
+  .popover-panel--visible {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .popover-close-wrap {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    height: 0;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .popover-close {
+    position: relative;
+    top: 7px;
+    left: 7px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 6px;
+    background: var(--color-close-bg);
+    backdrop-filter: blur(12px);
+    color: white;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    pointer-events: auto;
+  }
+
+  .popover-close:hover {
+    opacity: 0.8;
+  }
+
+  .popover-close svg {
+    width: 8px;
+    height: 8px;
+  }
+
+  .popover-hero {
+    width: 100%;
+    background: var(--color-surface);
+  }
+
+  .popover-hero__image {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    display: block;
+  }
+
+  .popover-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 24px;
+  }
+
+  .popover-header {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+    max-width: 720px;
+  }
+
+  .popover-title {
+    font-family: var(--font-body);
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 32px;
+    color: var(--color-text);
+  }
+
+  .popover-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .popover-chips :global(.popover-chip) {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 6px;
+    backdrop-filter: blur(12px);
+    font-family: var(--font-mono);
+    font-size: 8px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    color: var(--color-text);
+  }
+
+  .popover-body {
+    width: 100%;
+    max-width: 720px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 21px;
+    color: var(--color-text);
+  }
+
+  .popover-body :global(h2) {
+    font-family: var(--font-body);
+    font-size: 24px;
+    font-weight: 700;
+    margin: 40px 0 16px;
+    line-height: 1.3;
+  }
+
+  .popover-body :global(h3) {
+    font-family: var(--font-body);
+    font-size: 20px;
+    font-weight: 700;
+    margin: 32px 0 12px;
+    line-height: 1.3;
+  }
+
+  .popover-body :global(p) {
+    margin-bottom: 16px;
+  }
+
+  .popover-body :global(img) {
+    width: calc(100% + 48px);
+    margin-left: -24px;
+    height: auto;
+    border-radius: 16px;
+    border: 1px solid var(--color-border-subtle);
+    margin-top: 24px;
+    margin-bottom: 24px;
+    max-width: none;
+  }
+
+  .popover-body :global(ul),
+  .popover-body :global(ol) {
+    margin-bottom: 16px;
+    padding-left: 24px;
+  }
+
+  .popover-body :global(li) {
+    margin-bottom: 8px;
+  }
+
+  .popover-body :global(blockquote) {
+    border-left: 3px solid var(--color-border-subtle);
+    padding-left: 16px;
+    margin: 24px 0;
+    font-style: italic;
+    color: var(--color-blockquote);
+  }
+
+  .popover-body :global(code) {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    background: var(--color-surface);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .popover-body :global(pre) {
+    background: var(--color-surface);
+    padding: 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 24px 0;
+  }
+
+  .popover-body :global(pre code) {
+    background: none;
+    padding: 0;
+  }
+
+  .popover-body :global(hr) {
+    border: none;
+    border-top: 1px solid var(--color-border-subtle);
+    margin: 32px 0;
+  }
+
+  .popover-body :global(a) {
+    color: var(--color-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (max-width: 768px) {
+    .popover-panel {
+      width: 100%;
+      max-height: 100vh;
+    }
+
+    .popover-title {
+      font-size: 24px;
+      line-height: 24px;
+    }
+
+    .popover-chips {
+      gap: 4px;
+    }
+
+    .popover-content {
+      padding: 24px 16px;
+    }
+
+    .popover-body :global(img) {
+      width: calc(100% + 32px);
+      margin-left: -16px;
+      border-radius: 8px;
+    }
+  }
+</style>

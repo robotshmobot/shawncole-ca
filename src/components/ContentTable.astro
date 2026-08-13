@@ -1,0 +1,277 @@
+---
+interface Entry {
+  id: string;
+  title: string;
+  description: string;
+  context?: string;
+  date: Date;
+  type: string;
+  link?: string;
+}
+
+interface Props {
+  entries: Entry[];
+}
+
+const { entries } = Astro.props;
+
+function formatDate(date: Date, type: string): string {
+
+  const y = date.getUTCFullYear();
+  const m = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const d = String(date.getUTCDate()).padStart(2, '0');
+  if (m === '01' && d === '01') return String(y);
+  return `${y}${m}${d}`;
+}
+
+function filterLabel(type: string): string {
+  const map: Record<string, string> = {
+    'case-study': 'Work',
+    'idea': 'Ideas',
+    'futures': 'Futures',
+    'cv': 'CV',
+    'playground': 'Play',
+  };
+  return map[type] || type;
+}
+---
+
+<section class="work-section">
+  <div class="work-header">
+    <h2 class="work-heading">WORK & THINGS</h2>
+    <div class="filter-tabs" role="tablist">
+    <button class="filter-tab filter-tab--active" data-filter="all" role="tab" aria-selected="true">All</button>
+    <button class="filter-tab" data-filter="Work" role="tab" aria-selected="false">Work</button>
+    <button class="filter-tab" data-filter="Ideas" role="tab" aria-selected="false">Ideas</button>
+    <button class="filter-tab" data-filter="Futures" role="tab" aria-selected="false">Futures</button>
+    <button class="filter-tab" data-filter="Play" role="tab" aria-selected="false">Play</button>
+    <button class="filter-tab" data-filter="CV" role="tab" aria-selected="false">CV</button>
+    </div>
+  </div>
+  <table class="content-table">
+    <thead class="content-table__head">
+      <tr>
+        <th class="content-table__th content-table__th--what">What</th>
+        <th class="content-table__th content-table__th--who">Context</th>
+        <th class="content-table__th content-table__th--when">When</th>
+      </tr>
+    </thead>
+    <tbody>
+      {entries.map(entry => (
+        <tr
+          class="content-table__row"
+          data-entry-id={entry.id}
+          data-entry-type={filterLabel(entry.type)}
+          data-popover-trigger
+          {...(entry.link ? { 'data-entry-link': entry.link } : {})}
+        >
+          <td class="content-table__td content-table__td--what">
+            <span class="content-table__what-text">{entry.description || entry.title}</span>
+          </td>
+          <td class="content-table__td content-table__td--who">
+            <span class="content-table__mobile-label">{entry.context || ''}{entry.context && formatDate(entry.date, entry.type) ? ' · ' : ''}{formatDate(entry.date, entry.type)}</span>
+            <span class="content-table__desktop-text">{entry.context || ''}</span>
+          </td>
+          <td class="content-table__td content-table__td--when">
+            <span class="content-table__desktop-text">{formatDate(entry.date, entry.type)}</span>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</section>
+
+<script>
+  function initFilters() {
+    const tabs = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+    const rows = document.querySelectorAll<HTMLTableRowElement>('[data-entry-type]');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const filter = tab.dataset.filter!;
+
+        tabs.forEach(t => {
+          t.classList.remove('filter-tab--active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('filter-tab--active');
+        tab.setAttribute('aria-selected', 'true');
+
+        rows.forEach(row => {
+          if (filter === 'all' || row.dataset.entryType === filter) {
+            row.hidden = false;
+          } else {
+            row.hidden = true;
+          }
+        });
+      });
+    });
+  }
+
+  initFilters();
+</script>
+
+<style>
+  .work-section {
+    padding: 0 40px 40px;
+  }
+
+  .work-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 24px 0;
+    position: sticky;
+    top: 0;
+    background: var(--color-bg);
+    z-index: 10;
+  }
+
+  .work-heading {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 64px);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--color-text);
+    white-space: nowrap;
+  }
+
+  .filter-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .filter-tab {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 6px 14px;
+    border: 1px solid var(--color-text);
+    border-radius: 100px;
+    background: transparent;
+    color: var(--color-text);
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s;
+  }
+
+  .filter-tab:hover {
+    background: var(--color-header-bg);
+    color: var(--color-header-text);
+  }
+
+  .filter-tab--active {
+    background: var(--color-header-bg);
+    color: var(--color-header-text);
+  }
+
+  .content-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .content-table__head {
+    border-bottom: 1px solid var(--color-text);
+  }
+
+  .content-table__th {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text);
+    text-align: left;
+    padding: 8px 16px;
+  }
+
+  .content-table__th--what { width: 69%; }
+  .content-table__th--who { width: 24%; }
+  .content-table__th--when { width: 7%; }
+
+  .content-table__row {
+    border-bottom: 1px solid var(--color-text);
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s;
+  }
+
+  .content-table__row:hover {
+    background: var(--color-header-bg);
+    color: var(--color-header-text);
+  }
+
+  .content-table__td {
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.4;
+    padding: 14px 16px;
+    vertical-align: top;
+  }
+
+  .content-table__mobile-label {
+    display: none;
+  }
+
+  .content-table__desktop-text {
+    display: inline;
+  }
+
+  @media (max-width: 768px) {
+    .work-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .work-section {
+      padding: 0 16px 16px;
+    }
+
+    .content-table__head {
+      display: none;
+    }
+
+    .content-table__row {
+      display: flex;
+      flex-direction: column;
+      padding: 14px 0;
+    }
+
+    .content-table__td {
+      padding: 0;
+      font-size: 17px;
+    }
+
+    .content-table__td--who,
+    .content-table__td--when {
+      display: none;
+    }
+
+    .content-table__td--who {
+      display: block;
+    }
+
+    .content-table__mobile-label {
+      display: inline;
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    .content-table__desktop-text {
+      display: none;
+    }
+
+    .content-table__td--what {
+      order: 1;
+    }
+
+    .content-table__td--who {
+      order: 2;
+      margin-top: 4px;
+    }
+  }
+</style>

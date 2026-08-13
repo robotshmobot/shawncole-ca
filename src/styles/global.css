@@ -1,57 +1,8 @@
 @font-face {
-  font-family: 'Source Serif 4';
-  src: url('/fonts/SourceSerif4-Light.woff2') format('woff2');
-  font-weight: 300;
+  font-family: 'Faune Display';
+  src: url('/fonts/faune-display-black.woff2') format('woff2');
+  font-weight: 900;
   font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Source Serif 4';
-  src: url('/fonts/SourceSerif4-LightItalic.woff2') format('woff2');
-  font-weight: 300;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Source Serif 4';
-  src: url('/fonts/SourceSerif4-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Source Serif 4';
-  src: url('/fonts/SourceSerif4-Italic.woff2') format('woff2');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Source Serif 4';
-  src: url('/fonts/SourceSerif4-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Source Serif 4';
-  src: url('/fonts/SourceSerif4-BoldItalic.woff2') format('woff2');
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Geist';
-  src: url('/fonts/Geist-Light.woff2') format('woff2');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Geist';
-  src: url('/fonts/Geist-LightItalic.woff2') format('woff2');
-  font-weight: 300;
-  font-style: italic;
   font-display: swap;
 }
 @font-face {
@@ -89,48 +40,47 @@
   font-style: normal;
   font-display: swap;
 }
-@font-face {
-  font-family: 'SRC Marker';
-  src: url('/fonts/src-marker.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
 
 :root {
   --color-bg: #ffffff;
-  --color-text: #1a1a1a;
-  --color-muted: #6b6b6b;
-  --color-accent: #ff6b35;
-  --color-surface: #ffffff;
-  --color-dark: #12121A;
-  --color-cherry: #FF4949;
-  --color-lime: #B3FF38;
+  --color-text: #12121a;
+  --color-header-bg: #12121a;
+  --color-header-text: #ffffff;
+  --color-overlay: rgba(241, 241, 241, 0.66);
+  --color-close-bg: rgba(241, 241, 241, 0.22);
+  --color-border-subtle: rgba(18, 18, 26, 0.16);
+  --color-surface: #f5f5f5;
+  --color-blockquote: #6b6b6b;
+  --font-display: 'Faune Display', sans-serif;
   --font-body: 'Geist', system-ui, -apple-system, sans-serif;
-  --font-display: 'Source Serif 4', Georgia, serif;
-  --font-display-transform: none;
-  --space-xs: 0.5rem;
-  --space-sm: 1rem;
-  --space-md: 2rem;
-  --space-lg: 4rem;
-  --space-xl: 8rem;
-  --radius: 48px;
-  --transition-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --font-mono: 'Geist Mono', monospace;
   --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-  --site-max-width: 1600px;
-  --site-margin: 64px;
 }
 
-@media (max-width: 1024px) {
-  :root {
-    --site-margin: 24px;
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg: #1d2018;
+    --color-text: #a37f5c;
+    --color-header-bg: #a37f5c;
+    --color-header-text: #1d2018;
+    --color-overlay: rgba(29, 32, 24, 0.66);
+    --color-close-bg: rgba(29, 32, 24, 0.22);
+    --color-border-subtle: rgba(163, 127, 92, 0.24);
+    --color-surface: rgba(163, 127, 92, 0.1);
+    --color-blockquote: #8a7a6a;
   }
 }
 
-@media (max-width: 640px) {
-  :root {
-    --site-margin: 16px;
-  }
+:root[data-theme="dark"] {
+  --color-bg: #1d2018;
+  --color-text: #a37f5c;
+  --color-header-bg: #a37f5c;
+  --color-header-text: #1d2018;
+  --color-overlay: rgba(29, 32, 24, 0.66);
+  --color-close-bg: rgba(29, 32, 24, 0.22);
+  --color-border-subtle: rgba(163, 127, 92, 0.24);
+  --color-surface: rgba(163, 127, 92, 0.1);
+  --color-blockquote: #8a7a6a;
 }
 
 *,
@@ -143,7 +93,6 @@
 
 html {
   font-size: 16px;
-  scroll-behavior: smooth;
 }
 
 body {
@@ -152,120 +101,19 @@ body {
   color: var(--color-text);
   line-height: 1.6;
   min-height: 100vh;
-  max-width: var(--site-max-width);
-  margin: 0 auto;
-  padding-left: var(--site-margin);
-  padding-right: var(--site-margin);
   -webkit-font-smoothing: antialiased;
 }
 
+main {
+  max-width: 1660px;
+  margin: 0 auto;
+}
+
 ::selection {
-  background: var(--color-accent);
-  color: white;
+  background: var(--color-header-bg);
+  color: var(--color-header-text);
 }
 
-/* Card feed */
-.card-feed {
-  display: flex;
-  flex-direction: column;
-  gap: 64px;
-}
-
-@media (max-width: 1024px) {
-  .card-feed {
-    gap: 32px;
-  }
-}
-
-@media (max-width: 640px) {
-  .card-feed {
-    gap: 16px;
-  }
-}
-
-/* Slide up animation */
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Font pairings — max 2 fonts per piece, rotated throughout */
-.font-pair-serif-sans {
-  --font-display: 'Source Serif 4', Georgia, serif;
-  --font-body: 'Geist', system-ui, sans-serif;
-  --font-display-transform: none;
-}
-.font-pair-mono-serif {
-  --font-display: 'Geist Mono', monospace;
-  --font-body: 'Source Serif 4', Georgia, serif;
-  --font-display-transform: uppercase;
-}
-.font-pair-mono-sans {
-  --font-display: 'Geist Mono', monospace;
-  --font-body: 'Geist', system-ui, sans-serif;
-  --font-display-transform: uppercase;
-}
-.font-pair-sans-serif {
-  --font-display: 'Geist', system-ui, sans-serif;
-  --font-body: 'Source Serif 4', Georgia, serif;
-  --font-display-transform: none;
-}
-.font-pair-sans-sans {
-  --font-display: 'Geist', system-ui, sans-serif;
-  --font-body: 'Geist', system-ui, sans-serif;
-  --font-display-transform: none;
-}
-.font-pair-hand-sans {
-  --font-display: 'SRC Marker', cursive;
-  --font-body: 'Geist', system-ui, sans-serif;
-  --font-display-transform: uppercase;
-}
-.font-pair-hand-serif {
-  --font-display: 'SRC Marker', cursive;
-  --font-body: 'Source Serif 4', Georgia, serif;
-  --font-display-transform: uppercase;
-}
-
-/* Action links — span-bg inversion on hover, used in CTAs and callouts */
-.action-link {
-  --action-bg: #12121a;
-  --action-fg: #fff;
-  text-decoration: none;
-  padding: 2px 6px;
-  transition: background 0.15s, color 0.15s;
-}
-
-.action-link:visited {
-  color: inherit;
-}
-
-.action-link:hover {
-  background: var(--action-bg) !important;
-  color: var(--action-fg) !important;
-}
-
-.action-link--on-dark {
-  --action-bg: #fff;
-  --action-fg: #12121a;
-  color: #fff;
-}
-
-.action-link--on-dark:visited {
-  color: #fff;
-}
-
-.action-link--on-lime {
-  --action-bg: #12121a;
-  --action-fg: #B3FF38;
-}
-
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -1,10 +1,10 @@
 ---
 title: dot fabric generator
 designation: df-02
-description: A generative tool for creating dot fabric patterns. Customize dot size, density, diversity, turbulence, and more to produce unique fabric-like textures that can be exported as images.
+description: Generative tool for creating dot fabric patterns
 link: /playground/dot-fabric_20260401A.html
 image: /img/dot-fabric-gen_preview.jpg
-tag: web demo
+context: Javascript Tool
 date: 2026-06-08
 ---
 I needed specific artwork for a client deliverable but couldn't find something sustainable and consistent, so I built a web-based random dot fabric generator to export svg and png in 2 shots with Claude Code. It worked flawlessly.
