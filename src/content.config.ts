@@ -35,6 +35,15 @@ const playgroundSchema = z.object({
   warning: z.string().optional(),
 });
 
+const siteSchema = z.object({
+  destinations: z.array(z.string()),
+});
+
+const site = defineCollection({
+  loader: glob({ pattern: 'site.md', base: './src/shawncole-ca' }),
+  schema: siteSchema,
+});
+
 const caseStudies = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/shawncole-ca/case-studies' }),
   schema: contentSchema,
@@ -60,4 +69,4 @@ const cv = defineCollection({
   schema: cvSchema,
 });
 
-export const collections = { 'case-studies': caseStudies, futures, ideas, playground, cv };
+export const collections = { site, 'case-studies': caseStudies, futures, ideas, playground, cv };

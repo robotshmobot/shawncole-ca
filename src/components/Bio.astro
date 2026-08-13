@@ -1,26 +1,27 @@
 ---
+import { getCollection, render } from 'astro:content';
 
+const siteEntries = await getCollection('site');
+const siteEntry = siteEntries[0];
+const destinations = (siteEntry?.data?.destinations ?? []).map((d: string) => {
+  const [name, url] = d.split(' | ');
+  return { name: name.trim(), url: url.trim() };
+});
+const { Content } = await render(siteEntry);
 ---
 
 <section class="bio">
   <div class="bio__text">
-    <p>I'm a principal strategist, designer, and researcher with a habit of following interesting problems wherever they go. Sometimes that's a tricky enterprise service redesign. Sometimes it's a wild scenario about a future. Sometimes it's a synthesizer plugin I built on a Sunday.</p>
-    <p>Either way, welcome to my party attic.</p>
+    <Content />
   </div>
   <div class="bio__destinations">
     <h3 class="bio__destinations-heading">Destinations</h3>
-    <a href="https://www.linkedin.com/in/shawnrcole/" target="_blank" rel="noopener" class="bio__dest-row">
-      <span class="bio__dest-name">LinkedIn</span>
-      <span class="bio__dest-arrow">&rarr;</span>
-    </a>
-    <a href="https://medium.com/@shawnrcole" target="_blank" rel="noopener" class="bio__dest-row">
-      <span class="bio__dest-name">Medium</span>
-      <span class="bio__dest-arrow">&rarr;</span>
-    </a>
-    <a href="https://sentientspaces.bandcamp.com/" target="_blank" rel="noopener" class="bio__dest-row">
-      <span class="bio__dest-name">Sentient Spaces</span>
-      <span class="bio__dest-arrow">&rarr;</span>
-    </a>
+    {destinations.map((d) => (
+      <a href={d.url} target="_blank" rel="noopener" class="bio__dest-row">
+        <span class="bio__dest-name">{d.name}</span>
+        <span class="bio__dest-arrow">&rarr;</span>
+      </a>
+    ))}
   </div>
 </section>
 
@@ -38,7 +39,7 @@
     gap: 16px;
   }
 
-  .bio__text p {
+  .bio__text :global(p) {
     font-family: var(--font-body);
     font-size: 18px;
     line-height: 1.5;
@@ -90,7 +91,7 @@
       padding: 40px 16px;
     }
 
-    .bio__text p {
+    .bio__text :global(p) {
       font-size: 15px;
     }
 
