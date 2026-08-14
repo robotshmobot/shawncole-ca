@@ -20,13 +20,13 @@ As always, demos solved narrow problems beautifully and said nothing about the h
 
 As principal researcher, designer and strategist on a four-person team, embedded with the advanced HCI research group at a global technology company, we knew the following 12 months had a mandate to define general-purpose computing for a device class that didn't exist yet. This would not be a simple task, so we built the engagement as two volumes rather than one.
 
-![A of scanning signal cards on a computer screen](/img/spatial-computing_1_20260813.jpg)
-
 The first, a strategic foresight deliverable, established what would be true about the world over a 1 to 10-year time horizon. The second, an interaction and OS guideline, specified the system in enough detail that an engineering organization could argue with it. The futures were designed from the outset as the evidence bridge into the guideline. Every spec decision downstream could be traced to a signal, a finding, or a person we'd immersed with.
 
 ## Gathering evidence (pre-LLM)
 
 Three research streams ran in parallel, structured on STEEPV so the analysis stayed broader than technology.
+
+![A of scanning signal cards on a computer screen](/img/spatial-computing_1_20260813.jpg)
 
 Desk research swept websites, newspapers, scientific papers, industry publications, patents, film, art, literature, talks, and of course, social media. It produced 375 discrete findings, which clustered into 75 insights. In parallel we reviewed hundreds of peer-reviewed papers and worked directly with scientists across optics, HCI, semiconductor engineering and machine learning.
 
@@ -34,15 +34,20 @@ This second stream was the least glamorous part of the work and the most useful.
 
 The third stream was ethnographic: in-depth, in-context fieldwork with 20 participants, producing 160 findings and 48 insights. Early adopters who had already built strange private rituals around their headsets, and ordinary people who had never worn one. The second group taught us more. Watching someone with no prior model try to put a thing "somewhere" and come back for it later exposed assumptions everyone in the industry, including me, was carrying unexamined.
 
+![A photo of insights and theme cards on a computer screen](/img/spatial-computing_2_20260813.jpg)
+
 Those findings resolved upward into 20 themes and 6 pillars, and then outward into **26 future scenarios**: narrative accounts of how specific future people might live with this technology, positioned deliberately across a range of likelihood so the client could plan for the probable and the strange at once.
 
 The three streams disagreed with each other constantly, and the disagreements were the useful output. The scan said always-on ambient computing was inevitable. The ethnography said persistent overlays exhausted people inside twenty minutes. The physics said the battery wouldn't allow it regardless. That collision produced a principle the whole system relied on that *spatial computing has to be something you enter and leave deliberately*, with state that survives the gap.
 
-## A guideline for a spatial oeprating system
+## A guideline for a spatial operating system
 
 The second deliverable specified the operating system. Environments and their physics, the interaction model, and the OS itself. We envisioned how a spatial file system, volumetric files and folders would work. Cut, copy, paste and a virtual clipboard that works when there's no clipboard. A universal system menu, an app drawer, app icons, multitasking mechanics, cross-device handoff, notifications, search, virtual agents, authentication, an app store, payments. Every subsystem a real OS needs, roughly 250 pages of it, plus four device classes as a maturity model from lightweight glasses to tethered heavyweight rigs.
 
 ### Principles
+
+![A blurred image of a sketch from the interaction portion of the guideline](/img/spatial-computing_4_20260813.jpg)
+`About as much as I can show at this time`
 
 **I specified one-handed operation throughout.** Two-handed interactions are easier to design and demo well. We considered them and then constrained the entire model so any action could be completed with one hand, because people carry things, hold railings, and have one working arm. Accessibility as a design constraint from the first page costs you elegance in month two and saves the platform in year five.
 
@@ -59,6 +64,8 @@ The engagement didn't stop at the OS. The closing recommendations named roughly 
 One of them was a proposed charter of virtual rights: a digital rights framework for the platform to adopt before regulators wrote one for them. Putting that in front of a company positioned to become the gatekeeper of a computing paradigm was a deliberate act of design leadership, and it was the recommendation I expected to lose. It stayed in.
 
 ## Outcomes
+![A photo of both of the large deliverable books on a marble countertop](/img/spatial-computing_10_20260813.jpg)
+`Not just pretty deliverables, but executive conversation starters`
 
 The work produced **50+ patentable concepts**, formally disclosed to the client's IP team. It commercialized a large body of dormant internal R&D. The science was already inside the walls of the client's HQ, just nobody had built the connective tissue that let a product organization act on it, and that tissue was arguably the highest-value thing we delivered.
 

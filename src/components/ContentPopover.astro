@@ -86,6 +86,16 @@
         chipsEl.appendChild(chip);
       });
 
+      if (meta?.url) {
+        const link = document.createElement('a');
+        link.href = meta.url;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.className = 'popover-chip popover-chip--visit';
+        link.innerHTML = 'Visit <svg width="7" height="7" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.353516 6.5L6.35352 0.5M6.35352 6.5V0.5H0.353516" stroke="currentColor"/></svg>';
+        chipsEl.appendChild(link);
+      }
+
       overlay.hidden = false;
       panel.scrollTop = 0;
       requestAnimationFrame(() => {
@@ -292,6 +302,16 @@
     letter-spacing: 0.05em;
     white-space: nowrap;
     color: var(--color-text);
+  }
+
+  .popover-chips :global(.popover-chip--visit) {
+    gap: 8px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .popover-chips :global(.popover-chip--visit:hover) {
+    opacity: 0.7;
   }
 
   .popover-body {

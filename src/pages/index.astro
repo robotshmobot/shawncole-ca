@@ -25,6 +25,7 @@ type ContentEntry = {
   role?: string;
   projectDate?: string;
   link?: string;
+  url?: string;
 };
 
 const allContent: ContentEntry[] = [
@@ -84,6 +85,7 @@ const allContent: ContentEntry[] = [
     image: e.data.image,
     role: e.data.role,
     projectDate: e.data.dates,
+    url: e.data.url,
   })),
 ];
 
@@ -106,6 +108,7 @@ const dataIsland = allContent.map(e => ({
   projectDate: e.projectDate || null,
   type: e.type,
   link: e.link || null,
+  url: e.url || null,
 }));
 ---
 
