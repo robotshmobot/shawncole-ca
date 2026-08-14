@@ -113,8 +113,8 @@ const dataIsland = allContent.map(e => ({
   <main>
     <Hero />
     <Bio />
-    <Monogram />
     <ContentTable entries={allContent} />
+    <Monogram />
 
     {renderedContent.map(({ id, Content }) => (
       <div id={`content-${id}`} hidden>

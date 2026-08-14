@@ -6,7 +6,7 @@ dates: 2016–2018
 location: Toronto
 url: https://www.linkedin.com/company/helpful.com/
 date: 2016-02-01
-image: ""
+image: /img/helpful-app.jpg
 ---
 Third employee at an early-stage business video platform startup. Owned product design and research end-to-end; partnered with engineering, product management, and ML/data science.
 

@@ -6,7 +6,7 @@ dates: 2014–2016
 location: Toronto
 url: https://www.linkedin.com/company/kineticcommerce/
 date: 2014-03-01
-image: ""
+image: /img/aldo-endless-shelf.jpg
 ---
 Multi-year retail digital + service design engagement; managed a team of interaction designers across iOS, Android, web, and large-format retail digital experiences.
 
