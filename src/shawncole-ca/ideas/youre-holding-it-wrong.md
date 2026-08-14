@@ -26,7 +26,7 @@ In 2010, Apple launched the iconic iPhone 4. A gorgeous sandwich of glass and al
 
 He was right, technically. Certain grips _did_ interfere with the antenna bands, but that was not the point. The phone was designed for how Apple wanted it, not for how people actually used it.
 
-![Steve Jobs walking pensively across the stage with the antennagate slide behind him](https://media.licdn.com/dms/image/v2/D4E12AQFQxV7CUHdhlg/article-inline_image-shrink_1000_1488/B4EZ6EkeNAGwAI-/0/1780340614476?e=1784160000&v=beta&t=KvJWPHuZGMRIWvkWsYIhI76fezLoFU9k74MG_GsWHQY)
+![Steve Jobs walking pensively across the stage with the antennagate slide behind him](/img/steve-jobs-antennagate.webp)
 `"Scare quotes"`
 
 Ready for a huuuge stretch? Something nearly identical is playing out in enterprise AI right now.
@@ -49,7 +49,7 @@ Most organizations are still optimizing the node. They subscribe to an expensive
 
 The organizations I’ve seen get this right understand the human system before selecting the tools. They design for adoption from day one, treating behavioural change as a parallel workstream alongside the build. They measure with the same discipline they’d apply to any capital investment, and they’re willing to hear that the answer sometimes involves zero AI at all. Shocking.
 
-![A tongue-in-cheek version of the Gartner Hype Curve](https://media.licdn.com/dms/image/v2/D4D12AQESw85Mubi1dg/article-inline_image-shrink_1000_1488/B4DZ6EUZXnKEAM-/0/1780336400238?e=1784160000&v=beta&t=63q1VrUeWVr1oUMhOTJKgaNNf9mpSXiWdBpC1pngMzY)
+![A tongue-in-cheek version of the Gartner Hype Curve](/img/steve-jobs-ai-hype-curve.jpg)
 `Honestly, there are so many inflated expectation moments…`
 
 AI is in the [Trough of Disillusionment](https://www.gartner.com/en/research/methodologies/gartner-hype-cycle) in 2026, which means predictability of ROI has to happen before AI can truly scale in the enterprise. In my experience, the predictability problem is an organizational capability issue, not a technology maturity one. Incentives, operational nuances, identifying real problems at the edge, and if I have to say it again, I will: culture. You can’t _how do you do fellow kids_ your way to AI adoption.

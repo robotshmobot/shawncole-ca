@@ -6,7 +6,7 @@ dates: 2018–2023
 location: Toronto
 url: https://www.humanistic.ca/
 date: 2018-02-01
-image: ""
+image: /img/autodesk-dreamcatcher.jpg
 ---
 Strategic research, design, and futures advisory firm. Led the strategic design and foresight practice.
 
