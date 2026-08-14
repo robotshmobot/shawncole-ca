@@ -7,6 +7,7 @@ location: Toronto
 url: https://www.linkedin.com/company/kineticcommerce/
 date: 2014-03-01
 image: /img/aldo-endless-shelf.jpg
+alt-text: A shopper browsing shoes on an in-store touchscreen kiosk.
 ---
 Multi-year retail digital + service design engagement; managed a team of interaction designers across iOS, Android, web, and large-format retail digital experiences.
 

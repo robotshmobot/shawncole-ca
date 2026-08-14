@@ -7,6 +7,7 @@ location: Toronto
 url: https://www.humanistic.ca/
 date: 2018-02-01
 image: /img/autodesk-dreamcatcher.jpg
+alt-text: Illustration of a robotic fabrication outpost on a moon, with four-legged lattice-limbed robots and a gas giant overhead.
 ---
 Strategic research, design, and futures advisory firm. Led the strategic design and foresight practice.
 

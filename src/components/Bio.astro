@@ -19,7 +19,7 @@ const { Content } = await render(siteEntry);
     {destinations.map((d) => (
       <a href={d.url} target="_blank" rel="noopener" class="bio__dest-row">
         <span class="bio__dest-name">{d.name}</span>
-        <span class="bio__dest-arrow">&rarr;</span>
+        <svg class="bio__dest-arrow" width="21" height="7" viewBox="0 0 21 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 3.35358H20M17 6.35358L20 3.35358L17 0.353577" stroke="currentColor"/></svg>
       </a>
     ))}
   </div>
@@ -81,7 +81,9 @@ const { Content } = await render(siteEntry);
   }
 
   .bio__dest-arrow {
-    font-size: 20px;
+    width: 21px;
+    height: 7px;
+    flex-shrink: 0;
   }
 
   @media (max-width: 640px) {

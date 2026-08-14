@@ -6,7 +6,8 @@ dates: 2023–2026
 location: Toronto
 url: https://www.linkedin.com/company/koru-hq
 date: 2023-07-31
-image: ""
+image: /img/koru-studio.jpg
+alt-text: A Koru card with the title venture and enablement studio
 ---
 OTPP-backed venture studio specializing in enterprise AI adoption, change management, and strategic design. Lead a cross-functional pod of designers, researchers, bizops and product across 2-3 active engagements at any time.
 
