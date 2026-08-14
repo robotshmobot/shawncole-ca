@@ -56,7 +56,9 @@
     position: fixed;
     bottom: 10px;
     right: 10px;
-    z-index: 50;
+    /* Above the popover (overlay 100 / panel 101) so the theme can be switched
+       while reading, but below the lightbox (200). */
+    z-index: 150;
     display: flex;
     gap: 0;
     border-radius: 14px;

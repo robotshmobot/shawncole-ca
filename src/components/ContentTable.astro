@@ -233,7 +233,11 @@ function filterLabel(type: string): string {
 
   @media (max-width: 640px) {
     .work-section {
-      padding: 0 16px 16px;
+      padding: 0 0 16px;
+    }
+
+    .work-header {
+      padding: 24px 16px;
     }
 
     .content-table__head {
@@ -243,7 +247,11 @@ function filterLabel(type: string): string {
     .content-table__row {
       display: flex;
       flex-direction: column;
-      padding: 14px 0;
+      padding: 14px 16px;
+    }
+
+    .content-table__row[hidden] {
+      display: none;
     }
 
     .content-table__td {
