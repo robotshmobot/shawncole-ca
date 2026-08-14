@@ -44,6 +44,7 @@
 :root {
   --color-bg: #ffffff;
   --color-text: #12121a;
+  --color-body-text: #12121a;
   --color-header-bg: #12121a;
   --color-header-text: #ffffff;
   --color-overlay: rgba(241, 241, 241, 0.66);
@@ -61,6 +62,7 @@
   :root:not([data-theme="light"]) {
     --color-bg: #1d2018;
     --color-text: #a37f5c;
+    --color-body-text: #B79371;
     --color-header-bg: #a37f5c;
     --color-header-text: #1d2018;
     --color-overlay: rgba(29, 32, 24, 0.66);
@@ -74,6 +76,7 @@
 :root[data-theme="dark"] {
   --color-bg: #1d2018;
   --color-text: #a37f5c;
+  --color-body-text: #B79371;
   --color-header-bg: #a37f5c;
   --color-header-text: #1d2018;
   --color-overlay: rgba(29, 32, 24, 0.66);
