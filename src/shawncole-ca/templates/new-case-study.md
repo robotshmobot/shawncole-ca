@@ -6,5 +6,6 @@ date: {{date}}
 tags: []
 image: ""
 alt-text: ""
+executive-summary: ""
 ---
 

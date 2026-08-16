@@ -8,6 +8,7 @@ const contentSchema = z.object({
   tags: z.array(z.string()).optional(),
   image: z.string().nullable().optional(),
   'alt-text': z.string().optional(),
+  'executive-summary': z.string().optional(),
   context: z.string().optional(),
   role: z.string().optional(),
   projectDate: z.string().optional(),

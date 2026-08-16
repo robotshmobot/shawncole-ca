@@ -51,6 +51,7 @@
   --color-close-bg: rgba(241, 241, 241, 0.22);
   --color-border-subtle: rgba(18, 18, 26, 0.16);
   --color-surface: #f5f5f5;
+  --color-card-bg: #f1f1f1;
   --color-blockquote: #6b6b6b;
   --font-display: 'Faune Display', sans-serif;
   --font-body: 'Geist', system-ui, -apple-system, sans-serif;
@@ -69,6 +70,7 @@
     --color-close-bg: rgba(29, 32, 24, 0.22);
     --color-border-subtle: rgba(163, 127, 92, 0.24);
     --color-surface: rgba(163, 127, 92, 0.1);
+    --color-card-bg: rgba(183, 147, 113, 0.08);
     --color-blockquote: #8a7a6a;
   }
 }
@@ -83,6 +85,7 @@
   --color-close-bg: rgba(29, 32, 24, 0.22);
   --color-border-subtle: rgba(163, 127, 92, 0.24);
   --color-surface: rgba(163, 127, 92, 0.1);
+  --color-card-bg: rgba(183, 147, 113, 0.08);
   --color-blockquote: #8a7a6a;
 }
 

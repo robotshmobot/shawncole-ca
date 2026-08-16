@@ -9,10 +9,11 @@ image: /img/cs-ford-pro_hero_20260617A.jpg
 context: Ford Pro
 role: Principal Researcher & Strategist
 projectDate: April 2022
+executive-summary: |-
+  Ford Pro's three-phase marketplace strategy, delivered in 2022, reached production in March 2025 when the company launched LocateFordWorkTrucks.com in direct partnership with Work Truck Solutions — a specific Phase 1 recommendation — and by 2026 made the platform mandatory infrastructure for all Commercial Vehicle Center dealers. Ford Pro captured value only at vehicle sale; the $9–12B North American commercial upfitting aftermarket ran on phone calls, paper catalogues, and personal referrals, with no technological layer connecting buyers to upfitters, parts, or services. 
+
+  Mapping the ecosystem as an actor-based value web rather than a linear customer journey exposed five intervention points where Ford could move downstream, and a three-phase roadmap used data accumulation as the compounding mechanism: partner for inventory data first, build storefront tools to capture supplier data second, consolidate into an OEM-agnostic marketplace third. As co-lead on a 4-person team over 8 weeks, I ran the ethnographic research across five upfitting shops, led the competitive landscape analysis, synthesized the five opportunity areas with build-vs-buy-vs-partner recommendations, and designed the phased strategy that Ford Pro eventually operationalized.
 ---
-
-## What do upfitters do, and how?
-
 I co-led a 4-person Humanistic team through an 8-week engagement structured around two parallel workstreams: ethnographic research with industry insiders and a comprehensive market and competitive landscape analysis.
 
 We operated at arm's length from Ford, positioning ourselves as a third-party research firm rather than an OEM proxy. The upfitting industry runs on personal relationships and deep skepticism toward manufacturers getting involved in their business. That positioning got upfitters, parts distributors, and independent dealers to open up about competitive dynamics, pricing structures, and technology hesitations they would have guarded in a direct OEM conversation.

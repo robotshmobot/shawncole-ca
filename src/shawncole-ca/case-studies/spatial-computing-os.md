@@ -4,9 +4,13 @@ description: ""
 context: Global Tech Company
 role: Principal Researcher & Designer
 date: 2021-06-01
-tags: []
 image: /img/spatial-computing_0_20260813.jpg
 alt-text: An illustration of a woman standing in a virtual orb wearing vr glasses controlling the scene
+executive-summary: |-
+  The client's advanced HCI research group entered this engagement scoped to a device category and left it funding a platform thesis, with 50+ patentable concepts disclosed into its IP portfolio and a spatial operating system specified end to end. In 2021 every major technology company could demonstrate augmented reality, and none could say what a person would do inside one all day, which left years of R&D spending with no product to aim at. 
+
+  The brief covered interaction patterns for a headset, and the research redirected it to the operating system underneath, because patterns have nothing to attach to until someone decides what a file, a window and a clipboard become when there is no screen. As principal researcher, designer and strategist on a four-person embedded team, over 18 months I ran the foresight scan and the ethnographic fieldwork, built 26 future scenarios from 375 desk findings and 160 field findings, specified the system across environments, interaction and OS behaviour, and put build, partner or acquire calls against twelve platform initiatives.
+projectDate: June 2021
 ---
 A global technology company needed a credible claim on spatial computing before the hardware existed. Embedded 12 months with a team of four, I led the foresight and ethnographic research and co-authored a two-volume deliverable: 26 future scenarios and a complete spatial OS specification. It produced 50+ patentable concepts and a board-level platform strategy.
 

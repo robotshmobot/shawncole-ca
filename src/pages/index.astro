@@ -26,6 +26,7 @@ type ContentEntry = {
   projectDate?: string;
   link?: string;
   url?: string;
+  executiveSummary?: string;
 };
 
 const allContent: ContentEntry[] = [
@@ -40,6 +41,7 @@ const allContent: ContentEntry[] = [
     altText: e.data['alt-text'],
     role: e.data.role,
     projectDate: e.data.projectDate,
+    executiveSummary: e.data['executive-summary'],
   })),
   ...futures.map(e => ({
     id: e.id,
@@ -109,6 +111,7 @@ const dataIsland = allContent.map(e => ({
   type: e.type,
   link: e.link || null,
   url: e.url || null,
+  executiveSummary: e.executiveSummary || null,
 }));
 ---
 

@@ -19,6 +19,10 @@
       <div class="popover-header" data-popover-header>
         <h2 class="popover-title" data-popover-title></h2>
         <div class="popover-chips" data-popover-chips></div>
+        <div class="popover-summary" data-popover-summary hidden>
+          <h3 class="popover-summary__heading">Executive summary</h3>
+          <div class="popover-summary__body" data-popover-summary-body></div>
+        </div>
       </div>
       <div class="popover-body" data-popover-body></div>
     </div>
@@ -45,6 +49,8 @@
     const imageEl = document.querySelector<HTMLImageElement>('[data-popover-image]')!;
     const titleEl = document.querySelector<HTMLElement>('[data-popover-title]')!;
     const chipsEl = document.querySelector<HTMLElement>('[data-popover-chips]')!;
+    const summaryEl = document.querySelector<HTMLElement>('[data-popover-summary]')!;
+    const summaryBody = document.querySelector<HTMLElement>('[data-popover-summary-body]')!;
     const lightbox = document.querySelector<HTMLElement>('[data-lightbox]')!;
     const lightboxImg = document.querySelector<HTMLImageElement>('[data-lightbox-image]')!;
     const lightboxClose = document.querySelector<HTMLButtonElement>('[data-lightbox-close]')!;
@@ -108,6 +114,22 @@
       }
 
       titleEl.textContent = meta?.title || '';
+
+      // Blank lines separate paragraphs; card is omitted entirely when absent.
+      const summary = (meta?.executiveSummary || '').trim();
+      summaryBody.innerHTML = '';
+      if (summary) {
+        summary.split(/\n\s*\n/).forEach(para => {
+          const text = para.trim();
+          if (!text) return;
+          const p = document.createElement('p');
+          p.textContent = text;
+          summaryBody.appendChild(p);
+        });
+        summaryEl.hidden = false;
+      } else {
+        summaryEl.hidden = true;
+      }
 
       chipsEl.innerHTML = '';
       const chips: string[] = [];
@@ -368,6 +390,38 @@
     opacity: 0.7;
   }
 
+  .popover-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    padding: 32px;
+    border-radius: 8px;
+    background: var(--color-card-bg);
+  }
+
+  .popover-summary[hidden] {
+    display: none;
+  }
+
+  .popover-summary__heading {
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 32px;
+    color: var(--color-body-text);
+  }
+
+  .popover-summary__body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 21px;
+    color: var(--color-body-text);
+  }
+
   .popover-body {
     width: 100%;
     max-width: 720px;
@@ -548,6 +602,10 @@
 
     .popover-chips {
       gap: 4px;
+    }
+
+    .popover-summary {
+      padding: 16px;
     }
 
     .popover-content {
